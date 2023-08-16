@@ -1,13 +1,8 @@
 import React, { createContext, useContext, useState } from 'react';
-import { Theme, DayTheme, NightTheme } from '../interfaces/themes';
-
-interface ThemeContextType {
-  theme: Theme;
-  toggleTheme: () => void;
-}
-interface Props {
-    children?: React.ReactNode
-  }
+import { Theme } from '../interfaces/interfaces';
+import { ThemeContextType } from '../interfaces/interfaces';
+import { Props } from '../interfaces/interfaces';
+import { DayTheme, NightTheme } from '../themes/themes';
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider: React.FC<Props> = ({children}) => {

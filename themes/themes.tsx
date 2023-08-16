@@ -1,9 +1,5 @@
-export interface Theme {
-    backgroundColor: string;
-    textColor: string;
-  }
-  
-  export const DayTheme: Theme = {
+import { Theme } from "../interfaces/interfaces";
+export const DayTheme: Theme = {
     backgroundColor: '#FFFFFF',
     textColor: '#000000',
   };
@@ -12,4 +8,3 @@ export interface Theme {
     backgroundColor: '#0D1117',
     textColor: '#FFFFFF',
   };
-  
