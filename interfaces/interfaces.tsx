@@ -1,7 +1,9 @@
 export interface Theme {
     backgroundColor: string;
     textColor: string;
-}
+    primaryColor: string;
+    secondaryColor: string;
+  }
 export interface ThemeContextType {
     theme: Theme;
     toggleTheme: () => void;
@@ -23,7 +25,6 @@ export interface LoginScreenType {
 
 }
 export interface HomeScreenType {
-    theme: Theme
 }
 export interface SignupScreenType {
     
@@ -49,4 +50,7 @@ export interface ProfileScreenType{
 }
 export interface SettingsScreenType{
     
+}
+export interface AuthenticatedStackType{
+
 }

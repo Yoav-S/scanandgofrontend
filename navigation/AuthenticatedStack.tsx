@@ -1,11 +1,11 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import LoginScreen from '../screens/LoginScreen';
 import StatsScreen from '../screens/StatsScreen';
 import HomeScreen from '../screens/HomeScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import ProfileScreen from '../screens/ProfileScreen';
+import { AuthenticatedStackType } from '../interfaces/interfaces';
 const AuthenticatedStack = createStackNavigator();
-export const AuthenticatedStackScreen: React.FC = () => {
+export const AuthenticatedStackScreen: React.FC<AuthenticatedStackType> = () => {
     return (
       <AuthenticatedStack.Navigator>
         <AuthenticatedStack.Screen 

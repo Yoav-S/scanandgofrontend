@@ -12,7 +12,6 @@ const LoginScreen: React.FC = () => {
   const setEmailInputHandler = (value: string) => {
     setEmailInput(value);
   }
-  console.log(EmailInput);
   
   return (
     <View style={[styles.container, { backgroundColor: theme.backgroundColor }]}>
