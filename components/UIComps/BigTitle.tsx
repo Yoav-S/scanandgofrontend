@@ -1,19 +1,27 @@
-import React from "react";
+import React, {useState} from "react";
 import { View, SafeAreaView, StyleSheet, Text } from "react-native";
-import { BigTitleType } from '../../interfaces/interfaces'
-const BigTitle: React.FC<BigTitleType> = () => {
-    return(
-        <View style={styles.container}>
-            <Text style={styles.colorBlack}>Login</Text>
+import { BigTitleType } from '../../interfaces/interfaces';
+import { useTheme } from '../../context/ThemeContext';
+
+const BigTitle: React.FC<BigTitleType> = (props) => {
+    const { theme } = useTheme();
+    const [title, setTitle] = useState<string>(props.title);
+    return (
+        <View style={[styles.container, { backgroundColor: theme.backgroundColor }]}>
+            <Text style={[styles.colorBlack, { color: theme.textColor }]}>{title}</Text>
         </View>
     )
 }
+
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     colorBlack: {
-        color: 'black',
+        fontWeight: 'bold',
+        fontSize: 24,
     }
 })
-export default BigTitle
+
+export default BigTitle;
