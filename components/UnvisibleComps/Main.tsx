@@ -6,17 +6,14 @@ import { AuthenticatedStackScreen } from '../../navigation/AuthenticatedStack';
 import { NotAuthenticatedStackScreen } from '../../navigation/NotAuthenticatedStack';
 
 const Main: React.FC = () => {
-  const { theme, toggleTheme } = useTheme();
   const { currentUser } = useDataContext();
 
   return (
     <View style={styles.container}>
         {currentUser ? (
-                    <NotAuthenticatedStackScreen />
-
+                    <AuthenticatedStackScreen />
         ) : (
-          <AuthenticatedStackScreen />
-
+          <NotAuthenticatedStackScreen />
         )}
 
     </View>
@@ -25,7 +22,6 @@ const Main: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white'
   }
 });
 export default Main;

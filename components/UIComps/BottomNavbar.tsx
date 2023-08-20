@@ -25,6 +25,8 @@ const BottomNavbar: React.FC<BottomNavbarInterface> = (props) => {
   console.log('Scanner triggered');
   
  }
+
+ 
   return (
     <SafeAreaView style={styles.container}>
       <Icon name="home" size={30} color={route.name === "Home" ? 'lightblue' : 'white'} onPress={navigateHome}/>

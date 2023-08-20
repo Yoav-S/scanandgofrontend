@@ -39,7 +39,8 @@ export interface DayNightSwitcherProps {
   }
 export interface FormInputType{
     label: string;
-    setEmailInput: (value: string) => void;
+    setEmailInput?: (value: string) => void;
+    setPasswordInput?: (value: string) => void;
     theme: Theme;
 }
 export interface StatsScreenType{
@@ -54,3 +55,16 @@ export interface SettingsScreenType{
 export interface AuthenticatedStackType{
 
 }
+export interface TokenContextType {
+    token: Token | null;
+    setToken: (token: Token | null) => void;
+  }
+  
+  export interface Token {
+    expiration: number; // Expiration timestamp
+    id: string;
+    fullname: string;
+    email: string;
+  }
+  
+  
