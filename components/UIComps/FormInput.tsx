@@ -2,16 +2,12 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import { FormInputType } from "../../interfaces/interfaces";
 import { TextInput } from "@react-native-material/core";
-
+import { useTheme } from "../../context/ThemeContext";
 const FormInput: React.FC<FormInputType> = (props) => {
-  const theme = props.theme;
+  const {theme} = useTheme();
 
   const onChangeTextHandler = (text: string) => {
-    if (props.label === "Email" && props.setEmailInput) {
-      props.setEmailInput(text);
-    } else if (props.label === "Password" && props.setPasswordInput) {
-      props.setPasswordInput(text);
-    }
+    props.setInput(text);
   };
 
   return (
@@ -35,7 +31,6 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     paddingHorizontal: 16,
     paddingVertical: 12,
-    marginBottom: 16,
     fontSize: 16,
     width: '90%',
     alignSelf: 'center'

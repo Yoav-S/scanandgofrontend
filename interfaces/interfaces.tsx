@@ -30,18 +30,14 @@ export interface SignupScreenType {
     
 }
 export interface BigTitleType {
-    theme: Theme;
     title: string;
 }
 export interface DayNightSwitcherProps {
-    isEnabled: boolean;
-    onToggle: () => void;
+
   }
 export interface FormInputType{
     label: string;
-    setEmailInput?: (value: string) => void;
-    setPasswordInput?: (value: string) => void;
-    theme: Theme;
+    setInput: (value: string) => void;
 }
 export interface StatsScreenType{
 
@@ -58,13 +54,37 @@ export interface AuthenticatedStackType{
 export interface TokenContextType {
     token: Token | null;
     setToken: (token: Token | null) => void;
-  }
-  
-  export interface Token {
+}
+export interface Token {
     expiration: number; // Expiration timestamp
     id: string;
     fullname: string;
     email: string;
-  }
+}
+export interface StyledButtonType {
+  text: string;
+  btnHandler: () => void;
+}
+export interface StyledBarrierProps{
+    text: string;
+}
+export interface TitleAndBtnConProps {
+    text: string;
+    btnlabel: string;
+    textbold?: boolean;
+    btnbold?: boolean;
+    onNavigateToSignUp?: () => void; // Correct prop name
+}
+export interface AllCheckBoxCategoriesProps {
+    title: string;
+    categories: string[];
+    isSingleCategory?: boolean; // Optional prop to determine single or multiple selection
+    setSelectedCategories: (value: string[]) => void;
+    selectedCategories: string[];
+}
+
+
+ 
+  
   
   

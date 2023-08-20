@@ -2,7 +2,6 @@ import React, {useState} from "react";
 import { View, StyleSheet, Image, Text } from "react-native";
 import { useTheme } from "../context/ThemeContext";
 import { useToken } from '../context/TokenContext'; // Import the TokenContext hook
-import { NightTheme } from "../themes/themes";
 import { CheckBox } from 'react-native-elements'
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -10,10 +9,18 @@ import BigTitle from "../components/UIComps/BigTitle";
 import DayNightSwitcher from "../components/UIComps/DayNightSwitcher";
 import FormInput from "../components/UIComps/FormInput";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import TitledBarrier from "../components/UIComps/TitledBarrier";
+import { Icon } from "react-native-elements";
+import StyledButton from "../components/UIComps/StyledButton";
+import TitleAndBtnCon from "../components/UIComps/TitleAndBtnCon";
+import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from '@react-navigation/stack';
 const LoginScreen: React.FC = () => {
+  const navigation = useNavigation<StackNavigationProp<any, 'Login'>>();
+
   const { setToken } = useToken(); // Use the useToken hook
   const [checkBoxValue, setCheckBoxValue] = useState<boolean>(false);
-  const { theme, toggleTheme } = useTheme();
+  const { theme } = useTheme();
   const [EmailInput, setEmailInput] = useState<string | undefined>(undefined);
   const [PasswordInput, setPasswordInput] = useState<string | undefined>(undefined);
   const setPasswordInputHandler = (value: string) => {
@@ -41,33 +48,39 @@ const LoginScreen: React.FC = () => {
     setCheckBoxValue(!checkBoxValue)
   }
   console.log(checkBoxValue);
-  
-  
+  const navigateToSignUp = () => {
+    navigation.navigate('Signup');
+  }
 
   return (
     <View style={[styles.container, { backgroundColor: theme.backgroundColor }]}>
       <DayNightSwitcher
-        isEnabled={theme === NightTheme}
-        onToggle={toggleTheme}
       />
       <View style={styles.imageCon}>
         <Image style={styles.image} source={require("../images/3135715.png")} />
       </View>
-      <BigTitle title="Login" theme={theme} />
-      <FormInput theme={theme} setEmailInput={setEmailInputHandler} label={"Email"}/>
-      <FormInput theme={theme} setPasswordInput={setPasswordInputHandler} label={"Password"}/>
+      <BigTitle title="Login" />
+      <FormInput setInput={setEmailInputHandler} label={"Email"}/>
+      <FormInput setInput={setPasswordInputHandler} label={"Password"}/>
       <View style={styles.checkBoxBtnCon}>
+      <View style={{flexDirection: 'row', alignItems: 'center'}}>
       <CheckBox
          style={[styles.checkBoxStyles]}
          center
-         title='Keep me logged in ?'
          checked={checkBoxValue} // Set the checked prop
          onPress={checkBoxHandler}
       />
+      <Text style={{color: theme.textColor}}>Keep me logged in ?</Text>
+      </View>
       <TouchableOpacity>
         <Text style={[{color: theme.secondaryColor},styles.forgotPasswordText]}>Forgot Password ?</Text>
       </TouchableOpacity>
       </View>
+      <StyledButton btnHandler={LoginAttempt} text={"Sign in"}/>
+      <TitleAndBtnCon text={"Dont have an account ?"} btnlabel={"Sign up"} btnbold  onNavigateToSignUp={navigateToSignUp} />
+      <TitledBarrier text={"Or Sign in via"}/>
+      <Icon style={styles.icon} name="home" size={30} />
+      <TitleAndBtnCon text="Notice a bug in the app ?" btnlabel="Notice us" btnbold/>
     </View>
   );
 };
@@ -76,12 +89,20 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  icon: {
+    margin: '2%'
+  },
   checkBoxStyles: {
     width: '50%'
   },
   imageCon: {
     alignSelf: 'center',
     padding: '10%',
+  },
+  bugCon: {
+    flexDirection: 'row',
+    width: '95%',
+    alignSelf: 'center',
   },
   image: {
     width: 150,
