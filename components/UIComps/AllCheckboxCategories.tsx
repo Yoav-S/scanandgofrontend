@@ -3,11 +3,12 @@ import { View, Text, StyleSheet } from 'react-native';
 import { CheckBox } from 'react-native-elements';
 import { useTheme } from '../../context/ThemeContext';
 import { AllCheckBoxCategoriesProps } from '../../interfaces/interfaces';
-
+import { set_gender_Validator_Flag } from '../../messages/Statements';
 const AllCheckBoxCategories: React.FC<AllCheckBoxCategoriesProps> = (props) => {
   const { theme } = useTheme();
 
   const handleCategorySelect = (category: string) => {
+    set_gender_Validator_Flag(true);
     if (props.isSingleCategory) {
       props.setSelectedCategories([category]);
     } else {

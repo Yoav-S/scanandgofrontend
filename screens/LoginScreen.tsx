@@ -23,6 +23,8 @@ const LoginScreen: React.FC = () => {
   const { theme } = useTheme();
   const [EmailInput, setEmailInput] = useState<string | undefined>(undefined);
   const [PasswordInput, setPasswordInput] = useState<string | undefined>(undefined);
+  const [buttonStatus, setButtonStatus] = useState<boolean>(true);
+
   const setPasswordInputHandler = (value: string) => {
     setPasswordInput(value);
   }
@@ -76,8 +78,8 @@ const LoginScreen: React.FC = () => {
         <Text style={[{color: theme.secondaryColor},styles.forgotPasswordText]}>Forgot Password ?</Text>
       </TouchableOpacity>
       </View>
-      <StyledButton btnHandler={LoginAttempt} text={"Sign in"}/>
-      <TitleAndBtnCon text={"Dont have an account ?"} btnlabel={"Sign up"} btnbold  onNavigateToSignUp={navigateToSignUp} />
+      <StyledButton disabled={buttonStatus} btnHandler={LoginAttempt} text={"Sign in"}/>
+      <TitleAndBtnCon text={"Dont have an account ?"} btnlabel={"Sign up"} btnbold  onPress={navigateToSignUp} />
       <TitledBarrier text={"Or Sign in via"}/>
       <Icon style={styles.icon} name="home" size={30} />
       <TitleAndBtnCon text="Notice a bug in the app ?" btnlabel="Notice us" btnbold/>
