@@ -5,6 +5,7 @@ import { ThemeProvider } from './context/ThemeContext';
 import { TokenProvider } from './context/TokenContext';
 import { DataProvider } from './context/DataContext';
 import { NavigationContainer } from '@react-navigation/native';
+import { firebase } from '@react-native-firebase/messaging';
 const App: React.FC = () => {
   return (
     <NavigationContainer>

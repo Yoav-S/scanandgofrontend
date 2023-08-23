@@ -78,7 +78,7 @@ const LoginScreen: React.FC = () => {
         <Text style={[{color: theme.secondaryColor},styles.forgotPasswordText]}>Forgot Password ?</Text>
       </TouchableOpacity>
       </View>
-      <StyledButton disabled={buttonStatus} btnHandler={LoginAttempt} text={"Sign in"}/>
+      <StyledButton disabled={buttonStatus} onPress={LoginAttempt} text={"Sign in"}/>
       <TitleAndBtnCon text={"Dont have an account ?"} btnlabel={"Sign up"} btnbold  onPress={navigateToSignUp} />
       <TitledBarrier text={"Or Sign in via"}/>
       <Icon style={styles.icon} name="home" size={30} />

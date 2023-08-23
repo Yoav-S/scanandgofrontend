@@ -4,8 +4,13 @@ import { StyledButtonType } from "../../interfaces/interfaces";
 import { useTheme } from "../../context/ThemeContext";
 const StyledButton: React.FC<StyledButtonType> = (props) =>{
     const {theme} = useTheme();
+
+    
     return (
-        <TouchableOpacity disabled={props.disabled} style={[styles.btnstyle, {backgroundColor : props.disabled ? theme.primaryColor : theme.secondaryColor}]} onPress={props.btnHandler}>
+        <TouchableOpacity 
+        disabled={props.disabled} 
+        style={[styles.btnstyle, {backgroundColor : props.disabled ? theme.primaryColor : theme.secondaryColor}]} 
+        onPress={props.onPress}>
             <Text style={[styles.textstyle, {color: theme.textColor}]}>{props.text}</Text>
         </TouchableOpacity>
     )

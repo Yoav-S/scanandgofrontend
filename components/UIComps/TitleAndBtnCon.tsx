@@ -25,6 +25,7 @@ const TitleAndBtnCon: React.FC<TitleAndBtnConProps> = (props) => {
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
+        marginTop: '5%',
         width: '95%',
         alignSelf: 'center',
     }

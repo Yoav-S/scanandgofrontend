@@ -1,20 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { CheckBox } from 'react-native-elements';
 import { useTheme } from '../../context/ThemeContext';
 import { AllCheckBoxCategoriesProps } from '../../interfaces/interfaces';
-import { set_gender_Validator_Flag } from '../../messages/Statements';
+
 const AllCheckBoxCategories: React.FC<AllCheckBoxCategoriesProps> = (props) => {
   const { theme } = useTheme();
+  const [categorySelections, setCategorySelections] = useState<{ [key: string]: boolean }>({});
+
+  const isCategorySelected = (category: string) => {
+    return categorySelections[category] || false;
+  };
 
   const handleCategorySelect = (category: string) => {
-    set_gender_Validator_Flag(true);
     if (props.isSingleCategory) {
-      props.setSelectedCategories([category]);
+      const newSelections = { [category]: true };
+      setCategorySelections(newSelections);
+      props.setSelectedCategories(category);
     } else {
-      const updatedCategories = props.selectedCategories.includes(category)
-        ? props.selectedCategories.filter(cat => cat !== category)
-        : [...props.selectedCategories, category];
+      const updatedSelections = { ...categorySelections };
+      updatedSelections[category] = !isCategorySelected(category);
+      setCategorySelections(updatedSelections);
+      const updatedCategories = Object.keys(updatedSelections).filter(cat => updatedSelections[cat]);
       props.setSelectedCategories(updatedCategories);
     }
   };
@@ -30,17 +37,20 @@ const AllCheckBoxCategories: React.FC<AllCheckBoxCategoriesProps> = (props) => {
             key={index}
             title={category}
             center
-            checked={props.selectedCategories.includes(category)}
+            checked={isCategorySelected(category)}
             onPress={() => handleCategorySelect(category)}
           />
         ))}
       </View>
+      {props.errorMessage && <Text style={{color: theme.textColor, width: '90%', alignSelf:'center'}}>{props.errorMessage}</Text>}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    marginTop: '5%'
+  },
   titleCon: {},
   categoriesMapView: {
     flexDirection: 'row',

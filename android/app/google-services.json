@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "359255945934",
+    "project_id": "scanandgo-b5cb2",
+    "storage_bucket": "scanandgo-b5cb2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:359255945934:android:08dce9b10385dfd808969f",
+        "android_client_info": {
+          "package_name": "com.scanandgorn"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "359255945934-88opt731nm86ugppcfhtu0elro5o4574.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA52cJSP-HNWdyTAB6vpxOQ_9w5-eckgz0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "359255945934-88opt731nm86ugppcfhtu0elro5o4574.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
