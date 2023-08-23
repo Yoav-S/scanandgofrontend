@@ -15,10 +15,9 @@ import StyledButton from '../components/UIComps/StyledButton';
 import DatePicker from 'react-native-date-picker';
 import TitleAndBtnCon from '../components/UIComps/TitleAndBtnCon';
 import messaging from '@react-native-firebase/messaging'; // Import Firebase messaging
-import { emailSchema, fullnameSchema, passwordSchema, genderSchema } from '../messages/Statements';
+import { emailSchema, fullnameSchema, passwordSchema, genderSchema, birthDateSchema } from '../messages/Statements';
 import { Registergion_Form_Props } from '../interfaces/interfaces';
 import { useDataContext } from '../context/DataContext';
-const birthDateSchema = Yup.string().required('Field is required');
 
 const validationSchema = Yup.object().shape({
   email: emailSchema,
