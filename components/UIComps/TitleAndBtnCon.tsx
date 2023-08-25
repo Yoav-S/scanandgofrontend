@@ -14,9 +14,9 @@ const TitleAndBtnCon: React.FC<TitleAndBtnConProps> = (props) => {
 
     return (
         <View style={styles.container}>
-            <Text style={{ color: theme.textColor, fontWeight: props.textbold ? 'bold' : '300' }}>{props.text}</Text>
-            <TouchableOpacity style={{ marginLeft: '4%' }} onPress={triggerBtn}>
-                <Text style={{ color: theme.textColor, fontWeight: props.btnbold ? 'bold' : '300' }}>{props.btnlabel}</Text>
+            <Text style={{ color: theme.textColor, fontWeight: props.textbold ? 'bold' : '300', fontSize: 12 }}>{props.text}</Text>
+            <TouchableOpacity onPress={triggerBtn}>
+                <Text style={{ color: theme.textColor, fontWeight: props.btnbold ? 'bold' : '300' , fontSize: 12 }}> {props.btnlabel}</Text>
             </TouchableOpacity>
         </View>
     );
@@ -25,7 +25,6 @@ const TitleAndBtnCon: React.FC<TitleAndBtnConProps> = (props) => {
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        marginTop: '5%',
         width: '95%',
         alignSelf: 'center',
     }

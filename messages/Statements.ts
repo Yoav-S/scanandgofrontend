@@ -13,4 +13,6 @@ import * as Yup from 'yup';
   export const genderSchema = Yup.string() .required('field is required')
 
   export const birthDateSchema = Yup.string() .required('field is required')
+
+  export const termsSchema = Yup.boolean() .required('field is required')
  

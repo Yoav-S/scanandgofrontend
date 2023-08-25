@@ -9,7 +9,7 @@ export const DataProvider: React.FC<Props> = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<CurrentUserType | null>(null);
 
 
-  const [apiUrl, setapiUrl] = useState<string>('server');
+  const [apiUrl, setapiUrl] = useState<string>('https://scan-and-go.onrender.com//');
   
 
 

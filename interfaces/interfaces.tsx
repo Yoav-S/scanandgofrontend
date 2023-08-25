@@ -81,6 +81,7 @@ export interface TitleAndBtnConProps {
     textbold?: boolean;
     btnbold?: boolean;
     onPress?: () => void; 
+    btntextcolor?: string;
 }
 export interface AllCheckBoxCategoriesProps {
     title: string;
@@ -102,6 +103,7 @@ confirmPassword?: string;
 gender: string;
 birthDate?: string;
 deviceToken?: string;
+termsAndConditions? : boolean;
 }
 export interface ForgotPasswordProps{
 
