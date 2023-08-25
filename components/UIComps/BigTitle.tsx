@@ -16,7 +16,7 @@ const BigTitle: React.FC<BigTitleType> = (props) => {
 const styles = StyleSheet.create({
     container: {
         justifyContent: 'center',
-        alignItems: 'center',
+        padding: '5%'
     },
     colorBlack: {
         fontWeight: 'bold',

@@ -25,6 +25,8 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import Modal from 'react-native-modalbox';
 import Slider from 'react-native-slider';
 import { ActivityIndicator } from '@react-native-material/core';
+import Toast from 'react-native-toast-message';
+import { requestUserPermission } from '../utils/requests';
 const validationSchema = Yup.object().shape({
   email: emailSchema,
   password: passwordSchema,
@@ -41,7 +43,7 @@ const SignupScreen: React.FC = () => {
   const { setToken } = useToken();
   const { theme } = useTheme();
   const [isBirthDateValidated, setIsBirthDateValidated] = useState<boolean>(false);
-  const {apiUrl} = useDataContext();
+  const { signupAttempt, showToast , autoLoginNewUser} = useDataContext();
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [isLoading, setisLoading] = useState<boolean>(false);
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
@@ -53,85 +55,30 @@ const SignupScreen: React.FC = () => {
     setopenDateModal(!openDateModal);
   };
 
-  const requestPermission = async (): Promise<string | null> => {
-    try {
-      await messaging().requestPermission();
-      console.log('Permission granted');
-      const token = await getDeviceToken();
-      return token;
-    } catch (error) {
-      console.error('Permission denied:', error);
-      return null;
-    }
-  };
-  
-  const getDeviceToken = async (): Promise<string | null> => {
-    try {
-      const token = await messaging().getToken();
-      console.log('Device Token:', token);
-      return token;
-    } catch (error) {
-      console.error('Error getting device token:', error);
-      return null;
-    }
-  };
-  
+
   const handleFormSubmit = async (values: Registergion_Form_Props) => {
     console.log(values);
     setIsBirthDateValidated(true);
     setisLoading(true);
-    try {
-      const token = await requestPermission();
-      if (token !== null) {
-        values.deviceToken = token;
-        console.log(values);    
-    //   const response = await axios.post(apiUrl + 'auth/signup', {
-    //     values
-    //   });
-    setisLoading(false);
-       showMessage({
-        message: "Success",
-        description: "success",
-        type: "success",
-        backgroundColor: "green", // background color
-        color: "#606060", // text color
-      });
-   } else {
-    setisLoading(false);
-       showMessage({
-         message: "failure",
-         description: "Permission denied",
-         type: "danger",
-         backgroundColor: "red", // background color
-         color: "#606060", // text color
-       });
-     }
-    } catch (error: any) {
-      setisLoading(false);
-      showMessage({
-        message: "failure",
-        description: error.message,
-        type: "danger",
-        backgroundColor: "red", // background color
-        color: "#606060", // text color
-      });
-      
-    }
-    setisLoading(false);
-
+      const deviceToken = await requestUserPermission();
+        values.deviceToken = deviceToken;
+        const [isRegistered, message, token] = await signupAttempt(values);
+        const [messageToast, statusToast, headerToast] = isRegistered ? [`${message} moving to homepage`, 'success', 'Sign-Up Successfully 👋'] : [message, 'error', 'Sign-Up failed'];
+        console.log(values);  
+        setisLoading(false);  
+        showToast(messageToast, statusToast, headerToast);
+        if (!isRegistered || !token) return
+        setTimeout(() => {
+          autoLoginNewUser(token)
+        }, 3000)
   };
 
-  useEffect(() => {
-    const onTokenRefreshListener = messaging().onTokenRefresh((fcmToken : any) => {
-      console.log('Refreshed token:', fcmToken);
-    });  
-    return () => onTokenRefreshListener();
-  }, []);
+
 
   return (
     <View style={[styles.container, { backgroundColor: theme.backgroundColor }]}>
 
-{ isLoading ? (<ActivityIndicator/>) : (  <View><BigTitle title={'Signup'} />
+{ isLoading ? (<ActivityIndicator size={60}/>) : (  <View><BigTitle title={'Signup'} />
       <Formik
         initialValues={{ email: '', password: '', confirmPassword: '', fullName: '', gender: '', birthDate: '', termsAndConditions: false }}
         validationSchema={validationSchema}
@@ -140,7 +87,6 @@ const SignupScreen: React.FC = () => {
         
         {({ handleChange, handleSubmit, values, errors, isValid, dirty, setFieldValue, touched }) => (
           <>
-          {console.log('errors:', errors)}
             <FormInput
               value={values.fullName}
               errorMessage={errors.fullName}
@@ -265,7 +211,7 @@ const SignupScreen: React.FC = () => {
       <StyledButton disabled={false} onPress={() => {navigation.navigate('Login')}} text={'Back to login'} />
       </View>
      )}
-
+  <Toast/>
 
 
     </View>

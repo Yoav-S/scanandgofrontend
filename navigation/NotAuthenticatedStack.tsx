@@ -1,6 +1,8 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from '../screens/LoginScreen';
 import SignupScreen from '../screens/SignupScreen';
+import ForgotPassword from '../screens/ForgotPassword';
+
 const NotAuthenticatedStack = createStackNavigator();
 export const NotAuthenticatedStackScreen: React.FC = () => {
     return (
@@ -18,6 +20,13 @@ export const NotAuthenticatedStackScreen: React.FC = () => {
         }} 
         name="Signup" 
         component={SignupScreen} 
+        />
+        <NotAuthenticatedStack.Screen         
+        options={{
+          headerShown: false 
+        }} 
+        name="ForgotPassword" 
+        component={ForgotPassword} 
         />
       </NotAuthenticatedStack.Navigator>
     );

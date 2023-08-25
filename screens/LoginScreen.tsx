@@ -10,79 +10,107 @@ import DayNightSwitcher from "../components/UIComps/DayNightSwitcher";
 import FormInput from "../components/UIComps/FormInput";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import TitledBarrier from "../components/UIComps/TitledBarrier";
+import { Formik } from 'formik';
+import * as Yup from 'yup';
 import { Icon } from "react-native-elements";
 import StyledButton from "../components/UIComps/StyledButton";
 import TitleAndBtnCon from "../components/UIComps/TitleAndBtnCon";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from '@react-navigation/stack';
+import { emailSchema, passwordSchema } from "../messages/Statements";
+import Toast from 'react-native-toast-message';
+import { useDataContext } from "../context/DataContext";
+import { ActivityIndicator } from "@react-native-material/core";
+
+const validationSchema = Yup.object().shape({
+  email: emailSchema,
+  password: passwordSchema,
+});
 const LoginScreen: React.FC = () => {
   const navigation = useNavigation<StackNavigationProp<any, 'Login'>>();
 
-  const { setToken } = useToken(); // Use the useToken hook
   const [checkBoxValue, setCheckBoxValue] = useState<boolean>(false);
   const { theme } = useTheme();
-  const [EmailInput, setEmailInput] = useState<string | undefined>(undefined);
-  const [PasswordInput, setPasswordInput] = useState<string | undefined>(undefined);
   const [buttonStatus, setButtonStatus] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState(false)
+  const {loginAttempt, setAuthenticated, showToast} = useDataContext();
 
-  const setPasswordInputHandler = (value: string) => {
-    setPasswordInput(value);
-  }
-  const setEmailInputHandler = (value: string) => {
-    setEmailInput(value);
-  }
-  const LoginAttempt = async () => {
-    try {
-      const response = await axios.post('my_login_endpoint', {
-        email: EmailInput,
-        password: PasswordInput
-      });
-      const { token: newToken } = response.data;
-      setToken(newToken);
-      await AsyncStorage.setItem('token', newToken);
-      console.log(newToken);
-      
-    } catch (error : any) {
-      console.log(error.message);
+
+  const handleFormSubmit = async (values: { email: string; password: string; }) => {
+    const messageToast='Sorry... wrong email or password';
+    const statusToast='error';
+    const headerToast='Login Failed';
+    setIsLoading(true)
+    const result = await loginAttempt(values.email, values.password, checkBoxValue);
+    setIsLoading(false)
+    if (result === false) {
+      showToast(messageToast,statusToast,headerToast);
+      return;
     }
+    setAuthenticated(true);
   };
-  const checkBoxHandler = () => {
-    setCheckBoxValue(!checkBoxValue)
-  }
-  console.log(checkBoxValue);
+
   const navigateToSignUp = () => {
     navigation.navigate('Signup');
   }
 
   return (
     <View style={[styles.container, { backgroundColor: theme.backgroundColor }]}>
-      <DayNightSwitcher
-      />
       <View style={styles.imageCon}>
         <Image style={styles.image} source={require("../images/3135715.png")} />
       </View>
       <BigTitle title="Login" />
-      <FormInput setInput={setEmailInputHandler} label={"Email"}/>
-      <FormInput setInput={setPasswordInputHandler} label={"Password"}/>
-      <View style={styles.checkBoxBtnCon}>
-      <View style={{flexDirection: 'row', alignItems: 'center'}}>
-      <CheckBox
-         style={[styles.checkBoxStyles]}
-         center
-         checked={checkBoxValue} // Set the checked prop
-         onPress={checkBoxHandler}
-      />
-      <Text style={{color: theme.textColor}}>Keep me logged in ?</Text>
-      </View>
-      <TouchableOpacity>
-        <Text style={[{color: theme.secondaryColor},styles.forgotPasswordText]}>Forgot Password ?</Text>
-      </TouchableOpacity>
-      </View>
-      <StyledButton disabled={buttonStatus} onPress={LoginAttempt} text={"Sign in"}/>
+      <View>
+
+{
+  isLoading ? (<ActivityIndicator size={60}/>) : (      <Formik
+    initialValues={{ email: '', password: '' }}
+    validationSchema={validationSchema}
+    onSubmit={handleFormSubmit}
+  >
+    {({ handleChange, handleSubmit, values, errors }) => (
+      <>
+        <FormInput
+          value={values.email}
+          errorMessage={errors.email}
+          setInput={handleChange('email')}
+          label={'Email'}
+        />
+        <FormInput
+          value={values.password}
+          errorMessage={errors.password}
+          setInput={handleChange('password')}
+          label={'Password'}
+        />
+  <View style={styles.checkBoxBtnCon}>
+  <View style={{flexDirection: 'row', alignItems: 'center'}}>
+  <CheckBox
+     style={[styles.checkBoxStyles]}
+     center
+     checked={checkBoxValue} // Set the checked prop
+     onPress={() => setCheckBoxValue(!checkBoxValue)}
+     />
+  <Text style={{color: theme.textColor}}>Keep me logged in ?</Text>
+  </View>
+  <TouchableOpacity onPress={() => {navigation.navigate('ForgotPassword')}}>
+    <Text style={[{color: theme.secondaryColor},styles.forgotPasswordText]}>Forgot Password ?</Text>
+  </TouchableOpacity>
+  </View>
+  <StyledButton disabled={isLoading} onPress={handleSubmit} text={"Login"}/>
+
+      </>
+    )}
+  </Formik>)
+ 
+}
+</View>
+
+
       <TitleAndBtnCon text={"Dont have an account ?"} btnlabel={"Sign up"} btnbold  onPress={navigateToSignUp} />
       <TitledBarrier text={"Or Sign in via"}/>
       <Icon style={styles.icon} name="home" size={30} />
       <TitleAndBtnCon text="Notice a bug in the app ?" btnlabel="Notice us" btnbold/>
+      <Toast/>
     </View>
   );
 };

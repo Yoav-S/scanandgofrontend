@@ -15,12 +15,23 @@ export interface DataContextType {
     currentUser: CurrentUserType | null;
     setCurrentUser: (user: CurrentUserType | null) => void;
     apiUrl: string;
+    authenticated: boolean;
+    signupAttempt: (newUser: Registergion_Form_Props) => Promise<[boolean, string, string?]>;
+    verifyEmail: (email: string) => Promise<[boolean, string, Date | undefined]>;
+    showToast: (message: string, status: string, header: string) => void;
+    token: string;
+    autoLoginNewUser: (newToken: string) => Promise<void>;
+    setAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
+    loginAttempt: (email: string, password: string, rememberMe: boolean) => Promise<boolean>;
 }
 export interface BottomNavbarInterface {
 theme: Theme
 }
 export interface CurrentUserType{
-
+    _id:string;
+    fullName:string;
+    email:string;
+    deviceToken:string;
 }
 export interface LoginScreenType {
 
@@ -102,13 +113,24 @@ password: string;
 confirmPassword?: string;
 gender: string;
 birthDate?: string;
-deviceToken?: string;
+deviceToken?: string | null;
 termsAndConditions? : boolean;
 }
 export interface ForgotPasswordProps{
 
 }
-
+export interface IHttpResponse<T> {
+    success:boolean;
+    data?:T;
+    message:string;
+    error?:string;
+    tokenError?:boolean;
+}
+export  interface Token{
+    exp: number;
+    iat: number;
+    id: string;
+  }
  
   
   
