@@ -29,10 +29,9 @@ export const DataProvider: React.FC<Props> = ({ children }) => {
     const loginAttempt = async (email: string, password: string, rememberMeValue: boolean): Promise<boolean> => {
 
       try {
-        const response = await api.post(`users/login`, {params: {email: email, password: password, rememberMeValue: rememberMeValue}});
-        const responseData: IHttpResponse<{ token: string }> = response.data;
-        if (!responseData.success || responseData.data === undefined) { return false; }
-        const token = responseData.data.token
+        const response = await api.post(`auth/login`, {params: {email: email, password: password, rememberMeValue: rememberMeValue}});
+        if (!response.data.success || response.data.data === undefined) { return false; }
+        const token = response.data.token
         setToken(token)
         updateRememberMe(rememberMeValue, token)
         const decoded: Token = jwt_decode(token);
@@ -53,25 +52,38 @@ export const DataProvider: React.FC<Props> = ({ children }) => {
       await updateDeviceTokenInDb(updatedDeviceToken, userId);
     };
 
-const verifyEmail = async (emailToSend: string): Promise<[boolean, string, Date?]> => {
+const verifyEmail = async (emailToSend: string): Promise<[boolean, string, Date?, string?]> => {
+  console.log(emailToSend);
+  
   try {
-    //const response = await api.get('users/verifyEmail', { params: { email: emailToSend } });
-   // const responseData: IHttpResponse<{ digits: string; expireIn: number }> = response.data;
-    const result = true;
-    if (result) {
-   //   const expireInMilliseconds = responseData.data.expireIn * 1000; // Convert to milliseconds
-     // const expirationDate = new Date(Date.now() + expireInMilliseconds); // Calculate expiration time
-      const expirationDatee = new Date(Date.now() + 5 * 60 * 1000); // Add 5 minutes in milliseconds
-      return [true, '3433', expirationDatee];
+    const response = await api.get('auth/verifyEmail', { params: { email: emailToSend } });
+    console.log(response.data);
+    console.log(response.status);
+    
+    
+    if (response.status === 200) {
+      return [true, response.data.digits, response.data.expireIn, response.data.userId];
     } else {
       return [false, '00000'];
     }
   } catch (err: any) {
-    return [false, '00000', new Date()];
+    return [false, '00000'];
   }
 };
 
-    
+
+const resetPassword = async (password: string, userId: string): Promise<boolean> => {
+  try {
+    const response = await api.post(`users/resetPassword`, { params: { newPassword: password, userId: userId } });
+    if (response.status === 201) {
+      return true;
+    }
+  } catch (error) {
+    // Add a return statement for the failure case
+    return false;
+  }
+};
+
     
 
   const updateRememberMe = async (rememberMeValue: boolean, token: string): Promise<void> => {
@@ -94,7 +106,7 @@ const verifyEmail = async (emailToSend: string): Promise<[boolean, string, Date?
     }
   };
 
-  
+
   const updateDeviceTokenInDb = async (deviceToken: string, userId: string): Promise<[boolean, string]> => {
     try {
       
@@ -103,10 +115,9 @@ const verifyEmail = async (emailToSend: string): Promise<[boolean, string, Date?
         deviceToken
       }
       const response = await api.post('/users/updateDeviceToken', requestBody)
-      const responseData: IHttpResponse<void> = response.data;
-      if (responseData.tokenError) { handleTokenError() }
+      if (response.data.tokenError) { handleTokenError() }
       //as [boolean,string] : I add this just because i know that if responseData.success is false then error won't be undefined 100%
-      return responseData.success ? [true, responseData.message] : [false, responseData.error!];
+      return response.data.success ? [true, response.data.message] : [false, response.data.error!];
 
     } catch (error: any) {
       console.error(error.response.data); // Log the error response data for further analysis
@@ -115,21 +126,21 @@ const verifyEmail = async (emailToSend: string): Promise<[boolean, string, Date?
   };
 
   const signupAttempt = async (newUser: Registergion_Form_Props): Promise<[boolean, string, string?]> => {
+    
     try {
       const requestBody = {
         fullName: newUser.fullName,
         email: newUser.email,
-        password: newUser.password,
+        newPassword: newUser.password,
         gender: newUser.gender,
-        birthDate: newUser,
-        deviceToken: newUser.deviceToken  
+        deviceToken: newUser.deviceToken ,
+        birthDate: newUser.birthDate?.toString(),
       }
-      const response = await api.post('auth/signup', requestBody);
-      const responseData: IHttpResponse<string> = response.data;
-      return responseData.success ? [true, responseData.message, responseData.data] : [false, responseData.error!];
-
+      const response = await api.post('auth/signup', requestBody);      
+      return response.data.success ? [true, response.data.message, response.data] : [false, response.data.error!];
     } catch (error: any) {
-      return [false, error.response.data.error]
+      console.log(error.message);     
+      return [false, error.message]
 
     }
   };
@@ -145,10 +156,9 @@ const verifyEmail = async (emailToSend: string): Promise<[boolean, string, Date?
     };
     try {
       const response: AxiosResponse = await api.post("/users/getUser", requestBody, { headers: { Authorization: 'Bearer ' + token, } });
-      const responseData: IHttpResponse<CurrentUserType> = response.data;
-      if (responseData.tokenError) { handleTokenError() }
-      if (responseData.data === undefined) { return null; }
-      return responseData.data;
+      if (response.data.tokenError) { handleTokenError() }
+      if (response.data === undefined) { return null; }
+      return response.data;
     } catch (error: any) {
       console.log(error.response.data.error);
       return null;
@@ -178,6 +188,9 @@ const verifyEmail = async (emailToSend: string): Promise<[boolean, string, Date?
     setAuthenticated(false);
   };
 
+
+
+
   const showToast = (message: string, status: string, header: string) => {
     Toast.show({
       type: status,
@@ -198,7 +211,8 @@ const verifyEmail = async (emailToSend: string): Promise<[boolean, string, Date?
     loginAttempt,
     setAuthenticated,
     authenticated,
-    verifyEmail
+    verifyEmail,
+    resetPassword
   };
 
   return (

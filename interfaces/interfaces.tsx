@@ -15,8 +15,9 @@ export interface DataContextType {
     currentUser: CurrentUserType | null;
     setCurrentUser: (user: CurrentUserType | null) => void;
     authenticated: boolean;
+    resetPassword: (password: string, userId: string) => Promise<boolean>;
     signupAttempt: (newUser: Registergion_Form_Props) => Promise<[boolean, string, string?]>;
-    verifyEmail: (email: string) => Promise<[boolean, string, Date?]>;
+    verifyEmail: (email: string) => Promise<[boolean, string, Date?, string?]>;
     showToast: (message: string, status: string, header: string) => void;
     token: string;
     autoLoginNewUser: (newToken: string) => Promise<void>;
@@ -129,6 +130,13 @@ export  interface Token{
     exp: number;
     iat: number;
     id: string;
+  }
+
+export interface UserEmailVerificationDetails{
+    userId: string;
+    digits: string;
+    email: string;
+    expireIn: Date;
   }
  
   
