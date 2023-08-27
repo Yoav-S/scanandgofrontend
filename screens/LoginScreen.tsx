@@ -37,14 +37,11 @@ const LoginScreen: React.FC = () => {
 
 
   const handleFormSubmit = async (values: { email: string; password: string; }) => {
-    const messageToast='Sorry... wrong email or password';
-    const statusToast='error';
-    const headerToast='Login Failed';
     setIsLoading(true)
     const result = await loginAttempt(values.email, values.password, checkBoxValue);
     setIsLoading(false)
     if (result === false) {
-      showToast(messageToast,statusToast,headerToast);
+      showToast('Sorry... wrong email or password','error','Login Failed');
       return;
     }
     setAuthenticated(true);

@@ -14,6 +14,8 @@ import { ActivityIndicator } from '@react-native-material/core'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import OTPInputView from '@twotalltotems/react-native-otp-input'
 import Clipboard from '@react-native-clipboard/clipboard';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import TitleAndBtnCon from '../components/UIComps/TitleAndBtnCon'
 import Toast from 'react-native-toast-message'
 const validationSchema = Yup.object().shape({
@@ -25,6 +27,8 @@ confirmPassword: Yup.string().required('Field is required').oneOf([Yup.ref('pass
 })
 
 const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
+  const navigation = useNavigation<StackNavigationProp<any, 'ForgotPassword'>>();
+
     const { theme } = useTheme();
     const [emailSended, setEmailSended] = useState<boolean>(false);
     const [isOneMinuteBind, setisOneMinuteBind] = useState<boolean>(false);
@@ -37,20 +41,25 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
     const [userId, setUserId] = useState<string>('');
     const [isOtpVerified, setisOtpVerified] = useState<boolean>(false);
     const {verifyEmail, showToast, resetPassword} = useDataContext();
+    const [remainingTime, setRemainingTime] = useState<number>(60); // Initialize with 60 seconds
+
     useEffect(() => {
-      if (isOneMinuteBind) {
-        const interval = setInterval(() => {
-          const currentTime = Date.now();
-          if (currentTime > oneMinuteBindEndTime) {
-            clearInterval(interval);
-            setisOneMinuteBind(false);
-          }
-        }, 1000);
-  
-        return () => {
-          clearInterval(interval);
-        };
-      }
+        if (isOneMinuteBind) {
+            const interval = setInterval(() => {
+                const currentTime = Date.now();
+                if (currentTime < oneMinuteBindEndTime) {
+                    const timeDiff = Math.max(Math.floor((oneMinuteBindEndTime - currentTime) / 1000), 0);
+                    setRemainingTime(timeDiff);
+                } else {
+                    clearInterval(interval);
+                    setisOneMinuteBind(false);
+                }
+            }, 1000);
+
+            return () => {
+                clearInterval(interval);
+            };
+        }
     }, [isOneMinuteBind, oneMinuteBindEndTime]);
   
 
@@ -58,10 +67,14 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
       setisLoadingResendEmail(true);
       try{
         const [isEmailSended, digits, expireIn] = await verifyEmail(emailValue);
+        const [messageToast, statusToast, headerToast] = isEmailSended ? 
+        ['Please check your email', 'success', 'Email Successfully Resent'] : 
+        ['Email Resend Failed', 'error', 'Please try again'];
         setisLoadingResendEmail(false);
         if (isEmailSended) {
           setEmailSended(true);
-  
+          setDigits(digits)
+          showToast(messageToast, statusToast, headerToast)
           const currentTime = Date.now();
           const expirationTime = currentTime + 60000; // Adding 1 minute in milliseconds
   
@@ -76,26 +89,35 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
           // Handle the failure case here
         }
       } catch (err : any) {
-        console.log(err.message);
-        
+        console.log(err.message);    
       }
     }
     const verifyOtpCode = async (value: {otpCode : string}) => {
-      console.log('user otp:', value.otpCode);
-      console.log('otp code:', Digits); 
-      if(value.otpCode === Digits){
-        console.log('verified');
+      const verified = value.otpCode === Digits
+      if(verified){
+        showToast('you can now change password', 'success', 'Otp verified Successfully');
         setisOtpVerified(true);
       }
-      console.log('still verified');
-      
+      else{
+        showToast('please try again', 'error', 'Otp verify failed');  
+      }      
     }
 
     const handleChangePassword = async (value: {password : string}) => {
      try{
       const isPasswordChanged = await resetPassword(value.password, userId);
-    } catch (err) {
+      if(isPasswordChanged) {
+        showToast('Password Succesfully saved', 'success', 'your about to move to login');
+        setTimeout(() => {
+          navigation.navigate('Login')
 
+        }, 2000)
+      }
+      else{
+         showToast('Password reset failed !', 'error', 'something went wrong');
+      }
+    } catch (err) {
+      showToast('Password reset failed !', 'error', 'something went wrong');
      }
       
     }
@@ -125,7 +147,11 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
       }
     };
 
-
+    const formatTime = (time: number): string => {
+      const minutes = Math.floor(time / 60);
+      const seconds = time % 60;
+      return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+  };
 
   return (
     <View style={[styles.container, { backgroundColor: theme.backgroundColor }]}>
@@ -133,7 +159,7 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
         {emailSended ? (
           isOtpVerified ? (
             <View>
-            <BigTitle title='Enter a new Password'/>
+            <BigTitle key={1} title='Enter a new Password'/>
              <Text style={{color: theme.textColor}}>Enter the new password for your account</Text>
             <View>
             <Formik
@@ -165,7 +191,7 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
             </View>
           ) : (            
           <View style={styles.otpCon}>
-                        <BigTitle title='Verify your OTP'/>
+                        <BigTitle key={2} title='Verify your OTP'/>
                         <OTPInputView
                           style={styles.otp}
                           pinCount={4}
@@ -181,7 +207,7 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
           )}
           {isOneMinuteBind && (
               <Text style={{ color: theme.textColor }}>
-                  Resend OTP in {Math.ceil((oneMinuteBindEndTime - Date.now()) / 1000)} seconds
+                    Resend OTP in {formatTime(remainingTime)}
               </Text>
           )}
       </View>
@@ -189,7 +215,7 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
 
         ) : (
             <View>
-                            <BigTitle title='Lets verify your email !'/>
+              <BigTitle key={3} title='Lets verify your email !'/>
 
                 {isLoadingForm ? (
                     <ActivityIndicator size={60} />

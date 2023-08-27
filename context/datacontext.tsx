@@ -29,7 +29,7 @@ export const DataProvider: React.FC<Props> = ({ children }) => {
     const loginAttempt = async (email: string, password: string, rememberMeValue: boolean): Promise<boolean> => {
 
       try {
-        const response = await api.post(`auth/login`, {params: {email: email, password: password, rememberMeValue: rememberMeValue}});
+        const response = await api.post(`auth/login`, {params: {email: email, password: password}});
         if (!response.data.success || response.data.data === undefined) { return false; }
         const token = response.data.token
         setToken(token)
@@ -73,10 +73,19 @@ const verifyEmail = async (emailToSend: string): Promise<[boolean, string, Date?
 
 
 const resetPassword = async (password: string, userId: string): Promise<boolean> => {
+  console.log(password);
+  console.log(userId);
+  
   try {
-    const response = await api.post(`users/resetPassword`, { params: { newPassword: password, userId: userId } });
-    if (response.status === 201) {
+    const response = await api.patch(`users/resetPassword`, { params: { newPassword: password, userId: userId } });
+    console.log(response.data);
+    console.log(response.status);
+    
+    if (response.status === 200) {
       return true;
+    }
+    else{
+      return false;
     }
   } catch (error) {
     // Add a return statement for the failure case
