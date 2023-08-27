@@ -1,0 +1,1 @@
+declare module "@twotalltotems/react-native-otp-input"

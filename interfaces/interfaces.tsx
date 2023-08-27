@@ -14,10 +14,9 @@ export interface Props {
 export interface DataContextType {
     currentUser: CurrentUserType | null;
     setCurrentUser: (user: CurrentUserType | null) => void;
-    apiUrl: string;
     authenticated: boolean;
     signupAttempt: (newUser: Registergion_Form_Props) => Promise<[boolean, string, string?]>;
-    verifyEmail: (email: string) => Promise<[boolean, string, Date | undefined]>;
+    verifyEmail: (email: string) => Promise<[boolean, string, Date?]>;
     showToast: (message: string, status: string, header: string) => void;
     token: string;
     autoLoginNewUser: (newToken: string) => Promise<void>;

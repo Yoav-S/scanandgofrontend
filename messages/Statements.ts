@@ -15,4 +15,5 @@ import * as Yup from 'yup';
   export const birthDateSchema = Yup.string() .required('field is required')
 
   export const termsSchema = Yup.boolean() .required('field is required')
- 
+
+  export const otpCodeSchema = Yup.number().required('Field is required').min(1000, 'OTP code must be 4 digits').max(9999, 'OTP code must be 4 digits'); 

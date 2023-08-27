@@ -16,7 +16,6 @@ export const DataProvider: React.FC<Props> = ({ children }) => {
   const [token, setToken] = useState<string>('');
 
 
-  const [apiUrl, setapiUrl] = useState<string>('https://scan-and-go.onrender.com//');
   const api: AxiosInstance = axios.create({
     baseURL: 'https://scan-and-go.onrender.com/', // Set your base URL
   });  
@@ -30,7 +29,7 @@ export const DataProvider: React.FC<Props> = ({ children }) => {
     const loginAttempt = async (email: string, password: string, rememberMeValue: boolean): Promise<boolean> => {
 
       try {
-        const response = await api.post(`/users/login`, {params: {email: email, password: password, rememberMeValue: rememberMeValue}});
+        const response = await api.post(`users/login`, {params: {email: email, password: password, rememberMeValue: rememberMeValue}});
         const responseData: IHttpResponse<{ token: string }> = response.data;
         if (!responseData.success || responseData.data === undefined) { return false; }
         const token = responseData.data.token
@@ -54,20 +53,24 @@ export const DataProvider: React.FC<Props> = ({ children }) => {
       await updateDeviceTokenInDb(updatedDeviceToken, userId);
     };
 
-    const verifyEmail = async (emailToSend: string): Promise<[boolean, string, Date | undefined]> => {
-      try {
-        const response = await api.get('users/verifyEmail', { params: { email: emailToSend } });
-        const responseData: IHttpResponse<{ digits: string; expireIn: Date }> = response.data;
-        
-        if (responseData.success && responseData.data) {
-          return [true, responseData.data.digits, responseData.data.expireIn];
-        } else {
-          return [false, responseData.error!, undefined];
-        }
-      } catch (err: any) {
-        return [false, err.response.data.error, undefined];
-      }
-    };
+const verifyEmail = async (emailToSend: string): Promise<[boolean, string, Date?]> => {
+  try {
+    //const response = await api.get('users/verifyEmail', { params: { email: emailToSend } });
+   // const responseData: IHttpResponse<{ digits: string; expireIn: number }> = response.data;
+    const result = true;
+    if (result) {
+   //   const expireInMilliseconds = responseData.data.expireIn * 1000; // Convert to milliseconds
+     // const expirationDate = new Date(Date.now() + expireInMilliseconds); // Calculate expiration time
+      const expirationDatee = new Date(Date.now() + 5 * 60 * 1000); // Add 5 minutes in milliseconds
+      return [true, '3433', expirationDatee];
+    } else {
+      return [false, '00000'];
+    }
+  } catch (err: any) {
+    return [false, '00000', new Date()];
+  }
+};
+
     
     
 
@@ -121,7 +124,7 @@ export const DataProvider: React.FC<Props> = ({ children }) => {
         birthDate: newUser,
         deviceToken: newUser.deviceToken  
       }
-      const response = await api.post('/users/signup', requestBody);
+      const response = await api.post('auth/signup', requestBody);
       const responseData: IHttpResponse<string> = response.data;
       return responseData.success ? [true, responseData.message, responseData.data] : [false, responseData.error!];
 
@@ -188,7 +191,6 @@ export const DataProvider: React.FC<Props> = ({ children }) => {
   const contextValue: DataContextType = {
     currentUser,
     setCurrentUser,
-    apiUrl,
     signupAttempt,
     showToast,
     token,
