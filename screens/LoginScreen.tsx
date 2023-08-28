@@ -60,7 +60,8 @@ const LoginScreen: React.FC = () => {
       <View>
 
 {
-  isLoading ? (<ActivityIndicator size={60}/>) : (      <Formik
+  isLoading ? (<ActivityIndicator size={60}/>) : (      
+  <Formik
     initialValues={{ email: '', password: '' }}
     validationSchema={validationSchema}
     onSubmit={handleFormSubmit}

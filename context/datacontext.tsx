@@ -7,7 +7,7 @@ import jwt_decode from "jwt-decode";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { requestUserPermission } from '../utils/requests';
 import DropDownPicker from 'react-native-dropdown-picker';
-
+import { Asset } from 'react-native-image-picker';
 const DataContext = createContext<DataContextType | undefined>(undefined);
 
 export const DataProvider: React.FC<Props> = ({ children }) => {
@@ -118,7 +118,60 @@ const resetPassword = async (password: string, userId: string): Promise<boolean>
   };
 
   const getArrayOfDropDownCategories = async () : Promise<string[]> => {
-    return [];
+    const response = await api.get('reportedProblem/getAllTypeCategories');
+
+    return response.data;
+  }
+
+  const uploadFile = async (asset: Asset) : Promise<string> => {
+    const formData = new FormData();      
+    formData.append('file', {
+      uri: asset.uri,
+      type: asset.type,
+      name: asset.fileName
+    });
+    const response = await api.post('reportedProblem/uploadFile',formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+    if(response.status === 201){
+      return response.data;
+    }
+    else{
+      return '';
+    }
+  }
+  const uploadReport = async (currentAsset : Asset | null, currentCategoryValue : string, description : string, deviceIdValue : string, osValue : string, systemVersionValue : string, deviceModel: string, appVersionValue: string) : Promise<[boolean, string]> => {
+    let imageUrl: string = '';
+    const assetFlag: boolean = currentAsset !== null;
+    if(currentAsset !== null){
+       imageUrl = await uploadFile(currentAsset);
+    } 
+    console.log(imageUrl);
+    
+    if(imageUrl === '' && assetFlag){
+      return [false, 'Image upload failed'];
+    }
+    else if(imageUrl === '' && !assetFlag){
+     return [true, 'Problem saved without image']
+    }
+    try{
+      const response = await api.post('reportedProblem/createProblem', {deviceInfo: {
+        os: osValue,
+        deviceModel: deviceModel,
+        systemVersion: systemVersionValue,
+        appVersion: appVersionValue
+      },
+      description: description,
+      type: currentCategoryValue,
+      screenShot: imageUrl
+    })
+    console.log(response.data);
+    return [true, 'Problem uploaded succesfully']
+    } catch (err) {
+      return [false, 'Error uploading Problem']
+    }
   }
 
   const updateDeviceTokenInDb = async (deviceToken: string, userId: string): Promise<[boolean, string]> => {
@@ -232,7 +285,9 @@ const resetPassword = async (password: string, userId: string): Promise<boolean>
     setToken,
     resetPassword,
     updateDeviceToken,
-    getArrayOfDropDownCategories
+    getArrayOfDropDownCategories,
+    uploadReport,
+    uploadFile
   };
 
   return (

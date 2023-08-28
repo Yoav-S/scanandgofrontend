@@ -17,3 +17,9 @@ import * as Yup from 'yup';
   export const termsSchema = Yup.boolean() .required('field is required')
 
   export const otpCodeSchema = Yup.number().required('Field is required').min(1000, 'OTP code must be 4 digits').max(9999, 'OTP code must be 4 digits'); 
+
+  export const imageSchema = Yup.string().optional()
+
+  export const categorySchema = Yup.string().required()
+
+  export const descriptionSchema = Yup.string().required('Must Write Description').min(20, 'At list 20 characters')

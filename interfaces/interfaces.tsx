@@ -1,3 +1,4 @@
+import { Asset } from "react-native-image-picker";
 export interface Theme {
     backgroundColor: string;
     textColor: string;
@@ -21,6 +22,8 @@ export interface DataContextType {
     verifyEmail: (email: string) => Promise<[boolean, string, Date?, string?]>;
     showToast: (message: string, status: string, header: string) => void;
     token: string;
+    uploadReport: (currentAsset : Asset | null, currentCategoryValue : string, appVersionValue: string , description : string, deviceIdValue : string, osValue : string, systemVersionValue : string, deviceModel: string) => Promise<[boolean, string]>;
+    uploadFile: (currentAsset : Asset) => Promise<string>;
     getUserById: (id: string, token: string) => Promise<CurrentUserType | null>; // get a user by Id and set CurrantUser state.
     setToken: React.Dispatch<React.SetStateAction<string>>;
     updateDeviceToken: (userId: string) => Promise<void>;
@@ -90,6 +93,7 @@ export interface StyledButtonType {
   text: string;
   onPress?: () => void;
   disabled?: boolean;
+  bigbutton?: boolean;
 }
 export interface StyledBarrierProps{
     text: string;
