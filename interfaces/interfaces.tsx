@@ -14,12 +14,16 @@ export interface Props {
 export interface DataContextType {
     currentUser: CurrentUserType | null;
     setCurrentUser: (user: CurrentUserType | null) => void;
+    getArrayOfDropDownCategories: () => Promise<string[]>;
     authenticated: boolean;
     resetPassword: (password: string, userId: string) => Promise<boolean>;
     signupAttempt: (newUser: Registergion_Form_Props) => Promise<[boolean, string, string?]>;
     verifyEmail: (email: string) => Promise<[boolean, string, Date?, string?]>;
     showToast: (message: string, status: string, header: string) => void;
     token: string;
+    getUserById: (id: string, token: string) => Promise<CurrentUserType | null>; // get a user by Id and set CurrantUser state.
+    setToken: React.Dispatch<React.SetStateAction<string>>;
+    updateDeviceToken: (userId: string) => Promise<void>;
     autoLoginNewUser: (newToken: string) => Promise<void>;
     setAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
     loginAttempt: (email: string, password: string, rememberMe: boolean) => Promise<boolean>;
@@ -73,10 +77,14 @@ export interface TokenContextType {
     setToken: (token: Token | null) => void;
 }
 export interface Token {
-    expiration: number; // Expiration timestamp
+    exp: number;
+    iat: number;
     id: string;
-    fullname: string;
-    email: string;
+    roles: Role[];
+}
+export enum Role {
+    USER = "user",
+    ADMIN = "admin",
 }
 export interface StyledButtonType {
   text: string;
@@ -137,8 +145,17 @@ export interface UserEmailVerificationDetails{
     digits: string;
     email: string;
     expireIn: Date;
-  }
- 
-  
-  
+}
+export interface ProblemReportType{
+    
+} 
+export interface DeviceInfo {
+    os: string;
+    deviceModel: string;
+    systemVersion: string;
+    appVersion: number;
+}  
+export interface ProblemReportRouteParams  {
+    cameFrom?: string;
+}   
   

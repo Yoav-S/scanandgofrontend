@@ -6,6 +6,8 @@ import Toast from 'react-native-toast-message';
 import jwt_decode from "jwt-decode";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { requestUserPermission } from '../utils/requests';
+import DropDownPicker from 'react-native-dropdown-picker';
+
 const DataContext = createContext<DataContextType | undefined>(undefined);
 
 export const DataProvider: React.FC<Props> = ({ children }) => {
@@ -26,16 +28,16 @@ export const DataProvider: React.FC<Props> = ({ children }) => {
  * @param rememberMeValue Whether to remember the user's login.
  * @returns A promise that resolves to a boolean indicating whether the login was successful.
  */
-    const loginAttempt = async (email: string, password: string, rememberMeValue: boolean): Promise<boolean> => {
-
+    const loginAttempt = async (email: string, password: string, rememberMeValue: boolean): Promise<boolean> => {  
       try {
-        const response = await api.post(`auth/login`, {params: {email: email, password: password}});
-        if (!response.data.success || response.data.data === undefined) { return false; }
-        const token = response.data.token
+        const response = await api.post(`auth/login`, {email: email, password: password});        
+        if (response.status !== 201) { return false; }      
+        const token = response.data.token;
         setToken(token)
         updateRememberMe(rememberMeValue, token)
         const decoded: Token = jwt_decode(token);
         const connectedUser: CurrentUserType | null = await getUserById(decoded.id, token)
+        console.log(connectedUser);   
         if (!connectedUser) {
           console.error('Problem with Token')
           return false;
@@ -115,6 +117,9 @@ const resetPassword = async (password: string, userId: string): Promise<boolean>
     }
   };
 
+  const getArrayOfDropDownCategories = async () : Promise<string[]> => {
+    return [];
+  }
 
   const updateDeviceTokenInDb = async (deviceToken: string, userId: string): Promise<[boolean, string]> => {
     try {
@@ -164,7 +169,9 @@ const resetPassword = async (password: string, userId: string): Promise<boolean>
       },
     };
     try {
-      const response: AxiosResponse = await api.post("/users/getUser", requestBody, { headers: { Authorization: 'Bearer ' + token, } });
+      const response: AxiosResponse = await api.post("users/getOne", requestBody, { headers: { Authorization: 'Bearer ' + token, } });
+      console.log(response.data);
+      
       if (response.data.tokenError) { handleTokenError() }
       if (response.data === undefined) { return null; }
       return response.data;
@@ -221,7 +228,11 @@ const resetPassword = async (password: string, userId: string): Promise<boolean>
     setAuthenticated,
     authenticated,
     verifyEmail,
-    resetPassword
+    getUserById,
+    setToken,
+    resetPassword,
+    updateDeviceToken,
+    getArrayOfDropDownCategories
   };
 
   return (

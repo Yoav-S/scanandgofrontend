@@ -2,7 +2,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from '../screens/LoginScreen';
 import SignupScreen from '../screens/SignupScreen';
 import ForgotPassword from '../screens/ForgotPassword';
-
+import ProblemReport from '../screens/ProblemReport';
 const NotAuthenticatedStack = createStackNavigator();
 export const NotAuthenticatedStackScreen: React.FC = () => {
     return (
@@ -27,6 +27,13 @@ export const NotAuthenticatedStackScreen: React.FC = () => {
         }} 
         name="ForgotPassword" 
         component={ForgotPassword} 
+        />
+        <NotAuthenticatedStack.Screen         
+        options={{
+          headerShown: false 
+        }} 
+        name="ProblemReport" 
+        component={ProblemReport} 
         />
       </NotAuthenticatedStack.Navigator>
     );

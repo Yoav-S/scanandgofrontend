@@ -106,7 +106,7 @@ const LoginScreen: React.FC = () => {
       <TitleAndBtnCon text={"Dont have an account ?"} btnlabel={"Sign up"} btnbold  onPress={navigateToSignUp} />
       <TitledBarrier text={"Or Sign in via"}/>
       <Icon style={styles.icon} name="home" size={30} />
-      <TitleAndBtnCon text="Notice a bug in the app ?" btnlabel="Notice us" btnbold/>
+      <TitleAndBtnCon text="Notice a bug in the app ?" btnlabel="Notice us" btnbold onPress={() => {navigation.navigate('ProblemReport', {cameFrom: 'LoginScreen'});}}/>
       <Toast/>
     </View>
   );
