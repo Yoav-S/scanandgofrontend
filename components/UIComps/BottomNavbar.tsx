@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     width: '98%',
-    height: 80 ,
+    height: 70 ,
     paddingBottom: 10,
     marginBottom: '1%',
     borderRadius: 14

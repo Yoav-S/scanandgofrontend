@@ -17,12 +17,15 @@ export interface DataContextType {
     setCurrentUser: (user: CurrentUserType | null) => void;
     getArrayOfDropDownCategories: () => Promise<string[]>;
     authenticated: boolean;
+    handleLogOut: () => void;
+    updatePasswordAttempts: (password: string, newpassword: string) => Promise<boolean>;
+    updateDetailsAttempt: (email: string, fullName: string, gender: string, birthDate: string) => Promise<boolean>;
     resetPassword: (password: string, userId: string) => Promise<boolean>;
     signupAttempt: (newUser: Registergion_Form_Props) => Promise<[boolean, string, string?]>;
     verifyEmail: (email: string) => Promise<[boolean, string, Date?, string?]>;
     showToast: (message: string, status: string, header: string) => void;
     token: string;
-    uploadReport: (currentAsset : Asset | null, currentCategoryValue : string, appVersionValue: string , description : string, deviceIdValue : string, osValue : string, systemVersionValue : string, deviceModel: string) => Promise<[boolean, string]>;
+    uploadReport: (currentAsset : Asset | null, currentCategoryValue : string, appVersionValue: string , description : string, osValue : string, systemVersionValue : string, deviceModel: string) => Promise<[boolean, string]>;
     uploadFile: (currentAsset : Asset) => Promise<string>;
     getUserById: (id: string, token: string) => Promise<CurrentUserType | null>; // get a user by Id and set CurrantUser state.
     setToken: React.Dispatch<React.SetStateAction<string>>;
@@ -32,7 +35,6 @@ export interface DataContextType {
     loginAttempt: (email: string, password: string, rememberMe: boolean) => Promise<boolean>;
 }
 export interface BottomNavbarInterface {
-theme: Theme
 }
 export interface CurrentUserType{
     _id:string;
@@ -161,5 +163,9 @@ export interface DeviceInfo {
 }  
 export interface ProblemReportRouteParams  {
     cameFrom?: string;
-}   
+}  
+export interface TitleAndArrowBackProps{
+    text: string;
+    onPress?: () => void;
+} 
   

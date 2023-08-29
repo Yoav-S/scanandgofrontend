@@ -28,7 +28,35 @@ export const DataProvider: React.FC<Props> = ({ children }) => {
  * @param rememberMeValue Whether to remember the user's login.
  * @returns A promise that resolves to a boolean indicating whether the login was successful.
  */
-    const loginAttempt = async (email: string, password: string, rememberMeValue: boolean): Promise<boolean> => {  
+const updatePasswordAttempts = async (password: string, newpassword: string): Promise<boolean> =>{
+  console.log(currentUser?._id);
+  
+  try{
+    const response = await api.put('users/updatePassword', {
+      oldPassword: password,
+      newPassword: newpassword,
+      userId: currentUser?._id
+    },
+    { 
+      headers: 
+      { 
+        Authorization: 'Bearer ' + token, 
+      } 
+    })
+    console.log(response.data);
+    
+    if(response.status === 200 || response.status === 201){
+      return true;
+    }else{
+      return false;
+    }
+  } catch (err: any) {
+    console.log(err.message);
+    return false;
+  }
+}
+
+const loginAttempt = async (email: string, password: string, rememberMeValue: boolean): Promise<boolean> => {  
       try {
         const response = await api.post(`auth/login`, {email: email, password: password});        
         if (response.status !== 201) { return false; }      
@@ -43,17 +71,16 @@ export const DataProvider: React.FC<Props> = ({ children }) => {
           return false;
         }
         setCurrentUser(connectedUser);
-        await updateDeviceToken(connectedUser._id)
+      //  await updateDeviceToken(connectedUser._id)
         return true;
       } catch (error) {
         return false;
       }
-    };
-    const updateDeviceToken = async (userId: string) => {
-      let updatedDeviceToken = await requestUserPermission();
-      await updateDeviceTokenInDb(updatedDeviceToken, userId);
-    };
-
+};
+const updateDeviceToken = async (userId: string) => {
+  let updatedDeviceToken = await requestUserPermission();
+  await updateDeviceTokenInDb(updatedDeviceToken, userId);
+};
 const verifyEmail = async (emailToSend: string): Promise<[boolean, string, Date?, string?]> => {
   console.log(emailToSend);
   
@@ -72,14 +99,12 @@ const verifyEmail = async (emailToSend: string): Promise<[boolean, string, Date?
     return [false, '00000'];
   }
 };
-
-
 const resetPassword = async (password: string, userId: string): Promise<boolean> => {
   console.log(password);
   console.log(userId);
   
   try {
-    const response = await api.patch(`users/resetPassword`, { params: { newPassword: password, userId: userId } });
+    const response = await api.put(`users/resetPassword`, { params: { newPassword: password, userId: userId } });
     console.log(response.data);
     console.log(response.status);
     
@@ -94,9 +119,32 @@ const resetPassword = async (password: string, userId: string): Promise<boolean>
     return false;
   }
 };
-
-    
-
+const updateDetailsAttempt = async (email: string, fullName: string, gender: string, birthDate: string): Promise<boolean> => {
+  try{
+    const response = await api.patch('users/UpdateDetails', {
+      params: {
+        email: email,
+        fullName: fullName,
+        gender: gender,
+        birthDate: birthDate
+      }
+    },
+    { 
+      headers: 
+      { 
+        Authorization: 'Bearer ' + token, 
+      } 
+    }
+    )
+    console.log(response.data);
+    if(response.status === 200 || response.status === 201){
+      return true;
+    }
+    return false;
+  } catch (err) {
+    return false;
+  }
+}
   const updateRememberMe = async (rememberMeValue: boolean, token: string): Promise<void> => {
     if (rememberMeValue)
       storeObject('connectedUser', token)
@@ -109,21 +157,18 @@ const resetPassword = async (password: string, userId: string): Promise<boolean>
   * @param value The value of the object.
   * @returns A promise that resolves to void.
   */
-  const storeObject = async (key: string, value: string): Promise<void> => {
+const storeObject = async (key: string, value: string): Promise<void> => {
     try {
       await AsyncStorage.setItem(key, value);
     } catch (error) {
       console.log('Error storing object:', error);
     }
-  };
-
-  const getArrayOfDropDownCategories = async () : Promise<string[]> => {
+};
+const getArrayOfDropDownCategories = async () : Promise<string[]> => {
     const response = await api.get('reportedProblem/getAllTypeCategories');
-
     return response.data;
-  }
-
-  const uploadFile = async (asset: Asset) : Promise<string> => {
+}
+const uploadFile = async (asset: Asset) : Promise<string> => {
     const formData = new FormData();      
     formData.append('file', {
       uri: asset.uri,
@@ -136,25 +181,20 @@ const resetPassword = async (password: string, userId: string): Promise<boolean>
       },
     })
     if(response.status === 201){
-      return response.data;
+      return response.data.imageUrl;
     }
     else{
       return '';
     }
-  }
-  const uploadReport = async (currentAsset : Asset | null, currentCategoryValue : string, description : string, deviceIdValue : string, osValue : string, systemVersionValue : string, deviceModel: string, appVersionValue: string) : Promise<[boolean, string]> => {
+}
+const uploadReport = async (currentAsset : Asset | null, currentCategoryValue : string, description : string, osValue : string, systemVersionValue : string, deviceModel: string, appVersionValue: string) : Promise<[boolean, string]> => {
     let imageUrl: string = '';
     const assetFlag: boolean = currentAsset !== null;
-    if(currentAsset !== null){
+    if(assetFlag && currentAsset){
        imageUrl = await uploadFile(currentAsset);
-    } 
-    console.log(imageUrl);
-    
+    }     
     if(imageUrl === '' && assetFlag){
       return [false, 'Image upload failed'];
-    }
-    else if(imageUrl === '' && !assetFlag){
-     return [true, 'Problem saved without image']
     }
     try{
       const response = await api.post('reportedProblem/createProblem', {deviceInfo: {
@@ -167,14 +207,12 @@ const resetPassword = async (password: string, userId: string): Promise<boolean>
       type: currentCategoryValue,
       screenShot: imageUrl
     })
-    console.log(response.data);
-    return [true, 'Problem uploaded succesfully']
-    } catch (err) {
-      return [false, 'Error uploading Problem']
+    return [true, response.data]
+    } catch (err: any) {
+      return [false, err.message]
     }
-  }
-
-  const updateDeviceTokenInDb = async (deviceToken: string, userId: string): Promise<[boolean, string]> => {
+}
+const updateDeviceTokenInDb = async (deviceToken: string, userId: string): Promise<[boolean, string]> => {
     try {
       
       const requestBody = {
@@ -190,9 +228,8 @@ const resetPassword = async (password: string, userId: string): Promise<boolean>
       console.error(error.response.data); // Log the error response data for further analysis
       return [false, error.response.data.error];
     };
-  };
-
-  const signupAttempt = async (newUser: Registergion_Form_Props): Promise<[boolean, string, string?]> => {
+};
+const signupAttempt = async (newUser: Registergion_Form_Props): Promise<[boolean, string, string?]> => {
     
     try {
       const requestBody = {
@@ -209,8 +246,7 @@ const resetPassword = async (password: string, userId: string): Promise<boolean>
       console.log(error.message);     
       return [false, error.message]
 
-    }
-  };
+}};
 
   const getUserById = async (id: string, token: string): Promise<CurrentUserType | null> => {
     const requestBody = {
@@ -287,7 +323,10 @@ const resetPassword = async (password: string, userId: string): Promise<boolean>
     updateDeviceToken,
     getArrayOfDropDownCategories,
     uploadReport,
-    uploadFile
+    uploadFile,
+    handleLogOut,
+    updateDetailsAttempt,
+    updatePasswordAttempts
   };
 
   return (

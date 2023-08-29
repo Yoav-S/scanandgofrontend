@@ -10,7 +10,7 @@ const ProfileScreen: React.FC<ProfileScreenType> = (props) => {
   return (
     <SafeAreaView style={styles.container}>
         <Text style={styles.colorBlack}>ProfileScreen</Text>
-        <BottomNavbar theme={theme}/>
+        <BottomNavbar/>
       </SafeAreaView>
   );
 };

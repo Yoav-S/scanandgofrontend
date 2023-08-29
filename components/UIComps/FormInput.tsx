@@ -6,7 +6,8 @@ import { useTheme } from "../../context/ThemeContext";
 import { ErrorMessage } from "formik";
 const FormInput: React.FC<FormInputType> = (props) => {
   const {theme} = useTheme();
-
+  console.log(props.label);
+  
   const onChangeTextHandler = (text: string) => {
     props.setInput(text);
   };
@@ -18,7 +19,7 @@ const FormInput: React.FC<FormInputType> = (props) => {
       onChangeText={onChangeTextHandler}
       autoCapitalize="none"
       autoCorrect={false}
-      secureTextEntry={props.label === 'Password' || props.label === 'Confirm Password'}
+      secureTextEntry={props.label === 'Password' || props.label === 'Repeat Password' || props.label === 'Current Password' || props.label === 'New Password'}
       placeholder={props.label}
       placeholderTextColor={theme.textColor}
       selectionColor="white"

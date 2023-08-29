@@ -9,6 +9,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useDataContext } from "../context/DataContext";
 import DropDownPicker from 'react-native-dropdown-picker';
+import TitleAndArrowBack from "../components/UIComps/TitleAndArrowBack";
 import {
     launchCamera,
     launchImageLibrary,
@@ -21,6 +22,7 @@ import * as Yup from 'yup';
 import { categorySchema, descriptionSchema, imageSchema } from "../messages/Statements";
 import StyledButton from "../components/UIComps/StyledButton";
 import { ActivityIndicator } from "@react-native-material/core";
+import BottomNavbar from "../components/UIComps/BottomNavbar";
 const validationSchema = Yup.object().shape({
     image: imageSchema,
     category: categorySchema,
@@ -37,7 +39,6 @@ const ProblemReport: React.FC<ProblemReportType> = () => {
     const [selectedImage, setSelectedImage] = useState<string>('');
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [appVersionValue, setAppVersionValue] = useState<string>(appVersion);
-    const [deviceIdValue, setDeviceIdValue] = useState<string>('');
     const [deviceModel, setdeviceModel] = useState<string>('');
     const [systemVersionValue, setSystemVersionValue] = useState<string>('');
     const [osValue, setOsValue] = useState<string>('');
@@ -47,7 +48,6 @@ const ProblemReport: React.FC<ProblemReportType> = () => {
     const [allCategoriesValues, setAllCategoriesValues] = useState<{ label: string; value: string }[]>([]);
     const [currentCategoryValue, setCurrentCategoryValue] = useState<string>('');
     const [isFormValidating, setIsFormValidating] = useState<boolean>(true);
-
     useEffect(() => {
         const bringAllDetails = async () => {
             const deviceId: string = DeviceInfo.getDeviceId();
@@ -57,7 +57,6 @@ const ProblemReport: React.FC<ProblemReportType> = () => {
             const arrayOfCategories: string[] = await getArrayOfDropDownCategories();
             const formattedCategories = arrayOfCategories.map((category : string) => ({ label: category, value: category }));            
             setAllCategoriesValues(formattedCategories);
-            setDeviceIdValue(deviceId);
             setdeviceModel(deviceModel);
             setSystemVersionValue(systemVersion);
             setOsValue(baseOs);
@@ -103,21 +102,28 @@ const ProblemReport: React.FC<ProblemReportType> = () => {
         setIsLoading(true);
         console.log(currentAsset);
         console.log(selectedImage);
-        
-        const [isPostUploaded, uploadMessage]= await uploadReport(currentAsset, currentCategoryValue, value.description, deviceIdValue, osValue, systemVersionValue, deviceModel, appVersionValue)
+        try{
+          const [isPostUploaded, uploadMessage]= await uploadReport(currentAsset, currentCategoryValue, value.description, osValue, systemVersionValue, deviceModel, appVersionValue)
+          if(isPostUploaded) {
+            showToast('We will contact you soon', 'success', 'Problem succesfully uploaded')
+            setTimeout(() => {
+              navigation.goBack();   
+            }, 3000)
+          }
+        } catch(err : any) {
+          setCurrentAsset(null);
+          setCurrentCategoryValue('');
+          showToast(err.message, 'error', 'Problem uploading failed !')
+        }
       }
     return (
-        <SafeAreaView style={styles.container}>
-                        <View style={styles.titleandarrowcon}>
-            <Icon
-            onPress={() => navigation.goBack()}
-            name="arrow-left"
-            size={30}
-            /> 
-            <Text style={{color: theme.textColor, fontWeight: '700'}}>Report A Problem</Text>
-            </View>
+        <SafeAreaView style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
+
+                        <TitleAndArrowBack text="Report A Problem" onPress={() => {navigation.goBack()}}/>
+                        <View style={styles.allbutNavbarCon}>
+
             {
-                isLoading ? (<ActivityIndicator/>) : (            <Formik
+                isLoading ? (<ActivityIndicator style={{marginTop: '20%'}} size={70}/>) : (            <Formik
                     initialValues={{ category: '', image: '', description: '' }}
                     validationSchema={validationSchema}
                     onSubmit={handleFormSubmit}
@@ -141,7 +147,7 @@ const ProblemReport: React.FC<ProblemReportType> = () => {
                       setItems={setAllCategoriesValues}
                     />
                           <View style={styles.descriptionContainer}>
-                          <Text style={{ color: theme.textColor, fontWeight: '500' }}>Description</Text>
+                          <Text style={{ color: theme.textColor, fontWeight: '500' , marginBottom: '3%'}}>Description</Text>
                           <TextInput
                             multiline
                             numberOfLines={14} // Adjust this based on your design
@@ -159,8 +165,8 @@ const ProblemReport: React.FC<ProblemReportType> = () => {
         )}
       </Formik>)
             }
-
-
+</View>
+            {route.params.cameFrom === "Settings" ? (<BottomNavbar/>) : (null)}
         </SafeAreaView>
     );
 }
@@ -168,7 +174,6 @@ const ProblemReport: React.FC<ProblemReportType> = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: '2%'
     },
     titleandarrowcon: {
         flexDirection: 'row',
@@ -180,6 +185,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between'
+    },
+    allbutNavbarCon: {
+      margin: '4%'
     },
     descriptionContainer: {
         marginTop: 20,

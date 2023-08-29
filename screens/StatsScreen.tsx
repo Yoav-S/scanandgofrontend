@@ -9,7 +9,7 @@ const StatsScreen: React.FC<StatsScreenType> = (props) => {
   return (
     <SafeAreaView style={styles.container}>
         <Text style={styles.colorBlack}>StatsScreen</Text>
-        <BottomNavbar theme={theme}/>
+        <BottomNavbar/>
       </SafeAreaView>
   );
 };

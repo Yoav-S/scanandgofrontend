@@ -44,6 +44,9 @@ const LoginScreen: React.FC = () => {
       showToast('Sorry... wrong email or password','error','Login Failed');
       return;
     }
+    setTimeout(() => {
+      showToast('We will now move to Home page', 'success', 'Login Success')
+    }, 3000)
     setAuthenticated(true);
   };
 
@@ -94,7 +97,7 @@ const LoginScreen: React.FC = () => {
     <Text style={[{color: theme.secondaryColor},styles.forgotPasswordText]}>Forgot Password ?</Text>
   </TouchableOpacity>
   </View>
-  <StyledButton disabled={isLoading} onPress={handleSubmit} text={"Login"}/>
+  <StyledButton disabled={isLoading} onPress={handleSubmit} text={"Login"} bigbutton/>
 
       </>
     )}

@@ -27,7 +27,7 @@ const Main: React.FC = () => {
 
           if (currantUser != null) {
             setCurrentUser(currantUser);
-            await updateDeviceToken(currantUser._id);
+            //await updateDeviceToken(currantUser._id);
             setAuthenticated(true);
           }
         }

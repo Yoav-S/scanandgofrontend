@@ -8,7 +8,7 @@ const HomeScreen: React.FC<HomeScreenType> = (props) => {
     return (
         <SafeAreaView style={styles.container} >
             <Text style={styles.colorBlack}>Home Screen</Text>
-            <BottomNavbar theme={theme}/>
+            <BottomNavbar />
         </SafeAreaView>
     )
 }
