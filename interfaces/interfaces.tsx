@@ -18,6 +18,7 @@ export interface DataContextType {
     getArrayOfDropDownCategories: () => Promise<string[]>;
     authenticated: boolean;
     handleLogOut: () => void;
+    changeDefaultCardAttempt: (cardId: string) => Promise<boolean>;
     updatePasswordAttempts: (password: string, newpassword: string) => Promise<boolean>;
     updateDetailsAttempt: (email: string, fullName: string, gender: string, birthDate: string) => Promise<boolean>;
     resetPassword: (password: string, userId: string) => Promise<boolean>;
@@ -41,6 +42,21 @@ export interface CurrentUserType{
     fullName:string;
     email:string;
     deviceToken:string;
+    gender: string;
+    creditCards: creditCardType[];
+}
+export interface CreditCardFormType{
+    userId: string;
+    creditCard: creditCardType;
+}
+export interface creditCardType{
+    cardId: string;
+    cardNumber: string;
+    expirationDate: string;
+    cardholderName: string;
+    cvv: string;
+    cardType: string;
+    isDefault: boolean;
 }
 export interface LoginScreenType {
 
@@ -63,6 +79,7 @@ export interface FormInputType{
     errorMessage?: string | undefined;
     startValue?: string;
     value?: string;
+    numeric?: boolean;
     onChangeText?: (value: string) => void;
 }
 export interface StatsScreenType{
@@ -96,6 +113,7 @@ export interface StyledButtonType {
   onPress?: () => void;
   disabled?: boolean;
   bigbutton?: boolean;
+  smallbutton?: boolean;
 }
 export interface StyledBarrierProps{
     text: string;

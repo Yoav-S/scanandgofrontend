@@ -3,7 +3,10 @@ import {Text, StyleSheet, View} from 'react-native'
 import { TitleAndArrowBackProps } from '../../interfaces/interfaces';
 import { Icon } from 'react-native-elements';
 import { useTheme } from '../../context/ThemeContext';
+
+
 const TitleAndArrowBack: React.FC<TitleAndArrowBackProps> = (props) => {
+
     const {theme} = useTheme();
     return (
         <View style={styles.titleandarrowcon}>

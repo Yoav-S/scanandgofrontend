@@ -9,6 +9,7 @@ import PaymentMethodsScreen from '../screens/PaymentMethodsScreen';
 import ProblemReport from '../screens/ProblemReport';
 import TermsAndServicesScreen from '../screens/TermsAndServicesScreen';
 import HelpAndSupportScreen from '../screens/HelpAndSupportScreen';
+import AddCreditCardScreen from '../screens/AddCreditCardScreen';
 import { AuthenticatedStackType } from '../interfaces/interfaces';
 const AuthenticatedStack = createStackNavigator();
 export const AuthenticatedStackScreen: React.FC<AuthenticatedStackType> = () => {
@@ -76,6 +77,13 @@ export const AuthenticatedStackScreen: React.FC<AuthenticatedStackType> = () => 
         }} 
         name="ProblemReport" 
         component={ProblemReport} 
+        />
+        <AuthenticatedStack.Screen
+        options={{
+          headerShown: false 
+        }} 
+        name="AddCreditCardScreen" 
+        component={AddCreditCardScreen} 
         />
       </AuthenticatedStack.Navigator>
     );

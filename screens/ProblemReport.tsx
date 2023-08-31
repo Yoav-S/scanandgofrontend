@@ -10,6 +10,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { useDataContext } from "../context/DataContext";
 import DropDownPicker from 'react-native-dropdown-picker';
 import TitleAndArrowBack from "../components/UIComps/TitleAndArrowBack";
+import Toast from "react-native-toast-message";
 import {
     launchCamera,
     launchImageLibrary,
@@ -167,6 +168,7 @@ const ProblemReport: React.FC<ProblemReportType> = () => {
             }
 </View>
             {route.params.cameFrom === "Settings" ? (<BottomNavbar/>) : (null)}
+            <Toast/>
         </SafeAreaView>
     );
 }

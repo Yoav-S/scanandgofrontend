@@ -10,6 +10,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { passwordSchema } from '../messages/Statements';
 import StyledButton from '../components/UIComps/StyledButton';
 import FormInput from '../components/UIComps/FormInput';
+import Toast from "react-native-toast-message";
 import { useDataContext } from '../context/DataContext';
 import { ActivityIndicator } from '@react-native-material/core';
 const validationSchema = Yup.object().shape({
@@ -73,6 +74,7 @@ const SecurityScreen: React.FC = () => {
  
             </View>
             <BottomNavbar />
+            <Toast/>
         </SafeAreaView>
         )
 }

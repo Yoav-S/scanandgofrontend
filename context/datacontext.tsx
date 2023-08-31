@@ -121,8 +121,11 @@ const resetPassword = async (password: string, userId: string): Promise<boolean>
 };
 const updateDetailsAttempt = async (email: string, fullName: string, gender: string, birthDate: string): Promise<boolean> => {
   try{
-    const response = await api.patch('users/UpdateDetails', {
-      params: {
+    const response = await api.patch('users/updateOne', {
+      query: {
+        _id: currentUser?._id
+      },
+      updateQuery: {
         email: email,
         fullName: fullName,
         gender: gender,
@@ -135,9 +138,8 @@ const updateDetailsAttempt = async (email: string, fullName: string, gender: str
         Authorization: 'Bearer ' + token, 
       } 
     }
-    )
-    console.log(response.data);
-    if(response.status === 200 || response.status === 201){
+    ) 
+    if(response.status === 200){
       return true;
     }
     return false;
@@ -293,7 +295,26 @@ const signupAttempt = async (newUser: Registergion_Form_Props): Promise<[boolean
     setAuthenticated(false);
   };
 
-
+  const changeDefaultCardAttempt = async (cardId: string): Promise<boolean> => { 
+    try{
+      const response = await api.patch('users/paymentMethods/changeDefault', {
+        cardId: cardId,
+        userId: currentUser?._id
+      },
+      { headers: { Authorization: 'Bearer ' + token, } }
+      )
+      console.log(response.data);
+      
+      if(response.status == 200 || response.status === 201){
+        return true;
+      }
+      else{
+        return false;
+      }
+    } catch (err) {
+      return false;
+    }
+  }
 
 
   const showToast = (message: string, status: string, header: string) => {
@@ -326,7 +347,8 @@ const signupAttempt = async (newUser: Registergion_Form_Props): Promise<[boolean
     uploadFile,
     handleLogOut,
     updateDetailsAttempt,
-    updatePasswordAttempts
+    updatePasswordAttempts,
+    changeDefaultCardAttempt
   };
 
   return (

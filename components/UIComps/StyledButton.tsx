@@ -10,7 +10,7 @@ const StyledButton: React.FC<StyledButtonType> = (props) =>{
         <TouchableOpacity 
         disabled={props.disabled} 
         style={[styles.btnstyle, 
-        {backgroundColor : props.text === 'Image Added' ? 'green' : props.disabled ? theme.primaryColor : theme.secondaryColor, width: props.bigbutton ? 270 : 120}]} 
+        {backgroundColor : props.text === 'Image Added' ? 'green' : props.disabled ? theme.primaryColor : theme.secondaryColor, width: props.bigbutton ? 270 : props.smallbutton ? 90 : 120}]} 
         onPress={props.onPress}>
             <Text style={[styles.textstyle, {color: props.text === 'Image Added' ? 'white' : theme.textColor}]}>{props.text}</Text>
         </TouchableOpacity>
