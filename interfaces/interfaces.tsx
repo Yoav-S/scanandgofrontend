@@ -17,6 +17,7 @@ export interface DataContextType {
     setCurrentUser: (user: CurrentUserType | null) => void;
     getArrayOfDropDownCategories: () => Promise<string[]>;
     authenticated: boolean;
+    deleteCardAttempt: (cardId: string, userId: string) => Promise<boolean>;
     handleLogOut: () => void;
     changeDefaultCardAttempt: (cardId: string) => Promise<boolean>;
     updatePasswordAttempts: (password: string, newpassword: string) => Promise<boolean>;

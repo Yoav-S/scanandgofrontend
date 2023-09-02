@@ -56,6 +56,16 @@ const updatePasswordAttempts = async (password: string, newpassword: string): Pr
   }
 }
 
+const deleteCardAttempt = async (cardId: string, userId: string): Promise<boolean> => {
+  try{
+    const response: AxiosResponse = await api.delete('paymentMethods/deleteCreditCard', {userId: userId,cardId: cardId}
+
+    );
+  } catch (err: any) {
+
+  }
+}
+
 const loginAttempt = async (email: string, password: string, rememberMeValue: boolean): Promise<boolean> => {  
       try {
         const response = await api.post(`auth/login`, {email: email, password: password});        
@@ -348,7 +358,8 @@ const signupAttempt = async (newUser: Registergion_Form_Props): Promise<[boolean
     handleLogOut,
     updateDetailsAttempt,
     updatePasswordAttempts,
-    changeDefaultCardAttempt
+    changeDefaultCardAttempt,
+    deleteCardAttempt
   };
 
   return (
