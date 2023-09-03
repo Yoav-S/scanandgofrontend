@@ -27,6 +27,8 @@ export interface DataContextType {
     verifyEmail: (email: string) => Promise<[boolean, string, Date?, string?]>;
     showToast: (message: string, status: string, header: string) => void;
     token: string;
+    isVisibleStatus: boolean;
+    setisVisibleStatus: React.Dispatch<React.SetStateAction<boolean>>;
     uploadReport: (currentAsset : Asset | null, currentCategoryValue : string, appVersionValue: string , description : string, osValue : string, systemVersionValue : string, deviceModel: string) => Promise<[boolean, string]>;
     uploadFile: (currentAsset : Asset) => Promise<string>;
     getUserById: (id: string, token: string) => Promise<CurrentUserType | null>; // get a user by Id and set CurrantUser state.
@@ -51,7 +53,7 @@ export interface CreditCardFormType{
     creditCard: creditCardType;
 }
 export interface creditCardType{
-    cardId: string;
+    _id: string;
     cardNumber: string;
     expirationDate: string;
     cardholderName: string;

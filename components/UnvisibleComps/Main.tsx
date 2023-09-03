@@ -5,6 +5,7 @@ import { useDataContext } from '../../context/DataContext';
 import { AuthenticatedStackScreen } from '../../navigation/AuthenticatedStack';
 import { NotAuthenticatedStackScreen } from '../../navigation/NotAuthenticatedStack';
 import jwt_decode from 'jwt-decode';
+import ScanModal from '../UIComps/ScanModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Token } from '../../interfaces/interfaces';
 const Main: React.FC = () => {
@@ -14,6 +15,7 @@ const Main: React.FC = () => {
     setAuthenticated,
     setCurrentUser,
     getUserById,
+    isVisibleStatus,
     setToken,
     updateDeviceToken } = useDataContext();
   useEffect(() => {
@@ -39,10 +41,15 @@ const Main: React.FC = () => {
   
     getData();
   }, []);
+
+
   return (
     <View style={styles.container}>
         {authenticated ? (
+                    <View style={{flex: 1}}>
                     <AuthenticatedStackScreen />
+                    <ScanModal/>
+                    </View>
         ) : (
           <NotAuthenticatedStackScreen />
         )}

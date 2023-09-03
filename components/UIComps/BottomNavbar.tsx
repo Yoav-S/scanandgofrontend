@@ -2,13 +2,16 @@ import React, {useState} from 'react';
 import { SafeAreaView, View, StyleSheet } from 'react-native';
 import { BottomNavbarInterface } from '../../interfaces/interfaces';
 import { Icon } from 'react-native-elements';
+
 import { useRoute } from '@react-navigation/native';
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from '@react-navigation/stack';
+import { useDataContext } from '../../context/DataContext';
 const BottomNavbar: React.FC<BottomNavbarInterface> = (props) => {
   const route = useRoute();
   const [routeName, setRouteName] = useState<string>(route.name);
   const navigation = useNavigation<StackNavigationProp<any>>();
+  const {isVisibleStatus,setisVisibleStatus} = useDataContext();
  const navigateHome = () => {
   navigation.navigate('Home');
  }
@@ -22,9 +25,8 @@ const BottomNavbar: React.FC<BottomNavbarInterface> = (props) => {
   navigation.navigate('Profile');
  }
  const triggerScan = () => {
-  console.log('Scanner triggered');
-  
- }
+  setisVisibleStatus(!isVisibleStatus);
+}
 
  
   return (

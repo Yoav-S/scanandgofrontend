@@ -32,9 +32,15 @@ const PaymentMethodsScreen: React.FC<PaymentMethodsScreenProps> = ({ navigation 
             }
         
     };
-    const handleDeleteCard = async (cardId: string) => {
+    const handleDeleteCard = async (cardId: string) => {        
         if(currentUser){
             const isCardDeleted = await deleteCardAttempt(cardId, currentUser?._id);
+            if(isCardDeleted){
+                showToast("Card deleted succesffully", 'success', 'Deleted Successfully');
+            }
+            else{
+                showToast("Card delete failed", 'error', 'please try again');
+            }
         }
     }
     return (
@@ -45,7 +51,9 @@ const PaymentMethodsScreen: React.FC<PaymentMethodsScreenProps> = ({ navigation 
             </View>
             <ScrollView style={styles.scrollView}>
                 {currentUser?.creditCards.map((card : creditCardType, index) => (
-                    <View key={index}
+                    
+                    <View key={card._id}
+                    
                     style={styles.cardContainer}>
                         <CreditCard
                             type={card.cardType}
@@ -55,12 +63,12 @@ const PaymentMethodsScreen: React.FC<PaymentMethodsScreenProps> = ({ navigation 
                             cvc={card.cvv}
                         />
                         <View style={styles.trashiconCon}>
-                        <Icon style={styles.trashicon} name="settings" size={30} onPress={() => {handleDeleteCard(card.cardId)}} color={theme.textColor}/>
+                        <Icon style={styles.trashicon} name="settings" size={30} onPress={() => {handleDeleteCard(card._id)}} color={theme.textColor}/>
                         </View>
                         <View style={{flexDirection: 'row', alignItems: 'center'}}>
                         <CheckBox
                             checked={card.isDefault}
-                            onPress={() => handleDefaultCardChange(card.cardId)}
+                            onPress={() => handleDefaultCardChange(card._id)}
                         />
                         <Text style={{color: theme.textColor}}>Use as default payment credit card</Text>
                         </View>

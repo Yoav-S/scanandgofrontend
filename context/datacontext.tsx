@@ -16,7 +16,7 @@ export const DataProvider: React.FC<Props> = ({ children }) => {
   const [rememberMe, setRememberMe] = useState<boolean>(true);
   const [showError, setShowError] = useState(false);
   const [token, setToken] = useState<string>('');
-
+  const [isVisibleStatus, setisVisibleStatus] = useState(false);
 
   const api: AxiosInstance = axios.create({
     baseURL: 'https://scan-and-go.onrender.com/', // Set your base URL
@@ -57,12 +57,23 @@ const updatePasswordAttempts = async (password: string, newpassword: string): Pr
 }
 
 const deleteCardAttempt = async (cardId: string, userId: string): Promise<boolean> => {
+  const obj = {
+    userId: userId,
+    cardId: cardId
+  }
   try{
-    const response: AxiosResponse = await api.delete('paymentMethods/deleteCreditCard', {userId: userId,cardId: cardId}
-
-    );
+    const response: AxiosResponse = await api.patch('paymentMethods/deleteCreditCard', obj);
+    console.log(response.data);
+    
+    if(response.status === 200 || response.status === 201){
+      return true;
+    }
+    else{
+      return false;
+    }
+    
   } catch (err: any) {
-
+    return false;
   }
 }
 
@@ -359,7 +370,9 @@ const signupAttempt = async (newUser: Registergion_Form_Props): Promise<[boolean
     updateDetailsAttempt,
     updatePasswordAttempts,
     changeDefaultCardAttempt,
-    deleteCardAttempt
+    deleteCardAttempt,
+    isVisibleStatus,
+    setisVisibleStatus
   };
 
   return (
