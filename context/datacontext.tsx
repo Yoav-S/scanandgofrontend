@@ -7,6 +7,7 @@ import jwt_decode from "jwt-decode";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { requestUserPermission } from '../utils/requests';
 import DropDownPicker from 'react-native-dropdown-picker';
+import {IteminCartType} from '../interfaces/interfaces'
 import { Asset } from 'react-native-image-picker';
 const DataContext = createContext<DataContextType | undefined>(undefined);
 
@@ -17,6 +18,7 @@ export const DataProvider: React.FC<Props> = ({ children }) => {
   const [showError, setShowError] = useState(false);
   const [token, setToken] = useState<string>('');
   const [isVisibleStatus, setisVisibleStatus] = useState(false);
+  const [amountofitemsvariable, setamountofitemsvariable] = useState<number>(currentUser?.cart.length || 0);
 
   const api: AxiosInstance = axios.create({
     baseURL: 'https://scan-and-go.onrender.com/', // Set your base URL
@@ -168,12 +170,12 @@ const updateDetailsAttempt = async (email: string, fullName: string, gender: str
     return false;
   }
 }
-  const updateRememberMe = async (rememberMeValue: boolean, token: string): Promise<void> => {
+const updateRememberMe = async (rememberMeValue: boolean, token: string): Promise<void> => {
     if (rememberMeValue)
       storeObject('connectedUser', token)
     else
       AsyncStorage.removeItem('connectedUser');
-  };
+};
   /**
   * Stores an object in async storage with the specified key and value.
   * @param key The key of the object.
@@ -270,7 +272,28 @@ const signupAttempt = async (newUser: Registergion_Form_Props): Promise<[boolean
       return [false, error.message]
 
 }};
-
+const deleteItemAttempt = async (userId: string, nfcTagCode: string): Promise<[boolean, IteminCartType[]?]> => {
+  console.log(userId);
+  console.log(nfcTagCode);
+  
+  
+try{
+  const response : AxiosResponse = await api.patch('users/removeFromCart', {
+    userId,
+    nfcTagCode
+  },
+  { headers: { Authorization: 'Bearer ' + token, } });
+  console.log(response.data);
+  
+  if(response.status === 200 || response.status === 201){
+    return [true, response.data];
+  } else {
+    return [false];
+  }
+} catch (error: any) {
+  return [false];
+}
+}
   const getUserById = async (id: string, token: string): Promise<CurrentUserType | null> => {
     const requestBody = {
       query: {
@@ -372,7 +395,10 @@ const signupAttempt = async (newUser: Registergion_Form_Props): Promise<[boolean
     changeDefaultCardAttempt,
     deleteCardAttempt,
     isVisibleStatus,
-    setisVisibleStatus
+    setisVisibleStatus,
+    deleteItemAttempt,
+    setamountofitemsvariable,
+    amountofitemsvariable
   };
 
   return (

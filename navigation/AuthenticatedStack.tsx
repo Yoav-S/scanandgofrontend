@@ -9,7 +9,9 @@ import PaymentMethodsScreen from '../screens/PaymentMethodsScreen';
 import ProblemReport from '../screens/ProblemReport';
 import TermsAndServicesScreen from '../screens/TermsAndServicesScreen';
 import HelpAndSupportScreen from '../screens/HelpAndSupportScreen';
+import Cart from '../screens/Cart';
 import AddCreditCardScreen from '../screens/AddCreditCardScreen';
+import Checkout from '../screens/Checkout';
 import { AuthenticatedStackType } from '../interfaces/interfaces';
 const AuthenticatedStack = createStackNavigator();
 export const AuthenticatedStackScreen: React.FC<AuthenticatedStackType> = () => {
@@ -84,6 +86,20 @@ export const AuthenticatedStackScreen: React.FC<AuthenticatedStackType> = () => 
         }} 
         name="AddCreditCardScreen" 
         component={AddCreditCardScreen} 
+        />
+        <AuthenticatedStack.Screen
+        options={{
+          headerShown: false 
+        }} 
+        name="CartScreen" 
+        component={Cart} 
+        />
+        <AuthenticatedStack.Screen
+        options={{
+          headerShown: false 
+        }} 
+        name="CheckoutScreen"  
+        component={Checkout} 
         />
       </AuthenticatedStack.Navigator>
     );

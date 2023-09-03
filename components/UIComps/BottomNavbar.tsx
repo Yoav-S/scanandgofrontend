@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import { SafeAreaView, View, StyleSheet } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import { SafeAreaView, View,Text ,StyleSheet } from 'react-native';
 import { BottomNavbarInterface } from '../../interfaces/interfaces';
 import { Icon } from 'react-native-elements';
 
@@ -7,16 +7,19 @@ import { useRoute } from '@react-navigation/native';
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useDataContext } from '../../context/DataContext';
+import { useTheme } from '../../context/ThemeContext';
 const BottomNavbar: React.FC<BottomNavbarInterface> = (props) => {
   const route = useRoute();
+  const {theme} = useTheme();
   const [routeName, setRouteName] = useState<string>(route.name);
   const navigation = useNavigation<StackNavigationProp<any>>();
-  const {isVisibleStatus,setisVisibleStatus} = useDataContext();
+  const {isVisibleStatus,setisVisibleStatus, currentUser, setamountofitemsvariable, amountofitemsvariable} = useDataContext();
+  
  const navigateHome = () => {
   navigation.navigate('Home');
  }
- const navigateStats = () => {
-  navigation.navigate('Stats');
+ const navigateCart = () => {
+  navigation.navigate('CartScreen');
  }
  const navigateSettings = () => {
   navigation.navigate('Settings');
@@ -28,13 +31,24 @@ const BottomNavbar: React.FC<BottomNavbarInterface> = (props) => {
   setisVisibleStatus(!isVisibleStatus);
 }
 
+
+useEffect(() => {
+setamountofitemsvariable(currentUser?.cart.length || 0)
+}, [amountofitemsvariable]); 
  
   return (
     <SafeAreaView style={styles.container}>
       <Icon name="home" size={30} color={route.name === "Home" ? 'lightblue' : 'white'} onPress={navigateHome}/>
-      <Icon color={route.name === "Stats" ? 'lightblue' : 'white'} name="book" size={30} onPress={navigateStats}/>
+      <View style={{flexDirection: 'row'}}>
+      {amountofitemsvariable > 0 && (
+        <Text style={[{ color: 'red' }, styles.amountvariable]}>
+          {amountofitemsvariable.toString()}
+        </Text>
+      )}
+      <Icon color={route.name === "CartScreen" ? 'lightblue' : 'white'} name="shopping-cart" size={30} onPress={navigateCart}/>
+      </View>
       <View style={styles.plusIconContainer}>
-      <View style={styles.plusIconSecondCon} >
+      <View style={styles.plusIconSecondCon}>
         <Icon onPress={triggerScan} color="black" name="add" size={50} />
       </View>
       </View>
@@ -68,6 +82,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: '20%',
     position: 'relative',
+  },
+  amountvariable: {
+    position: 'absolute',
+    top: -10,
+    zIndex: 10,
+    left: -5,
+    fontWeight: 'bold'
   },
   plusIconSecondCon: {
     width: 70,

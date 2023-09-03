@@ -17,8 +17,11 @@ export interface DataContextType {
     setCurrentUser: (user: CurrentUserType | null) => void;
     getArrayOfDropDownCategories: () => Promise<string[]>;
     authenticated: boolean;
+    setamountofitemsvariable: (amount: number) => void;
+    amountofitemsvariable: number;
     deleteCardAttempt: (cardId: string, userId: string) => Promise<boolean>;
     handleLogOut: () => void;
+    deleteItemAttempt: (userId: string, nfcTagCode: string) => Promise<[boolean,IteminCartType[]?]>;
     changeDefaultCardAttempt: (cardId: string) => Promise<boolean>;
     updatePasswordAttempts: (password: string, newpassword: string) => Promise<boolean>;
     updateDetailsAttempt: (email: string, fullName: string, gender: string, birthDate: string) => Promise<boolean>;
@@ -47,6 +50,22 @@ export interface CurrentUserType{
     deviceToken:string;
     gender: string;
     creditCards: creditCardType[];
+    cart: IteminCartType[];
+}
+export interface CreditCardAbstractCompType{
+creditCard: creditCardType;
+}
+export interface IteminCartType{
+nfcTagCode: string;
+itemId: string;
+name: string;
+imageSource: string;
+price: number;
+category: string;
+}
+export interface ItemCompInterface{
+itemObj: IteminCartType;
+handleDeleteItem: (userId: string, nfcTagCode: string) => void;
 }
 export interface CreditCardFormType{
     userId: string;

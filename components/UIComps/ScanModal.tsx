@@ -72,7 +72,7 @@ const ScanModel: React.FC<Props> = () => {
         <ModalContent style={styles.modalContent}>
             <LottieView
             style={{width: 50, height: 50}}
-            speed={1}
+            speed={1} 
             source={animationData}
             autoPlay
             loop={true}

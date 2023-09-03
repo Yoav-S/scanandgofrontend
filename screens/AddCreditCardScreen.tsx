@@ -14,6 +14,7 @@ import { CheckBox } from "react-native-elements";
 import DropDownPicker from 'react-native-dropdown-picker';
 import FormInput from "../components/UIComps/FormInput";
 import { useDataContext } from "../context/DataContext";
+import { ScrollView } from "react-native-gesture-handler";
 const validationSchema = Yup.object().shape({
 cvv: cvvSchema,
 isDefault: isDefaultSchema,
