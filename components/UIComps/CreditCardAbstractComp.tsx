@@ -7,7 +7,8 @@ import { CheckBox } from 'react-native-elements';
 const CreditCardAbstractComp: React.FC<CreditCardAbstractCompType> = ({creditCard, onPress}) => {
   const { theme } = useTheme();
   const { cardType } = creditCard;
-  const [isChecked, setisChecked] = useState<boolean>(creditCard.isDefault);
+
+  
   let imageSource;
   if (cardType === 'americanexpress') {
     imageSource = require('../../images/americanexpress.png');
@@ -31,7 +32,7 @@ const CreditCardAbstractComp: React.FC<CreditCardAbstractCompType> = ({creditCar
             <Text style={{color: theme.textColor, fontWeight: '600'}}>{creditCard.cardType}</Text>
             <Text style={{color: theme.textColor, fontWeight: '300'}}>{creditCard.cardNumber}</Text>
             </View>
-            <CheckBox onPress={() => {onPress && onPress(creditCard._id)}} checked={isChecked} />
+            <CheckBox onPress={() => onPress && onPress(creditCard._id)} checked={creditCard.isDefault} />
         </View>
       </View>  
     </SafeAreaView>

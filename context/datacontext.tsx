@@ -370,7 +370,16 @@ try{
     });
   }
 
+  const verifyCouponAttempt = async (coupon: string): Promise<boolean> => {
+    const response: AxiosResponse = await api.post('coupon/getOne', {
 
+    });
+    if(response.status === 200 || response.status === 201) {
+      return true;
+    } else{
+      return false;
+    }
+  }
   const contextValue: DataContextType = {
     currentUser,
     setCurrentUser,
@@ -398,7 +407,8 @@ try{
     setisVisibleStatus,
     deleteItemAttempt,
     setamountofitemsvariable,
-    amountofitemsvariable
+    amountofitemsvariable,
+    verifyCouponAttempt
   };
 
   return (

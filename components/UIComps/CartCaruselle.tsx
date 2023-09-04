@@ -10,7 +10,7 @@ const CartCarusell: React.FC = () => {
     const {theme} = useTheme();
     return (
         <SafeAreaView style={[styles.container]}>
-            <Text style={{color: theme.textColor}}>Cart</Text>
+            <Text style={{color: theme.textColor, marginBottom: '2%', fontWeight: '600'}}>Cart</Text>
             <ScrollView horizontal style={styles.caruselle}>
                 {
                     currentUser?.cart.map((item: IteminCartType) => {
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
         flex: 1,
         width: '95%',
         alignSelf: 'center',
-        marginTop: '5%'
+        marginTop: '3%'
     },
     caruselle: {
         flexDirection: 'row'

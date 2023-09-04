@@ -16,7 +16,7 @@ const FormInput: React.FC<FormInputType> = (props) => {
     <View style={{marginTop: '4%'}}>
     <TextInput 
       keyboardType={props.numeric ? 'number-pad' : 'default'}
-      style={[styles.textInput, {width: props.label === "Exp Date" || props.label === "Cvv" ? 150 : 330}]}
+      style={[styles.textInput, {width: props.label === "Exp Date" || props.label === "Cvv" || props.label === 'Enter Coupon' ? 150 : 330}]}
       onChangeText={onChangeTextHandler}
       autoCapitalize="none"
       autoCorrect={false}

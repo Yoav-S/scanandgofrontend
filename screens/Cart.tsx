@@ -99,7 +99,7 @@ const Cart: React.FC = () => {
                             <Text style={{color: theme.textColor}}>Total</Text>
                             <Text style={{color: theme.textColor, fontWeight: 'bold'}}>{totalamountvariable}</Text>
                         </View>
-                        <StyledButton bigbutton text='Checkout' onPress={() => {navigation.navigate('CheckoutScreen')}}/>
+                        <StyledButton bigbutton text='Checkout' onPress={() => {navigation.navigate('CheckoutScreen', {totalAmount: totalamountvariable})}}/>
                     </View>
                 </View>) 
             }

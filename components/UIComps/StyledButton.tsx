@@ -1,18 +1,17 @@
-import React from "react";
+import React, {useState} from "react";
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import { StyledButtonType } from "../../interfaces/interfaces";
 import { useTheme } from "../../context/ThemeContext";
+import { ActivityIndicator } from "@react-native-material/core";
 const StyledButton: React.FC<StyledButtonType> = (props) =>{
     const {theme} = useTheme();
-
-    
     return (
         <TouchableOpacity 
         disabled={props.disabled} 
         style={[styles.btnstyle, 
         {backgroundColor : props.text === 'Image Added' ? 'green' : props.disabled ? theme.primaryColor : theme.secondaryColor, width: props.bigbutton ? 270 : props.smallbutton ? 90 : 120}]} 
         onPress={props.onPress}>
-            <Text style={[styles.textstyle, {color: props.text === 'Image Added' ? 'white' : theme.textColor}]}>{props.text}</Text>
+            {!props.isLoading ? (<Text style={[styles.textstyle, {color: props.text === 'Image Added' ? 'white' : theme.textColor}]}>{props.text}</Text>):(<ActivityIndicator size={30}/>)}
         </TouchableOpacity>
     )
 }

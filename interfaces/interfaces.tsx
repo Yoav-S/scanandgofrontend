@@ -17,6 +17,7 @@ export interface DataContextType {
     setCurrentUser: (user: CurrentUserType | null) => void;
     getArrayOfDropDownCategories: () => Promise<string[]>;
     authenticated: boolean;
+    verifyCouponAttempt: (coupon: string) => Promise<boolean>;
     setamountofitemsvariable: (amount: number) => void;
     amountofitemsvariable: number;
     deleteCardAttempt: (cardId: string, userId: string) => Promise<boolean>;
@@ -104,6 +105,8 @@ export interface FormInputType{
     validator?: boolean;
     errorMessage?: string | undefined;
     startValue?: string;
+    isApplied?: boolean;
+    isAttempted?: boolean;
     value?: string;
     numeric?: boolean;
     onChangeText?: (value: string) => void;
@@ -138,7 +141,10 @@ export interface StyledButtonType {
   text: string;
   onPress?: () => void;
   disabled?: boolean;
+  isLoading?: boolean;
   bigbutton?: boolean;
+  isApplied?: boolean;
+  isAttempted?: boolean;
   smallbutton?: boolean;
 }
 export interface StyledBarrierProps{
@@ -212,4 +218,11 @@ export interface TitleAndArrowBackProps{
     text: string;
     onPress?: () => void;
 } 
-  
+export interface CouponCompProps{
+    isCouponValid: boolean;
+    isAttempted: boolean;
+    isLoading: boolean;
+    handleCouponCheck: () => void;
+    btnLabelText: string;
+    changeInputHandler: (input: string) => void;
+}  
