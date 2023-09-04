@@ -19,7 +19,7 @@ export const DataProvider: React.FC<Props> = ({ children }) => {
   const [token, setToken] = useState<string>('');
   const [isVisibleStatus, setisVisibleStatus] = useState(false);
   const [amountofitemsvariable, setamountofitemsvariable] = useState<number>(currentUser?.cart.length || 0);
-
+  
   const api: AxiosInstance = axios.create({
     baseURL: 'https://scan-and-go.onrender.com/', // Set your base URL
   });  

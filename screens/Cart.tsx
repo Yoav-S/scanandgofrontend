@@ -13,8 +13,9 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import Item from '../components/UIComps/Item';
 import StyledButton from '../components/UIComps/StyledButton';
 import BottomNavbar from '../components/UIComps/BottomNavbar';
+import { CurrentUserType } from '../interfaces/interfaces';
 const Cart: React.FC = () => {
-    const {currentUser, deleteItemAttempt, showToast} = useDataContext();
+    const {setCurrentUser,currentUser, deleteItemAttempt, showToast, amountofitemsvariable, setamountofitemsvariable} = useDataContext();
     const {theme} = useTheme();
     const navigation = useNavigation<StackNavigationProp<any>>();
     
@@ -25,7 +26,19 @@ const Cart: React.FC = () => {
     const handleDeleteItem = async (userId : string, nfcTagCode : string) => {
         const [isDeleted, arrayofItems] = await deleteItemAttempt(userId, nfcTagCode);
         if(isDeleted) {
-            arrayofItems?.length == 0 ? setisCartEmpty(true) : null;
+            if(arrayofItems?.length === 0){
+                if(currentUser){
+                    let newUser: CurrentUserType = currentUser;
+                    newUser.cart = arrayofItems;
+                    setCurrentUser(newUser);
+                }
+                setisCartEmpty(true)
+                setamountofitemsvariable(0)
+            }
+            else if(arrayofItems && arrayofItems?.length > 0)
+            {
+                setamountofitemsvariable(arrayofItems.length)
+            }
             setCurrentUserItemsCart(arrayofItems);
             showToast('Enjoy Shopping !', 'success', 'Item Successfully deleted');
         }

@@ -38,7 +38,6 @@ const AddCreditCardScreen: React.FC = () => {
     const [currentCategoryValue, setCurrentCategoryValue] = useState<string>('');
     const {theme} = useTheme();
     const handleFormSubmit = async (values: {cardType: string, cardNumber: string, cardholderName: string, expirationDate: string, cvv: string, isDefault: boolean}) => {
-        console.log(values);
         
     }
     

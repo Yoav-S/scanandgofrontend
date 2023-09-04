@@ -52,9 +52,13 @@ export interface CurrentUserType{
     creditCards: creditCardType[];
     cart: IteminCartType[];
 }
-export interface CreditCardAbstractCompType{
-creditCard: creditCardType;
-}
+// interfaces/interfaces.tsx
+export interface CreditCardAbstractCompType {
+    creditCard: creditCardType;
+    onPress?: (cardId: string) => void | undefined; // Make onPress an optional function
+    isChecked?: boolean; // Add the isChecked prop
+  }
+  
 export interface IteminCartType{
 nfcTagCode: string;
 itemId: string;
@@ -65,7 +69,7 @@ category: string;
 }
 export interface ItemCompInterface{
 itemObj: IteminCartType;
-handleDeleteItem: (userId: string, nfcTagCode: string) => void;
+handleDeleteItem?: (userId: string, nfcTagCode: string) => void;
 }
 export interface CreditCardFormType{
     userId: string;

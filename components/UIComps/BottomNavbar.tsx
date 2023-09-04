@@ -13,7 +13,8 @@ const BottomNavbar: React.FC<BottomNavbarInterface> = (props) => {
   const {theme} = useTheme();
   const [routeName, setRouteName] = useState<string>(route.name);
   const navigation = useNavigation<StackNavigationProp<any>>();
-  const {isVisibleStatus,setisVisibleStatus, currentUser, setamountofitemsvariable, amountofitemsvariable} = useDataContext();
+  const {isVisibleStatus,setisVisibleStatus, currentUser, amountofitemsvariable, setamountofitemsvariable} = useDataContext();
+  console.log('item in cart1:', amountofitemsvariable );
   
  const navigateHome = () => {
   navigation.navigate('Home');
@@ -42,7 +43,7 @@ setamountofitemsvariable(currentUser?.cart.length || 0)
       <View style={{flexDirection: 'row'}}>
       {amountofitemsvariable > 0 && (
         <Text style={[{ color: 'red' }, styles.amountvariable]}>
-          {amountofitemsvariable.toString()}
+          {amountofitemsvariable}
         </Text>
       )}
       <Icon color={route.name === "CartScreen" ? 'lightblue' : 'white'} name="shopping-cart" size={30} onPress={navigateCart}/>
