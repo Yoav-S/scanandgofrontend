@@ -6,7 +6,6 @@ import { useTheme } from "../../context/ThemeContext";
 import { ErrorMessage } from "formik";
 const FormInput: React.FC<FormInputType> = (props) => {
   const {theme} = useTheme();
-  console.log(props.label);
   
   const onChangeTextHandler = (text: string) => {
     props.setInput(text);

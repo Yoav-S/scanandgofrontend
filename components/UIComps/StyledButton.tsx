@@ -9,9 +9,20 @@ const StyledButton: React.FC<StyledButtonType> = (props) =>{
         <TouchableOpacity 
         disabled={props.disabled} 
         style={[styles.btnstyle, 
-        {backgroundColor : props.text === 'Image Added' ? 'green' : props.disabled ? theme.primaryColor : theme.secondaryColor, width: props.bigbutton ? 270 : props.smallbutton ? 90 : 120}]} 
+        {backgroundColor : props.text === 'Invalid' ? 'red' 
+        : props.text === 'Verified' ? 'green' 
+        : props.text === 'Image Added' ? 'green' 
+        : props.disabled ? theme.primaryColor 
+        : theme.secondaryColor, width: props.bigbutton 
+        ? 270 : props.smallbutton ? 90 : 120}]} 
         onPress={props.onPress}>
-            {!props.isLoading ? (<Text style={[styles.textstyle, {color: props.text === 'Image Added' ? 'white' : theme.textColor}]}>{props.text}</Text>):(<ActivityIndicator size={30}/>)}
+            {!props.isLoading ? (
+            <Text style={[styles.textstyle, 
+            {color : props.text === 'Invalid' 
+            || props.text === 'Verified' ? 'white' 
+            : props.text === 'Image Added' ? 'white' 
+            : theme.textColor}]}>{props.text}</Text>)
+            :(<ActivityIndicator size={30}/>)}
         </TouchableOpacity>
     )
 }

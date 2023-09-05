@@ -7,8 +7,9 @@ import jwt_decode from "jwt-decode";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { requestUserPermission } from '../utils/requests';
 import DropDownPicker from 'react-native-dropdown-picker';
-import {IteminCartType} from '../interfaces/interfaces'
+import {IteminCartType, CouponType, TransactionFormType} from '../interfaces/interfaces'
 import { Asset } from 'react-native-image-picker';
+
 const DataContext = createContext<DataContextType | undefined>(undefined);
 
 export const DataProvider: React.FC<Props> = ({ children }) => {
@@ -314,19 +315,18 @@ try{
       console.log(error.response.data.error);
       return null;
     }
-  };
+};
 
-  const autoLoginNewUser = async (newToken: string) => {
-    await AsyncStorage.setItem('connectedUser', newToken)
-    const decoded: Token = jwt_decode(newToken);
-    setToken(newToken)
-    const newUser = await getUserById(decoded.id, newToken);
-
-    if (newUser != null) {
-      setCurrentUser(newUser);
-      setAuthenticated(true);
-    }
+const autoLoginNewUser = async (newToken: string) => {
+  await AsyncStorage.setItem('connectedUser', newToken)
+  const decoded: Token = jwt_decode(newToken);
+  setToken(newToken)
+  const newUser = await getUserById(decoded.id, newToken);
+  if (newUser != null) {
+    setCurrentUser(newUser);
+    setAuthenticated(true);
   }
+}
 
   async function handleTokenError(): Promise<void> {
     // show the dialog 
@@ -361,6 +361,37 @@ try{
   }
 
 
+  const PaymentAttempt = async (transactionObject: TransactionFormType): Promise<[boolean, string?]> => {
+    console.log(transactionObject);
+    
+    try{
+      const response: AxiosResponse = await api.post('transactions/createTransaction', transactionObject, {headers: {Authorization: 'Bearer ' + token}});
+      if(currentUser){
+      const newUser = await getUserById(currentUser._id, token);
+      if (newUser != null) {
+        setCurrentUser(newUser);
+        setAuthenticated(true);
+      }
+     }
+      return [true]
+    } catch (error: any){
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        if (error.response.status === 500) {
+          
+          return [false, error.response.message];
+        } else if (error.response.status === 404) {
+          return [false, error.response.message];
+        } else {
+          return [false, error.response.message];
+        }
+      } else{
+        return [false, error.message];
+      }
+    }
+    return [false];
+  }
+
   const showToast = (message: string, status: string, header: string) => {
     Toast.show({
       type: status,
@@ -370,16 +401,41 @@ try{
     });
   }
 
-  const verifyCouponAttempt = async (coupon: string): Promise<boolean> => {
-    const response: AxiosResponse = await api.post('coupon/getOne', {
-
-    });
-    if(response.status === 200 || response.status === 201) {
-      return true;
-    } else{
-      return false;
-    }
+  const verifyCouponAttempt = async (coupon: string): Promise<[boolean, CouponType | null]> => {
+    const requestBody = {
+      query: {
+        code: coupon,
+        isActive: true
+      },
+      projection: {
+        discountPercentage:1
+      },
+    };
+    try{
+      const response: AxiosResponse = await api.post('coupon/getOne', requestBody,
+      {
+        headers:{Authorization: "Bearer " + token}
+      });
+        const couponObject: CouponType = response.data;
+        return [true,couponObject];     
+    } catch (error: any) {
+      if (error.response) {
+        if (error.response.status === 500) {
+          console.log('error 500: ',error.response.message);
+          return [false, null];
+        } else if (error.response.status === 404) {
+          console.log('error 404 if: ',error.response.data.message);
+          return [false, null];
+        } else {
+          console.log('error 404 else: ',error.response.message);
+          return [false, null];
+        }
+      } else{
+        console.log('no response error', error.message);
+        return [false, null];
+      }
   }
+}
   const contextValue: DataContextType = {
     currentUser,
     setCurrentUser,
@@ -408,7 +464,8 @@ try{
     deleteItemAttempt,
     setamountofitemsvariable,
     amountofitemsvariable,
-    verifyCouponAttempt
+    verifyCouponAttempt,
+    PaymentAttempt
   };
 
   return (

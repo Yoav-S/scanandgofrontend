@@ -13,9 +13,7 @@ const BottomNavbar: React.FC<BottomNavbarInterface> = (props) => {
   const {theme} = useTheme();
   const [routeName, setRouteName] = useState<string>(route.name);
   const navigation = useNavigation<StackNavigationProp<any>>();
-  const {isVisibleStatus,setisVisibleStatus, currentUser, amountofitemsvariable, setamountofitemsvariable} = useDataContext();
-  console.log('item in cart1:', amountofitemsvariable );
-  
+  const {isVisibleStatus,setisVisibleStatus, currentUser, amountofitemsvariable, setamountofitemsvariable} = useDataContext();  
  const navigateHome = () => {
   navigation.navigate('Home');
  }

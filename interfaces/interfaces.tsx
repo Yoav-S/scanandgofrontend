@@ -12,12 +12,24 @@ export interface ThemeContextType {
 export interface Props {
     children?: React.ReactNode
 }
+export interface CouponType{
+_id: string;
+discountPercentage: number;
+}
+export interface TransactionFormType{
+    userId: string;
+    cardId: string;
+    amountToCharge: number;
+    products: productInTransaction[];
+    couponId: string;
+}
 export interface DataContextType {
     currentUser: CurrentUserType | null;
     setCurrentUser: (user: CurrentUserType | null) => void;
     getArrayOfDropDownCategories: () => Promise<string[]>;
     authenticated: boolean;
-    verifyCouponAttempt: (coupon: string) => Promise<boolean>;
+    PaymentAttempt: (transactionObject: TransactionFormType) => Promise<[boolean, string?]>;
+    verifyCouponAttempt: (coupon: string) => Promise<[boolean, CouponType | null]>;
     setamountofitemsvariable: (amount: number) => void;
     amountofitemsvariable: number;
     deleteCardAttempt: (cardId: string, userId: string) => Promise<boolean>;
@@ -58,8 +70,15 @@ export interface CreditCardAbstractCompType {
     creditCard: creditCardType;
     onPress?: (cardId: string) => void | undefined; // Make onPress an optional function
     isChecked?: boolean; // Add the isChecked prop
-  }
-  
+}
+ 
+export interface productInTransaction{
+nfcTagCode: string;
+itemId: string;
+name: string;
+imageSource: string;
+price: number;    
+}
 export interface IteminCartType{
 nfcTagCode: string;
 itemId: string;

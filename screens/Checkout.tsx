@@ -6,7 +6,7 @@ import { useDataContext } from '../context/DataContext';
 import StyledButton from '../components/UIComps/StyledButton';
 import { ScrollView } from 'react-native-gesture-handler';
 import CreditCard from 'react-native-credit-card';
-import { creditCardType } from '../interfaces/interfaces';
+import { creditCardType, IteminCartType, TransactionFormType, productInTransaction } from '../interfaces/interfaces';
 import { useNavigation, useRoute, RouteProp  } from "@react-navigation/native";
 import Toast from 'react-native-toast-message';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -14,25 +14,28 @@ import CreditCardAbstractComp from '../components/UIComps/CreditCardAbstractComp
 import BottomNavbar from '../components/UIComps/BottomNavbar';
 import CartCarusell from '../components/UIComps/CartCaruselle';
 import CouponComp from '../components/UIComps/CouponComp';
+import { ActivityIndicator } from '@react-native-material/core';
 type YourNavigatorParamList = {
     CheckoutScreen: { totalAmount: number }; // Define the parameter type here
     // ... other screens
-  };
+};
   
 const Checkout: React.FC = () => {
     const route = useRoute<RouteProp<YourNavigatorParamList, 'CheckoutScreen'>>();
     const totalAmount = route.params.totalAmount;    const {theme} = useTheme();    
-    const {currentUser, showToast, verifyCouponAttempt} = useDataContext();
+    const {currentUser, showToast, verifyCouponAttempt, PaymentAttempt} = useDataContext();
     const [isCouponValid, setisCouponValid] = useState<boolean>(false);
     const [isLoading, setisLoading] = useState<boolean>(false);
     const [isAttempted, setisAttempted] = useState<boolean>(false);
+    const [isLoadingPayment, setisLoadingPayment] = useState<boolean>(false);
     const [currentCouponInputValue, setCouponInputValue] = useState<string>('');
     const navigation = useNavigation<StackNavigationProp<any>>();
     const [localCheckedVal, setlocalCheckedVal] = useState<boolean>();
+    const [totalAmountToPay, setTotalAmountToPay] = useState<number>(0);
     const [couponDiscountAmount, setcouponDiscountAmount] = useState<number>(0);
     const [creditCards, setcreditCards] = useState<creditCardType[]>(currentUser?.creditCards || []);
-    const [btnLabelText, setBtnLabelText] = useState<string>(isAttempted && !isCouponValid ? 'Invalid' : isAttempted && isCouponValid ? 'Verified' : 'Apply')
-
+    const [btnLabelText, setBtnLabelText] = useState<string>('Apply')
+    const [currentCoupon, setCurrentCoupon] = useState<string>('');
     const [isEmptyCreditCardArray, setisEmptyCreditCardArray] = useState<boolean>(currentUser?.creditCards && currentUser?.creditCards.length > 0 ? false : true);
     const cards = creditCards.map((creditCard: creditCardType) => {
         return(
@@ -45,16 +48,28 @@ const Checkout: React.FC = () => {
         )
     })
     const changeInputHandler = (coupon: string) => {
+        setBtnLabelText('Apply');
+        setisCouponValid(false);
         setCouponInputValue(coupon);
-        console.log(coupon);
     }  
     const handleCouponCheck = async () => {
-        const isValid = await verifyCouponAttempt(currentCouponInputValue)
         setisLoading(true);
+        const [isValid, couponObject] = await verifyCouponAttempt(currentCouponInputValue);
+        setisLoading(false);
         setisAttempted(true);
-        setTimeout(() => {
-            setisLoading(false);
-        }, 2000)
+       if(isValid && couponObject){
+        setBtnLabelText('Verified')
+        setCurrentCoupon(couponObject._id);
+        setisCouponValid(true);
+        showToast(`Coupon discount ${couponObject?.discountPercentage}`, 'success', 'Coupon Verified !');
+        const newPercentFormat = couponObject.discountPercentage * (1/100);
+        const calculatedDiscountPrice = totalAmount * newPercentFormat;
+        setcouponDiscountAmount(calculatedDiscountPrice);
+        setTotalAmountToPay(totalAmount - calculatedDiscountPrice);
+       }else{
+        setBtnLabelText('Invalid')
+        showToast('Invalid Coupon', 'error', 'Coupon not Verified');
+       }
 
 
     }
@@ -72,62 +87,99 @@ const Checkout: React.FC = () => {
         setcreditCards(newCreditCards);
     }
 
-    const handlePayNow = () => {
+    const handlePayNow = async () => {
+        const chosenCreditCard = creditCards.filter((card: creditCardType) => card.isDefault)
+        const originalCart: IteminCartType[] = currentUser?.cart || [];
+        const newCart: productInTransaction[] = originalCart.map((item : IteminCartType) => {
+          const { category, ...newItem } = item;
+          return newItem;
+        });        
+       const transactionObject: TransactionFormType = {
+           userId: currentUser?._id || '',
+           cardId: chosenCreditCard[0]._id,
+           amountToCharge: totalAmountToPay,
+           products: newCart,
+           couponId: currentCoupon
 
+       }
+       setisLoadingPayment(true);       
+       const [paymentResult, message] = await PaymentAttempt(transactionObject);
+       setisLoadingPayment(false);       
+       if(paymentResult) {
+        setisAttempted(false);
+        setisCouponValid(false);
+        setCouponInputValue('');
+        showToast('You now about to move to recap', 'success', 'Purchase Completed');
+        setTimeout(() => {
+            navigation.navigate('PurchaseScreen', {totalAmount: totalAmount})
+           }, 2000);
+       }
+       else{
+        showToast(message || 'Something went wrong', 'error', 'Purchase Failed');
+       }
     }
 
-
+    
 
     return (
         <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
-            <TitleAndArrowBack text='Checkout' onPress={() => {navigation.goBack()}}/>
-            <View style={styles.paymentMethodsCon}>
-                <Text style={{color: theme.textColor, padding: '3%', fontWeight: '600'}}>Payment Method</Text>
-                {
-                    isEmptyCreditCardArray ? (
-                        <View style={{marginTop: '5%', marginBottom: '5%'}}>
-                        <StyledButton text='Add Credit Card' bigbutton/>
-                        </View>
-                    ) : (
-                        <ScrollView style={styles.creditCardSV}>
-                            {
-                                cards    
-                            }
-                        </ScrollView>
-                    )
-                }
-            </View>
-            <View style={[styles.barrier, {backgroundColor: theme.backgroundColor, borderRadius: 8}]}/>
-            <View style={styles.cartCarusell}>
-                <CartCarusell/>
-            </View>
-            <View style={styles.couponCompCon}>
-                <CouponComp
-                btnLabelText={btnLabelText}
-                isAttempted={isAttempted}
-                isLoading={isLoading}
-                handleCouponCheck={handleCouponCheck}
-                changeInputHandler={changeInputHandler}
-                isCouponValid={isCouponValid}/>
-            </View>
-            <View style={styles.totalAmountCon}>
-                <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '95%'}}>
-                    <Text style={{color: theme.textColor, fontWeight: '300'}}>Items</Text>
-                    <Text style={{color: theme.textColor, fontWeight: '600'}}>{totalAmount}</Text>  
+                        <TitleAndArrowBack text='Checkout' onPress={() => {navigation.goBack()}}/>
+                        <ScrollView>
+
+            {
+                isLoadingPayment ? (<ActivityIndicator style={{marginTop: '15%'}} size={70}/> ) : (
+                <View>
+                <View style={styles.paymentMethodsCon}>
+                    <Text style={{color: theme.textColor, padding: '3%', fontWeight: '600'}}>Payment Method</Text>
+                    {
+                        isEmptyCreditCardArray ? (
+                            <View style={{marginTop: '5%', marginBottom: '5%'}}>
+                            <StyledButton text='Add Credit Card' bigbutton/>
+                            </View>
+                        ) : (
+                            <ScrollView style={styles.creditCardSV}>
+                                {
+                                    cards    
+                                }
+                            </ScrollView>
+                        )
+                    }
                 </View>
-                { isCouponValid && <View style={styles.coupondiscountcon}>
-                <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '95%', marginTop: '2%'}}>
-                <Text style={{color: theme.textColor, fontWeight: '300'}}>Coupon</Text>
-                <Text style={{color: theme.textColor, fontWeight: '600'}}>{couponDiscountAmount}</Text>  
+                <View style={[styles.barrier, {backgroundColor: theme.backgroundColor, borderRadius: 8}]}/>
+                <View style={styles.cartCarusell}>
+                    <CartCarusell/>
                 </View>
-                <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '95%', marginTop: '2%'}}>
-                <Text style={{color: theme.textColor, fontWeight: '300'}}>Total</Text>
-                  <Text style={{color: theme.textColor, fontWeight: '600'}}>{totalAmount - couponDiscountAmount}</Text>  
+                <View style={styles.couponCompCon}>
+                    <CouponComp
+                    btnLabelText={btnLabelText}
+                    isAttempted={isAttempted}
+                    isLoading={isLoading}
+                    handleCouponCheck={handleCouponCheck}
+                    changeInputHandler={changeInputHandler}
+                    isCouponValid={isCouponValid}/>
                 </View>
+                <View style={styles.totalAmountCon}>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '95%'}}>
+                        <Text style={{color: theme.textColor, fontWeight: '300'}}>Items</Text>
+                        <Text style={{color: theme.textColor, fontWeight: '600'}}>{totalAmount}</Text>  
+                    </View>
+                    { isCouponValid && <View style={styles.coupondiscountcon}>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '95%', marginTop: '2%'}}>
+                    <Text style={{color: theme.textColor, fontWeight: '300'}}>Coupon</Text>
+                    <Text style={{color: theme.textColor, fontWeight: '600'}}>{couponDiscountAmount}</Text>  
+                    </View>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '95%', marginTop: '2%'}}>
+                    <Text style={{color: theme.textColor, fontWeight: '300'}}>Total</Text>
+                      <Text style={{color: theme.textColor, fontWeight: '600'}}>{totalAmountToPay}</Text>  
+                    </View>
+                    </View>
+                    }
                 </View>
-                }
-            </View>
-            <StyledButton text='Pay Now' bigbutton onPress={handlePayNow}/>
+                <StyledButton text='Pay Now' bigbutton onPress={handlePayNow}/>
+                </View>
+                )
+            }
+</ScrollView>
             <BottomNavbar/>
             <Toast/>
         </View>
@@ -144,7 +196,7 @@ const styles = StyleSheet.create({
         height: 170
     },
     cartCarusell: {
-        height: 200
+        height: 150
     },
     barrier: {
         borderWidth: 1,
