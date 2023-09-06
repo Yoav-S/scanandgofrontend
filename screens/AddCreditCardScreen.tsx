@@ -54,34 +54,60 @@ const AddCreditCardScreen: React.FC = () => {
                         
                         {({ handleChange, handleSubmit, values, errors, isValid, dirty, setFieldValue, touched }) => (
                           <>
-                        <View style={styles.cardContainer}>
+                        <ScrollView style={styles.cardContainer}>
                         <CreditCard
                         type={values.cardType}
                         number={values.cardNumber}
                         name={values.cardholderName}
                         expiry={values.expirationDate}
                         cvc={values.cvv}
+                        
                         />
-                        </View>
                         <FormInput errorMessage={errors.cardNumber} setInput={handleChange('cardNumber')} label="Card Number" numeric/>
                         <FormInput errorMessage={errors.cardholderName} setInput={handleChange('cardholderName')} label="Card Holder Name"/>
                         <View style={styles.expireincvvCon}>
                         <FormInput errorMessage={errors.expirationDate} setInput={handleChange('expirationDate')} label="Exp Date"/>
                         <FormInput errorMessage={errors.cvv} setInput={handleChange('cvv')} label="Cvv" numeric/>
                         </View>
-                        <DropDownPicker
-                        style={{width: 300, alignSelf: 'center', marginTop: '5%'}}
-                        open={open}
-                        value={currentCategoryValue}
-                        items={allCategoriesValues}
-                        onChangeValue={(category) => {
-                        setCurrentCategoryValue(category?.toString() || '');
-                        handleChange('cardType')(category?.toString() || '');}}
-                        setOpen={setOpen}
-                        setValue={setCurrentCategoryValue}
-                        setItems={setAllCategoriesValues}
-                        />
 
+                    <View style={[ { marginBottom: 16, height: 1000 }]}>
+                        <View>
+
+
+                                <DropDownPicker
+                                    listMode="SCROLLVIEW"
+                                    placeholder="Select your restaurant"
+                                    style={{
+                                        backgroundColor: '#fff',
+                                        borderWidth: 1,
+                                        paddingHorizontal: 12,
+                                        borderRadius: 5,
+                                        marginTop: 8,
+                                        marginBottom: 16,
+                                    }}
+                                    dropDownContainerStyle={{
+                                        borderRadius: 5,
+                                    }}
+                                    placeholderStyle={{
+                                        color: '#696969',
+                                        fontSize: 16,
+                                    }}
+                                    textStyle={{
+                                        fontSize: 16,
+                                    }}
+                                    open={open}
+                                    value={currentCategoryValue}
+                                    items={allCategoriesValues}
+                                    setOpen={setOpen}
+
+                                    onChangeValue={(category) => {
+                                    setCurrentCategoryValue(category?.toString() || '');
+                                    handleChange('cardType')(category?.toString() || '');}}
+                                    setValue={setCurrentCategoryValue}
+                                    setItems={setAllCategoriesValues}
+                                />
+                        </View>
+                    </View>
                         <CheckBox 
                         style={{marginTop: '5%'}}
                         title={"set as default"} 
@@ -91,6 +117,7 @@ const AddCreditCardScreen: React.FC = () => {
                         handleChange('isDefault')
                         }}/>        
                             <StyledButton onPress={handleSubmit} text='Save' bigbutton disabled={!isValid || !dirty}/>
+                            </ScrollView>
                           </>
                         )}
                       </Formik>
@@ -115,7 +142,6 @@ const styles = StyleSheet.create({
     },
     cardContainer: {
         marginBottom: "5%",
-        flex: 1,
         width: '90%'
     },
     cardCon: {
