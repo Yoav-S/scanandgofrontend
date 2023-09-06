@@ -45,7 +45,7 @@
     "react-native-otp-inputs": "^7.4.0",
     "react-native-payment-card": "^1.0.61",
     "react-native-reanimated": "^3.4.2",
-    "react-native-safe-area-context": "^4.7.1",
+    "react-native-safe-area-context": "^4.7.2",
     "react-native-screens": "^3.24.0",
     "react-native-slider": "^0.11.0",
     "react-native-textinput-effects": "^0.6.3",

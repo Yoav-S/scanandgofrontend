@@ -15,13 +15,12 @@ import BottomNavbar from '../components/UIComps/BottomNavbar';
 import CartCarusell from '../components/UIComps/CartCaruselle';
 import CouponComp from '../components/UIComps/CouponComp';
 import { ActivityIndicator } from '@react-native-material/core';
-type YourNavigatorParamList = {
-    CheckoutScreen: { totalAmount: number }; // Define the parameter type here
-    // ... other screens
+type NavigatorParamList = {
+    CheckoutScreen: { totalAmount: number, cart: IteminCartType[] }; // Define the parameter type here
 };
   
 const Checkout: React.FC = () => {
-    const route = useRoute<RouteProp<YourNavigatorParamList, 'CheckoutScreen'>>();
+    const route = useRoute<RouteProp<NavigatorParamList, 'CheckoutScreen'>>();
     const totalAmount = route.params.totalAmount;    const {theme} = useTheme();    
     const {currentUser, showToast, verifyCouponAttempt, PaymentAttempt} = useDataContext();
     const [isCouponValid, setisCouponValid] = useState<boolean>(false);
@@ -88,35 +87,35 @@ const Checkout: React.FC = () => {
     }
 
     const handlePayNow = async () => {
-        const chosenCreditCard = creditCards.filter((card: creditCardType) => card.isDefault)
-        const originalCart: IteminCartType[] = currentUser?.cart || [];
-        const newCart: productInTransaction[] = originalCart.map((item : IteminCartType) => {
-          const { category, ...newItem } = item;
-          return newItem;
-        });        
-       const transactionObject: TransactionFormType = {
-           userId: currentUser?._id || '',
-           cardId: chosenCreditCard[0]._id,
-           amountToCharge: totalAmountToPay,
-           products: newCart,
-           couponId: currentCoupon
+    const chosenCreditCard = creditCards.filter((card: creditCardType) => card.isDefault)
+    const originalCart: IteminCartType[] = currentUser?.cart || [];
+    const newCart: productInTransaction[] = originalCart.map((item : IteminCartType) => {
+      const { category, ...newItem } = item;
+      return newItem;
+    });        
+    const transactionObject: TransactionFormType = {
+       userId: currentUser?._id || '',
+       cardId: chosenCreditCard[0]._id,
+       totalAmount: totalAmountToPay,
+       products: newCart,
+       couponId: currentCoupon
 
-       }
-       setisLoadingPayment(true);       
-       const [paymentResult, message] = await PaymentAttempt(transactionObject);
-       setisLoadingPayment(false);       
-       if(paymentResult) {
-        setisAttempted(false);
-        setisCouponValid(false);
-        setCouponInputValue('');
-        showToast('You now about to move to recap', 'success', 'Purchase Completed');
-        setTimeout(() => {
-            navigation.navigate('PurchaseScreen', {totalAmount: totalAmount})
-           }, 2000);
-       }
-       else{
-        showToast(message || 'Something went wrong', 'error', 'Purchase Failed');
-       }
+   }
+   setisLoadingPayment(true);       
+   const paymentResult: boolean = await PaymentAttempt(transactionObject);   
+   setisLoadingPayment(false);       
+   if(paymentResult) {
+    setisAttempted(false);
+    setisCouponValid(false);
+    setCouponInputValue('');
+    showToast('You now about to move to recap', 'success', 'Purchase Completed');
+    setTimeout(() => {
+      navigation.navigate('PurchaseScreen', {totalAmount: totalAmount, cart: originalCart});
+     }, 2000);
+   }
+   else{
+    showToast('Please try again', 'error', 'Purchase Failed');
+   }
     }
 
     

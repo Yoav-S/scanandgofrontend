@@ -19,19 +19,30 @@ discountPercentage: number;
 export interface TransactionFormType{
     userId: string;
     cardId: string;
-    amountToCharge: number;
+    totalAmount: number;
     products: productInTransaction[];
     couponId: string;
+}
+export interface recentTransaction{
+_id: string;
+totalAmount: number;
+formattedDate: string;
+cardType: string;
+}
+export interface ItemHorizontalType{
+cartItem: IteminCartType;
+totalAmount: number;
 }
 export interface DataContextType {
     currentUser: CurrentUserType | null;
     setCurrentUser: (user: CurrentUserType | null) => void;
     getArrayOfDropDownCategories: () => Promise<string[]>;
     authenticated: boolean;
-    PaymentAttempt: (transactionObject: TransactionFormType) => Promise<[boolean, string?]>;
+    PaymentAttempt: (transactionObject: TransactionFormType) => Promise<boolean>;
     verifyCouponAttempt: (coupon: string) => Promise<[boolean, CouponType | null]>;
     setamountofitemsvariable: (amount: number) => void;
     amountofitemsvariable: number;
+    AddItemToCartAttempt: (userId: string, itemInCart: {itemId: string, nfcTagCode: string}) => Promise<boolean>;
     deleteCardAttempt: (cardId: string, userId: string) => Promise<boolean>;
     handleLogOut: () => void;
     deleteItemAttempt: (userId: string, nfcTagCode: string) => Promise<[boolean,IteminCartType[]?]>;
@@ -71,7 +82,18 @@ export interface CreditCardAbstractCompType {
     onPress?: (cardId: string) => void | undefined; // Make onPress an optional function
     isChecked?: boolean; // Add the isChecked prop
 }
- 
+export interface Itemprop{
+_id: string
+name: string;
+category: string;
+price: number;
+imageSource: string;
+fabric: string;
+gender: string;
+season: string;
+colors: string[]
+createdAt: Date 
+} 
 export interface productInTransaction{
 nfcTagCode: string;
 itemId: string;

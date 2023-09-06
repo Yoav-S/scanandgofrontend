@@ -6,8 +6,8 @@ import { CheckBox } from 'react-native-elements';
 
 const CreditCardAbstractComp: React.FC<CreditCardAbstractCompType> = ({creditCard, onPress}) => {
   const { theme } = useTheme();
-  const { cardType } = creditCard;
-
+  const { cardType, cardNumber } = creditCard;
+  
   
   let imageSource;
   if (cardType === 'americanexpress') {

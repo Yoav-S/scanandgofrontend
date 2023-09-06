@@ -361,11 +361,12 @@ const autoLoginNewUser = async (newToken: string) => {
   }
 
 
-  const PaymentAttempt = async (transactionObject: TransactionFormType): Promise<[boolean, string?]> => {
+  const PaymentAttempt = async (transactionObject: TransactionFormType): Promise<boolean> => {
     console.log(transactionObject);
     
     try{
       const response: AxiosResponse = await api.post('transactions/createTransaction', transactionObject, {headers: {Authorization: 'Bearer ' + token}});
+      console.log('status',response.status);
       if(currentUser){
       const newUser = await getUserById(currentUser._id, token);
       if (newUser != null) {
@@ -373,23 +374,22 @@ const autoLoginNewUser = async (newToken: string) => {
         setAuthenticated(true);
       }
      }
-      return [true]
+      return true;
     } catch (error: any){
       if (error.response) {
         // The request was made and the server responded with a status code
         if (error.response.status === 500) {
           
-          return [false, error.response.message];
+          return false;
         } else if (error.response.status === 404) {
-          return [false, error.response.message];
+          return false;
         } else {
-          return [false, error.response.message];
+          return false;
         }
       } else{
-        return [false, error.message];
+        return false;
       }
     }
-    return [false];
   }
 
   const showToast = (message: string, status: string, header: string) => {
@@ -436,6 +436,22 @@ const autoLoginNewUser = async (newToken: string) => {
       }
   }
 }
+
+const AddItemToCartAttempt = async (userId: string, itemInCart: {itemId: string, nfcTagCode: string}): Promise<boolean> => {
+try{
+const response = await api.post('users/addToCart', { userId, itemInCart }, {headers: {Authorization: 'Bearer ' + userId}})
+if(currentUser){
+let newUser: CurrentUserType = currentUser;
+newUser.cart = response.data;
+setCurrentUser(newUser);
+}
+return true;
+} catch (err: any){
+return false;
+}
+}
+
+
   const contextValue: DataContextType = {
     currentUser,
     setCurrentUser,
@@ -465,7 +481,8 @@ const autoLoginNewUser = async (newToken: string) => {
     setamountofitemsvariable,
     amountofitemsvariable,
     verifyCouponAttempt,
-    PaymentAttempt
+    PaymentAttempt,
+    AddItemToCartAttempt
   };
 
   return (

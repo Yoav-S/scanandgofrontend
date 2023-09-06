@@ -19,7 +19,7 @@ const Item: React.FC<ItemCompInterface> = (props) => {
             <Text style={[{color: theme.textColor},styles.wierlesstext]}>{props.itemObj.category}</Text>
             <Text style={[{color: theme.textColor},styles.pricetext]}>{props.itemObj.price}</Text>
             </View>
-            <Icon onPress={() => {props.handleDeleteItem(currentUser ? currentUser?._id : '',props.itemObj.nfcTagCode)}} name="cancel" size={30}/>
+            <Icon onPress={() => {props.handleDeleteItem && props.handleDeleteItem(currentUser ? currentUser?._id : '',props.itemObj.nfcTagCode)}} name="cancel" size={30}/>
         </SafeAreaView>
     )
 }
