@@ -12,7 +12,11 @@ import { useDataContext } from "../context/DataContext";
 const SettingsScreen: React.FC<SettingsScreenType> = (props) => {
   const { theme } = useTheme();
   const navigation = useNavigation<StackNavigationProp<any, 'SettingsScreen'>>();
-  const {handleLogOut} = useDataContext();
+  const {handleLogOut, isLogoutModal, setisLogoutModal} = useDataContext();
+
+  const handleLogOutModal = () => {
+    setisLogoutModal(true);
+  }
   return (
     <SafeAreaView style={[{backgroundColor: theme.backgroundColor},styles.container]}>
         <View style={styles.titleAndSettingsIcon}>
@@ -104,7 +108,7 @@ const SettingsScreen: React.FC<SettingsScreenType> = (props) => {
           size: 25,
           color: "black",
         }}
-        onPress={handleLogOut}  
+        onPress={handleLogOutModal}  
         title="Log out"
         titleStyle={{color: theme.textColor, fontSize: 14, marginLeft: '5%'}}
         buttonStyle={styles.button}

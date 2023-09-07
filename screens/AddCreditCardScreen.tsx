@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {View, Text, StyleSheet, SafeAreaView} from 'react-native'
+import {View, Text, StyleSheet, SafeAreaView, KeyboardAvoidingView} from 'react-native'
 import TitleAndArrowBack from "../components/UIComps/TitleAndArrowBack";
 import BottomNavbar from "../components/UIComps/BottomNavbar";
 import { useTheme } from '../context/ThemeContext';
@@ -14,7 +14,9 @@ import { CheckBox } from "react-native-elements";
 import DropDownPicker from 'react-native-dropdown-picker';
 import FormInput from "../components/UIComps/FormInput";
 import { useDataContext } from "../context/DataContext";
+import { creditCardFormType } from "../interfaces/interfaces";
 import { ScrollView } from "react-native-gesture-handler";
+
 const validationSchema = Yup.object().shape({
 cvv: cvvSchema,
 isDefault: isDefaultSchema,
@@ -28,6 +30,7 @@ const AddCreditCardScreen: React.FC = () => {
     const navigation = useNavigation<StackNavigationProp<any, 'AddCreditCardScreen'>>();
     const [open, setOpen] = useState<boolean>(false);
     const [isDefault, setisDefault] = useState<boolean>(false);
+    const {addCreditCardAttempt, showToast, setisMessageModalVisible} = useDataContext();
     const [allCategoriesValues, setAllCategoriesValues] = useState<{ label: string; value: string }[]>([
         { label: 'dankort', value: 'dankort' },
         { label: 'discover', value: 'discover' },
@@ -38,14 +41,25 @@ const AddCreditCardScreen: React.FC = () => {
     const [currentCategoryValue, setCurrentCategoryValue] = useState<string>('');
     const {theme} = useTheme();
     const handleFormSubmit = async (values: {cardType: string, cardNumber: string, cardholderName: string, expirationDate: string, cvv: string, isDefault: boolean}) => {
-        
+        setisMessageModalVisible(true);
+        const creditCardForm: creditCardFormType = values;
+        const [isAdded, message] = await addCreditCardAttempt(creditCardForm);
+        setisMessageModalVisible(false);
+        if(isAdded){
+            showToast('you can use it now', 'success', 'Credit card added successfully')
+        }
+        else{
+            showToast(message || 'Something went wrong', 'error', 'Credit card added successfully');
+        }
     }
     
     return (
         <SafeAreaView style={[{backgroundColor: theme.backgroundColor},styles.container]}>
                 <TitleAndArrowBack text="Add new credit card" onPress={() => {navigation.goBack()}}/>
                     <View style={styles.formikCon}>
+{
 
+}
                     <Formik
                         initialValues={{cardType: "", cardNumber: "", cardholderName: "", expirationDate: "", cvv: "", isDefault: false}}
                         validationSchema={validationSchema}
@@ -54,15 +68,17 @@ const AddCreditCardScreen: React.FC = () => {
                         
                         {({ handleChange, handleSubmit, values, errors, isValid, dirty, setFieldValue, touched }) => (
                           <>
-                        <ScrollView style={styles.cardContainer}>
+                          <ScrollView>
                         <CreditCard
+                        style={styles.card}
                         type={values.cardType}
                         number={values.cardNumber}
                         name={values.cardholderName}
                         expiry={values.expirationDate}
                         cvc={values.cvv}
-                        
-                        />
+                        /></ScrollView>
+                                                <ScrollView style={[styles.cardContainer,]}>
+
                         <FormInput errorMessage={errors.cardNumber} setInput={handleChange('cardNumber')} label="Card Number" numeric/>
                         <FormInput errorMessage={errors.cardholderName} setInput={handleChange('cardholderName')} label="Card Holder Name"/>
                         <View style={styles.expireincvvCon}>
@@ -70,30 +86,19 @@ const AddCreditCardScreen: React.FC = () => {
                         <FormInput errorMessage={errors.cvv} setInput={handleChange('cvv')} label="Cvv" numeric/>
                         </View>
 
-                    <View style={[ { marginBottom: 16, height: 1000 }]}>
-                        <View>
-
+                    <View style={[ { width: '90%', alignSelf: 'center', height: 90 }]}>
 
                                 <DropDownPicker
                                     listMode="SCROLLVIEW"
-                                    placeholder="Select your restaurant"
+                                    placeholder="Select credit card"
+                                    dropDownContainerStyle={{height: 300}}
                                     style={{
                                         backgroundColor: '#fff',
                                         borderWidth: 1,
                                         paddingHorizontal: 12,
                                         borderRadius: 5,
-                                        marginTop: 8,
-                                        marginBottom: 16,
-                                    }}
-                                    dropDownContainerStyle={{
-                                        borderRadius: 5,
-                                    }}
-                                    placeholderStyle={{
-                                        color: '#696969',
-                                        fontSize: 16,
-                                    }}
-                                    textStyle={{
-                                        fontSize: 16,
+                                        marginTop: '6%',
+                                        zIndex: 10
                                     }}
                                     open={open}
                                     value={currentCategoryValue}
@@ -106,17 +111,17 @@ const AddCreditCardScreen: React.FC = () => {
                                     setValue={setCurrentCategoryValue}
                                     setItems={setAllCategoriesValues}
                                 />
-                        </View>
                     </View>
                         <CheckBox 
-                        style={{marginTop: '5%'}}
                         title={"set as default"} 
                         checked={isDefault}
                         onPress={() => {
                         setisDefault(!isDefault)
                         handleChange('isDefault')
                         }}/>        
+                        <View style={{marginTop: '10%'}}>
                             <StyledButton onPress={handleSubmit} text='Save' bigbutton disabled={!isValid || !dirty}/>
+                            </View>
                             </ScrollView>
                           </>
                         )}
@@ -136,20 +141,24 @@ const styles = StyleSheet.create({
     },
     expireincvvCon: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
-        width: '90%',
+        alignItems: 'center',
         alignSelf: 'center'
     },
     cardContainer: {
         marginBottom: "5%",
-        width: '90%'
+        width: '90%',
+        height: 300,
+        marginTop: '5%'
     },
     cardCon: {
 
     },
     formikCon: {
-        margin: '2%'
+        margin: '2%',
+        alignItems: 'center',
     },
     card: {
+        alignSelf: 'center',
+        height: 200
     }
 })

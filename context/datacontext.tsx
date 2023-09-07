@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
-import { Props, DataContextType } from '../interfaces/interfaces'; // Make sure to import the required interfaces
+import { Props, DataContextType, creditCardFormType, creditCardRegisterionType } from '../interfaces/interfaces'; // Make sure to import the required interfaces
 import { CurrentUserType, Registergion_Form_Props, IHttpResponse, Token } from '../interfaces/interfaces';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import Toast from 'react-native-toast-message';
@@ -19,8 +19,9 @@ export const DataProvider: React.FC<Props> = ({ children }) => {
   const [showError, setShowError] = useState(false);
   const [token, setToken] = useState<string>('');
   const [isVisibleStatus, setisVisibleStatus] = useState(false);
+  const [isMessageModalVisible, setisMessageModalVisible] = useState(false);
   const [amountofitemsvariable, setamountofitemsvariable] = useState<number>(currentUser?.cart.length || 0);
-  
+  const [isLogoutModal, setisLogoutModal] = useState<boolean>(false);
   const api: AxiosInstance = axios.create({
     baseURL: 'https://scan-and-go.onrender.com/', // Set your base URL
   });  
@@ -360,6 +361,24 @@ const autoLoginNewUser = async (newToken: string) => {
     }
   }
 
+const addCreditCardAttempt = async (values: creditCardFormType): Promise<[boolean, string | null]> => {
+
+  try{
+    const creditCardObject: creditCardRegisterionType = {
+      userId: currentUser?._id || '',
+      creditCard: values
+    } 
+    console.log('credit card' , creditCardObject);
+    
+    const response: AxiosResponse = await api.post('paymentMethods/addCreditCard', creditCardObject, {headers: {Authorization: 'Bearer ' + token}});
+    console.log(response.data);
+    return [true, null];
+  } catch (err : any) {
+    return [false, err.message]
+  }
+
+
+}
 
   const PaymentAttempt = async (transactionObject: TransactionFormType): Promise<boolean> => {
     console.log(transactionObject);
@@ -482,7 +501,12 @@ return false;
     amountofitemsvariable,
     verifyCouponAttempt,
     PaymentAttempt,
-    AddItemToCartAttempt
+    AddItemToCartAttempt,
+    addCreditCardAttempt,
+    isMessageModalVisible,
+    setisMessageModalVisible,
+    isLogoutModal,
+    setisLogoutModal
   };
 
   return (

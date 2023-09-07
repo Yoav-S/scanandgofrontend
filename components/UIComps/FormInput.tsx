@@ -15,7 +15,7 @@ const FormInput: React.FC<FormInputType> = (props) => {
     <View style={{marginTop: '4%'}}>
     <TextInput 
       keyboardType={props.numeric ? 'number-pad' : 'default'}
-      style={[styles.textInput, {width: props.label === "Exp Date" || props.label === "Cvv" || props.label === 'Enter Coupon' ? 150 : 330}]}
+      style={[styles.textInput, {width: props.label === "Exp Date" || props.label === "Cvv" || props.label === 'Enter Coupon' ? 165 : 330}]}
       onChangeText={onChangeTextHandler}
       autoCapitalize="none"
       autoCorrect={false}
@@ -26,7 +26,7 @@ const FormInput: React.FC<FormInputType> = (props) => {
       variant='standard'
       inputStyle={{ color: theme.textColor }}
     />
-    {props.errorMessage && <Text style={{color: theme.textColor , width: '85%', alignSelf:'center'}}>{props.errorMessage}</Text>}
+    {props.errorMessage && <Text style={{color: theme.textColor , width: props.label === "Exp Date" || props.label === "Cvv" || props.label === 'Enter Coupon' ? 135 : '85%', alignSelf:'center'}}>{props.errorMessage}</Text>}
     </View>
   );
 };

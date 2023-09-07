@@ -6,8 +6,10 @@ import { AuthenticatedStackScreen } from '../../navigation/AuthenticatedStack';
 import { NotAuthenticatedStackScreen } from '../../navigation/NotAuthenticatedStack';
 import jwt_decode from 'jwt-decode';
 import ScanModal from '../UIComps/ScanModal';
+import MessageModal from '../UIComps/MessageModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Token } from '../../interfaces/interfaces';
+import LogoutModal from '../UIComps/LogoutModal';
 const Main: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true); // Add isLoading state
 
@@ -49,6 +51,8 @@ const Main: React.FC = () => {
                     <View style={{flex: 1}}>
                     <AuthenticatedStackScreen />
                     <ScanModal/>
+                    <MessageModal/>
+                    <LogoutModal/>
                     </View>
         ) : (
           <NotAuthenticatedStackScreen />

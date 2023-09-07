@@ -12,6 +12,7 @@ import HelpAndSupportScreen from '../screens/HelpAndSupportScreen';
 import Cart from '../screens/Cart';
 import AddCreditCardScreen from '../screens/AddCreditCardScreen';
 import Checkout from '../screens/Checkout';
+import TransactionScreen from '../screens/TransactionScreen';
 import PurchaseDetailsScreen from '../screens/PurchaseDetailsScreen';
 import { AuthenticatedStackType } from '../interfaces/interfaces';
 const AuthenticatedStack = createStackNavigator();
@@ -108,6 +109,13 @@ export const AuthenticatedStackScreen: React.FC<AuthenticatedStackType> = () => 
         }} 
         name="PurchaseScreen"   
         component={PurchaseDetailsScreen} 
+        />
+                <AuthenticatedStack.Screen
+        options={{
+          headerShown: false 
+        }} 
+        name="TransactionScreen"   
+        component={TransactionScreen} 
         />
       </AuthenticatedStack.Navigator>
     );

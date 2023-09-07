@@ -5,7 +5,6 @@ import TitleAndArrowBack from '../components/UIComps/TitleAndArrowBack';
 import { useDataContext } from '../context/DataContext';
 import StyledButton from '../components/UIComps/StyledButton';
 import { ScrollView } from 'react-native-gesture-handler';
-import CreditCard from 'react-native-credit-card';
 import { creditCardType, IteminCartType, TransactionFormType, productInTransaction } from '../interfaces/interfaces';
 import { useNavigation, useRoute, RouteProp  } from "@react-navigation/native";
 import Toast from 'react-native-toast-message';

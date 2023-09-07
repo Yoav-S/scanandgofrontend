@@ -33,11 +33,21 @@ export interface ItemHorizontalType{
 cartItem: IteminCartType;
 totalAmount: number;
 }
+export interface recentItemType{
+imageSource: string;
+itemId: string;
+name: string;
+}
 export interface DataContextType {
     currentUser: CurrentUserType | null;
+    isMessageModalVisible: boolean;
+    setisMessageModalVisible: (value: boolean) => void;
+    isLogoutModal: boolean;
+    setisLogoutModal: (value: boolean) => void;
     setCurrentUser: (user: CurrentUserType | null) => void;
     getArrayOfDropDownCategories: () => Promise<string[]>;
     authenticated: boolean;
+    addCreditCardAttempt: (values: creditCardFormType) => Promise<[boolean, string | null]>
     PaymentAttempt: (transactionObject: TransactionFormType) => Promise<boolean>;
     verifyCouponAttempt: (coupon: string) => Promise<[boolean, CouponType | null]>;
     setamountofitemsvariable: (amount: number) => void;
@@ -67,6 +77,13 @@ export interface DataContextType {
 }
 export interface BottomNavbarInterface {
 }
+export interface ImageCarouselProps{
+    data: recentItemType[];
+
+}
+export interface TransactionCompType{
+transaction: recentTransaction;
+}
 export interface CurrentUserType{
     _id:string;
     fullName:string;
@@ -75,6 +92,8 @@ export interface CurrentUserType{
     gender: string;
     creditCards: creditCardType[];
     cart: IteminCartType[];
+    recentItems: recentItemType[];
+    recentTransactions: recentTransaction[];
 }
 // interfaces/interfaces.tsx
 export interface CreditCardAbstractCompType {
@@ -113,9 +132,17 @@ export interface ItemCompInterface{
 itemObj: IteminCartType;
 handleDeleteItem?: (userId: string, nfcTagCode: string) => void;
 }
-export interface CreditCardFormType{
+export interface creditCardRegisterionType{
     userId: string;
-    creditCard: creditCardType;
+    creditCard: creditCardFormType;
+}
+export interface creditCardFormType{
+cardNumber: string;
+expirationDate: string;
+cardholderName: string;
+cvv: string;
+cardType: string;
+isDefault: boolean; 
 }
 export interface creditCardType{
     _id: string;
@@ -209,7 +236,7 @@ export interface AllCheckBoxCategoriesProps {
     value: string;
     errorMessage?: string | undefined;
   }
-  
+
   
 export interface Registergion_Form_Props{
 fullName: string;
