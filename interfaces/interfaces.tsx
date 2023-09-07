@@ -19,7 +19,7 @@ discountPercentage: number;
 export interface TransactionFormType{
     userId: string;
     cardId: string;
-    totalAmount: number;
+    amountToCharge: number;
     products: productInTransaction[];
     couponId: string;
 }

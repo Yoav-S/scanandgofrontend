@@ -396,9 +396,8 @@ const addCreditCardAttempt = async (values: creditCardFormType): Promise<[boolea
       return true;
     } catch (error: any){
       if (error.response) {
-        // The request was made and the server responded with a status code
-        if (error.response.status === 500) {
-          
+        console.log(error.response.data.message);
+        if (error.response.status === 500) {  
           return false;
         } else if (error.response.status === 404) {
           return false;

@@ -95,7 +95,7 @@ const Checkout: React.FC = () => {
     const transactionObject: TransactionFormType = {
        userId: currentUser?._id || '',
        cardId: chosenCreditCard[0]._id,
-       totalAmount: totalAmountToPay,
+       amountToCharge: totalAmountToPay,
        products: newCart,
        couponId: currentCoupon
 
