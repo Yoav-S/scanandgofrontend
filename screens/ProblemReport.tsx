@@ -99,6 +99,8 @@ const ProblemReport: React.FC<ProblemReportType> = () => {
           console.log('Image picker error: ', error);
         }
       };
+
+      
       const handleFormSubmit = async (value: {description: string}) => {
         setIsLoading(true);
         console.log(currentAsset);

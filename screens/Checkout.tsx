@@ -50,6 +50,7 @@ const Checkout: React.FC = () => {
         setisCouponValid(false);
         setCouponInputValue(coupon);
     }  
+    
     const handleCouponCheck = async () => {
         setisLoading(true);
         const [isValid, couponObject] = await verifyCouponAttempt(currentCouponInputValue);
@@ -98,7 +99,6 @@ const Checkout: React.FC = () => {
        amountToCharge: totalAmountToPay,
        products: newCart,
        couponId: currentCoupon
-
    }
    setisLoadingPayment(true);       
    const paymentResult: boolean = await PaymentAttempt(transactionObject);   

@@ -235,7 +235,7 @@ export interface AllCheckBoxCategoriesProps {
     validator?: boolean | undefined;
     value: string;
     errorMessage?: string | undefined;
-  }
+}
 
   
 export interface Registergion_Form_Props{
