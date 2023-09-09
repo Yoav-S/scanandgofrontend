@@ -89,6 +89,7 @@ const LoginScreen: React.FC = () => {
   <CheckBox
      style={[styles.checkBoxStyles]}
      center
+     checkedColor='green'
      checked={checkBoxValue} // Set the checked prop
      onPress={() => setCheckBoxValue(!checkBoxValue)}
      />
@@ -120,6 +121,7 @@ const LoginScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    padding: 20
   },
   icon: {
     margin: '2%'

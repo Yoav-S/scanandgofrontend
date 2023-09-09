@@ -86,11 +86,12 @@ const loginAttempt = async (email: string, password: string, rememberMeValue: bo
         const response = await api.post(`auth/login`, {email: email, password: password});        
         if (response.status !== 201) { return false; }      
         const token = response.data.token;
+        console.log(token);
+        
         setToken(token)
         updateRememberMe(rememberMeValue, token)
         const decoded: Token = jwt_decode(token);
         const connectedUser: CurrentUserType | null = await getUserById(decoded.id, token)
-        console.log(connectedUser);   
         if (!connectedUser) {
           console.error('Problem with Token')
           return false;
@@ -297,6 +298,9 @@ try{
 }
 }
   const getUserById = async (id: string, token: string): Promise<CurrentUserType | null> => {
+    console.log(id);
+    console.log(token);
+    
     const requestBody = {
       query: {
         _id: id,
@@ -306,14 +310,11 @@ try{
       },
     };
     try {
-      const response: AxiosResponse = await api.post("users/getOne", requestBody, { headers: { Authorization: 'Bearer ' + token, } });
-      console.log(response.data);
-      
+      const response = await api.post("users/getOne", requestBody, { headers: { Authorization: 'Bearer ' + token, } });      
       if (response.data.tokenError) { handleTokenError() }
       if (response.data === undefined) { return null; }
       return response.data;
     } catch (error: any) {
-      console.log(error.response.data.error);
       return null;
     }
 };

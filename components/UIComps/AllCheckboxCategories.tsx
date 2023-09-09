@@ -5,7 +5,7 @@ import { ThemeContext } from '../../context/ThemeContext';
 import { AllCheckBoxCategoriesProps } from '../../interfaces/interfaces';
 
 const AllCheckBoxCategories: React.FC<AllCheckBoxCategoriesProps> = (props) => {
-  const { theme } = useContext(ThemeContext);
+  const { theme , buttonTheme} = useContext(ThemeContext);
   const { primary, secondary, text, background } = theme.colors   
   const [categorySelections, setCategorySelections] = useState<{ [key: string]: boolean }>({});
 
@@ -30,12 +30,15 @@ const AllCheckBoxCategories: React.FC<AllCheckBoxCategoriesProps> = (props) => {
   return (
     <View style={[styles.container, {backgroundColor: background}]}>
       <View style={styles.titleCon}>
-        <Text style={{ color: text.primary }}>{props.title}</Text>
+        <Text style={{ color: text.primary, fontWeight: 'bold', fontSize: 18 }}>{props.title}</Text>
       </View>
       <View style={styles.categoriesMapView}>
         {props.categories.map((category, index) => (
           <CheckBox
             key={index}
+            containerStyle={{backgroundColor: background, borderRadius: 24, borderColor: buttonTheme.buttonAlt.background}}
+            textStyle={{color: text.primary}}
+            checkedColor='green'
             title={category}
             center
             checked={isCategorySelected(category)}
@@ -43,21 +46,21 @@ const AllCheckBoxCategories: React.FC<AllCheckBoxCategoriesProps> = (props) => {
           />
         ))}
       </View>
-      {props.errorMessage && <Text style={{color: text.primary, width: '90%', alignSelf:'center'}}>{props.errorMessage}</Text>}
+      {props.errorMessage && <Text style={{color: 'red', fontWeight: 'bold' , width: '90%', alignSelf:'center'}}>{props.errorMessage}</Text>}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: '5%'
+    marginTop: '5%',
+    width: '88%',
+    alignSelf: 'center'
   },
   titleCon: {},
   categoriesMapView: {
     flexDirection: 'row',
-    width: '95%',
-    alignSelf: 'center',
-    flexWrap: 'wrap'
+    marginTop: '3%'
   },
 });
 

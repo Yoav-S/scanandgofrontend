@@ -12,7 +12,7 @@ const FormInput: React.FC<FormInputType> = (props) => {
   };
   
   return (
-    <View style={{marginTop: '4%'}}>
+    <View style={{marginTop: '1%'}}>
     <TextInput 
       keyboardType={props.numeric ? 'number-pad' : 'default'}
       style={[styles.textInput, {width: props.label === "Exp Date" || props.label === "Cvv" || props.label === 'Enter Coupon' ? 165 : 330}]}
@@ -26,7 +26,7 @@ const FormInput: React.FC<FormInputType> = (props) => {
       variant='standard'
       inputStyle={{ color: text.primary }}
     />
-    {props.errorMessage && <Text style={{color: text.primary , width: props.label === "Exp Date" || props.label === "Cvv" || props.label === 'Enter Coupon' ? 135 : '85%', alignSelf:'center'}}>{props.errorMessage}</Text>}
+    {props.errorMessage && <Text style={{color: 'red', fontWeight: 'bold' , width: props.label === "Exp Date" || props.label === "Cvv" || props.label === 'Enter Coupon' ? 135 : '85%', alignSelf:'center'}}>{props.errorMessage}</Text>}
     </View>
   );
 };

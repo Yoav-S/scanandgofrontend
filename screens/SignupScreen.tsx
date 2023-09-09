@@ -158,6 +158,7 @@ const SignupScreen: React.FC = () => {
             <CheckBox
                 style={{ alignSelf: 'center' }}
                 center
+                checkedColor='green'
                 checked={values.termsAndConditions && readTerms}
                 onPress={() => {
                   if (readTerms) {
@@ -167,7 +168,7 @@ const SignupScreen: React.FC = () => {
                 disabled={!readTerms}
               />
               <TouchableOpacity onPress={() => setModalOpen(true)}>
-                <Text style={{ color: 'blue', textDecorationLine: 'underline' }}>View Terms and Conditions</Text>
+                <Text style={{ color: text.secondary, textDecorationLine: 'underline' }}>View Terms and Conditions</Text>
               </TouchableOpacity>
             </View>
             <Modal
@@ -193,6 +194,7 @@ const SignupScreen: React.FC = () => {
                           </Text>
               </ScrollView>
               <StyledButton
+              bigbutton
                 text="I have read and agree"
                 onPress={() => {
                 setModalOpen(false);
@@ -202,14 +204,15 @@ const SignupScreen: React.FC = () => {
               />
 
             </Modal>
-            <StyledButton              
+            <StyledButton
+            bigbutton              
             disabled={!isValid || !dirty || (!values.termsAndConditions && !readTerms)}
             onPress={handleSubmit}
             text={'Sign up'}/>
           </>
         )}
       </Formik>
-      <StyledButton disabled={false} onPress={() => {navigation.navigate('Login')}} text={'Back to login'} />
+      <StyledButton bigbutton disabled={false} onPress={() => {navigation.navigate('Login')}} text={'Back to login'} />
       </View>
      )}
   <Toast/>
@@ -229,6 +232,7 @@ const styles = StyleSheet.create({
   modal: {
     height: screen.height,
     width: screen.width,
+    padding: '5%'
   },
   modalContent: {
     margin: '2%'
