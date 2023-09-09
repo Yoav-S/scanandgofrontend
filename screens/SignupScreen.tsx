@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { View, StyleSheet, Text, Dimensions, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
-import { useTheme } from '../context/ThemeContext';
 import { useToken } from '../context/TokenContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BigTitle from '../components/UIComps/BigTitle';
@@ -27,6 +26,7 @@ import Slider from 'react-native-slider';
 import { ActivityIndicator } from '@react-native-material/core';
 import Toast from 'react-native-toast-message';
 import { requestUserPermission } from '../utils/requests';
+import { ThemeContext } from '../context/ThemeContext';
 const validationSchema = Yup.object().shape({
   email: emailSchema,
   password: passwordSchema,
@@ -41,7 +41,8 @@ const screen = Dimensions.get('window');
 const SignupScreen: React.FC = () => {
   const navigation = useNavigation<StackNavigationProp<any, 'Signup'>>();
   const { setToken } = useToken();
-  const { theme } = useTheme();
+  const { theme } = useContext(ThemeContext);
+  const { primary, secondary, text, background } = theme.colors 
   const [isBirthDateValidated, setIsBirthDateValidated] = useState<boolean>(false);
   const { signupAttempt, showToast , autoLoginNewUser} = useDataContext();
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
@@ -76,7 +77,7 @@ const SignupScreen: React.FC = () => {
 
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.backgroundColor }]}>
+    <View style={[styles.container, { backgroundColor: background }]}>
 
 { isLoading ? (<ActivityIndicator size={60}/>) : (  <View><BigTitle title={'Signup'} />
       <Formik
@@ -170,12 +171,12 @@ const SignupScreen: React.FC = () => {
               </TouchableOpacity>
             </View>
             <Modal
-             style={[styles.modal, {backgroundColor: theme.backgroundColor}]}
+             style={[styles.modal, {backgroundColor: background}]}
              isOpen={isModalOpen}
              onClosed={() => setModalOpen(false)}
             >
               <ScrollView style={styles.modalContent}>
-                <Text style={{color: theme.textColor, lineHeight: 25}}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,
+                <Text style={{color: text.primary, lineHeight: 25}}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,
                           molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum
                           numquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium
                           optio, eaque rerum! Provident similique accusantium nemo autem. Veritatis

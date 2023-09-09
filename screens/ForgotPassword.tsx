@@ -1,8 +1,7 @@
-import react, {useState, useEffect} from 'react'
+import react, {useState, useEffect, useContext} from 'react'
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native'
 import { ForgotPasswordProps, UserEmailVerificationDetails } from '../interfaces/interfaces'
 import BigTitle from '../components/UIComps/BigTitle'
-import { useTheme } from '../context/ThemeContext'
 import FormInput from '../components/UIComps/FormInput'
 import { Formik } from 'formik'
 import * as Yup from 'yup';
@@ -16,6 +15,7 @@ import OTPInputView from '@twotalltotems/react-native-otp-input'
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { ThemeContext } from '../context/ThemeContext'
 import TitleAndBtnCon from '../components/UIComps/TitleAndBtnCon'
 import Toast from 'react-native-toast-message'
 const validationSchema = Yup.object().shape({
@@ -29,7 +29,8 @@ confirmPassword: Yup.string().required('Field is required').oneOf([Yup.ref('pass
 const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
   const navigation = useNavigation<StackNavigationProp<any, 'ForgotPassword'>>();
 
-    const { theme } = useTheme();
+    const { theme } = useContext(ThemeContext);
+    const { primary, secondary, text, background } = theme.colors     
     const [emailSended, setEmailSended] = useState<boolean>(false);
     const [isOneMinuteBind, setisOneMinuteBind] = useState<boolean>(false);
     const [oneMinuteBindEndTime, setOneMinuteBindEndTime] = useState<number>(0);
@@ -154,13 +155,13 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.backgroundColor }]}>
+    <View style={[styles.container, { backgroundColor: background }]}>
         
         {emailSended ? (
           isOtpVerified ? (
             <View>
             <BigTitle key={1} title='Enter a new Password'/>
-             <Text style={{color: theme.textColor}}>Enter the new password for your account</Text>
+             <Text style={{color: text.primary}}>Enter the new password for your account</Text>
             <View>
             <Formik
                       initialValues={{ password: '', confirmPassword: '' }}
@@ -202,11 +203,11 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
       <View>
           {!isOneMinuteBind && emailSended && (
               <TouchableOpacity onPress={resendEmail}>
-                  <Text style={{ color: theme.textColor }}>Didn’t receive an OTP? Resend OTP!</Text>
+                  <Text style={{ color: text.primary }}>Didn’t receive an OTP? Resend OTP!</Text>
               </TouchableOpacity>
           )}
           {isOneMinuteBind && (
-              <Text style={{ color: theme.textColor }}>
+              <Text style={{ color: text.primary }}>
                     Resend OTP in {formatTime(remainingTime)}
               </Text>
           )}

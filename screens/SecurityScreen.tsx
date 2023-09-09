@@ -1,6 +1,5 @@
-import react, {useState} from 'react';
+import react, {useState, useContext} from 'react';
 import {Text, View, StyleSheet, SafeAreaView } from 'react-native'
-import { useTheme } from '../context/ThemeContext';
 import BottomNavbar from '../components/UIComps/BottomNavbar';
 import TitleAndArrowBack from '../components/UIComps/TitleAndArrowBack';
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -11,6 +10,7 @@ import { passwordSchema } from '../messages/Statements';
 import StyledButton from '../components/UIComps/StyledButton';
 import FormInput from '../components/UIComps/FormInput';
 import Toast from "react-native-toast-message";
+import { ThemeContext } from '../context/ThemeContext';
 import { useDataContext } from '../context/DataContext';
 import { ActivityIndicator } from '@react-native-material/core';
 const validationSchema = Yup.object().shape({
@@ -20,8 +20,9 @@ confirmPassword: Yup.string().required('Field is required').oneOf([Yup.ref('newp
 
 });
 const SecurityScreen: React.FC = () => {
-    const {theme} = useTheme();
-    const { updatePasswordAttempts, showToast} = useDataContext();
+  const { theme } = useContext(ThemeContext);
+  const { primary, secondary, text, background } = theme.colors     
+  const { updatePasswordAttempts, showToast} = useDataContext();
     const navigation = useNavigation<StackNavigationProp<any, 'SecurityScreen'>>();
     const [isLoading, setisLoading] = useState<boolean>(false);
     const handleFormSubmit = async (values: {password: string, newpassword: string}) => {
@@ -36,7 +37,7 @@ const SecurityScreen: React.FC = () => {
         }
     }
     return (
-        <SafeAreaView style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
+        <SafeAreaView style={[styles.container, {backgroundColor: background}]}>
             <TitleAndArrowBack text='Security' onPress={() => {navigation.goBack()}}/>
             <View style={styles.FormikCon}>
                 {

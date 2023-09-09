@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect,useContext} from 'react';
 import { SafeAreaView, View,Text ,StyleSheet } from 'react-native';
 import { BottomNavbarInterface } from '../../interfaces/interfaces';
 import { Icon } from 'react-native-elements';
@@ -7,10 +7,11 @@ import { useRoute } from '@react-navigation/native';
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useDataContext } from '../../context/DataContext';
-import { useTheme } from '../../context/ThemeContext';
+import { ThemeContext } from '../../context/ThemeContext';
 const BottomNavbar: React.FC<BottomNavbarInterface> = (props) => {
   const route = useRoute();
-  const {theme} = useTheme();
+  const { theme } = useContext(ThemeContext);
+  const { primary, secondary, text, background } = theme.colors 
   const [routeName, setRouteName] = useState<string>(route.name);
   const navigation = useNavigation<StackNavigationProp<any>>();
   const {isVisibleStatus,setisVisibleStatus, currentUser, amountofitemsvariable, setamountofitemsvariable} = useDataContext();  

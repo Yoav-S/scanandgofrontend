@@ -1,20 +1,21 @@
-import react from 'react';
+import react, {useContext} from 'react';
 import {Text, View, StyleSheet, SafeAreaView , ScrollView} from 'react-native'
-import { useTheme } from '../context/ThemeContext';
+import { ThemeContext } from '../context/ThemeContext';
 import TitleAndArrowBack from '../components/UIComps/TitleAndArrowBack';
 import BottomNavbar from '../components/UIComps/BottomNavbar';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation, useRoute } from "@react-navigation/native";
 
 const TermsAndServicesScreen: React.FC = () => {
-    const {theme} = useTheme();
+    const { theme } = useContext(ThemeContext);
+    const { primary, secondary, text, background } = theme.colors     
     const navigation = useNavigation<StackNavigationProp<any, 'SecurityScreen'>>();
 
     return (
-        <SafeAreaView style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
+        <SafeAreaView style={[styles.container, {backgroundColor: background}]}>
             <TitleAndArrowBack text='Our Terms Of Service' onPress={() => {navigation.goBack()}}/>
             <ScrollView style={styles.ScrollViewCon}>
-                <Text style={[{color: theme.textColor},styles.textstyle]}>
+                <Text style={[{color: text.primary},styles.textstyle]}>
                 Lorem ipsum dolor sit amet, consectetur adipiscing
                  elit. Proin vestibulum tortor sit amet imperdiet 
                 commodo. Donec suscipit mauris a urna facilisis

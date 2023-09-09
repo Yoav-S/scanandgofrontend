@@ -1,14 +1,15 @@
-import React, {useState} from "react";
+import React, {useState, useContext} from "react";
 import { View, SafeAreaView, StyleSheet, Text } from "react-native";
 import { BigTitleType } from '../../interfaces/interfaces';
-import { useTheme } from '../../context/ThemeContext';
+import { ThemeContext } from "../../context/ThemeContext";
 
 const BigTitle: React.FC<BigTitleType> = (props) => {
-    const { theme } = useTheme();
+    const { theme } = useContext(ThemeContext);
+    const { primary, secondary, text, background } = theme.colors 
     const [title, setTitle] = useState<string>(props.title);
     return (
-        <View style={[styles.container, { backgroundColor: theme.backgroundColor }]}>
-            <Text style={[styles.colorBlack, { color: theme.textColor }]}>{title}</Text>
+        <View style={[styles.container, { backgroundColor: background }]}>
+            <Text style={[styles.colorBlack, { color: text.primary }]}>{title}</Text>
         </View>
     )
 }

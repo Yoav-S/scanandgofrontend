@@ -1,6 +1,6 @@
-import React, {useState} from "react";
+import React, {useState, useContext} from "react";
 import { View, StyleSheet, Image, Text } from "react-native";
-import { useTheme } from "../context/ThemeContext";
+import { ThemeContext } from "../context/ThemeContext";
 import { useToken } from '../context/TokenContext'; // Import the TokenContext hook
 import { CheckBox } from 'react-native-elements'
 import axios from "axios";
@@ -30,7 +30,8 @@ const LoginScreen: React.FC = () => {
   const navigation = useNavigation<StackNavigationProp<any, 'Login'>>();
 
   const [checkBoxValue, setCheckBoxValue] = useState<boolean>(false);
-  const { theme } = useTheme();
+  const { theme } = useContext(ThemeContext);
+  const { primary, secondary, text, background } = theme.colors   
   const [buttonStatus, setButtonStatus] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState(false)
   const {loginAttempt, setAuthenticated, showToast} = useDataContext();
@@ -55,7 +56,7 @@ const LoginScreen: React.FC = () => {
   }
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.backgroundColor }]}>
+    <View style={[styles.container, { backgroundColor: background }]}>
       <View style={styles.imageCon}>
         <Image style={styles.image} source={require("../images/3135715.png")} />
       </View>
@@ -91,10 +92,10 @@ const LoginScreen: React.FC = () => {
      checked={checkBoxValue} // Set the checked prop
      onPress={() => setCheckBoxValue(!checkBoxValue)}
      />
-  <Text style={{color: theme.textColor}}>Keep me logged in ?</Text>
+  <Text style={{color: text.primary}}>Keep me logged in ?</Text>
   </View>
   <TouchableOpacity onPress={() => {navigation.navigate('ForgotPassword')}}>
-    <Text style={[{color: theme.secondaryColor},styles.forgotPasswordText]}>Forgot Password ?</Text>
+    <Text style={[{color: text.primary},styles.forgotPasswordText]}>Forgot Password ?</Text>
   </TouchableOpacity>
   </View>
   <StyledButton disabled={isLoading} onPress={handleSubmit} text={"Login"} bigbutton/>

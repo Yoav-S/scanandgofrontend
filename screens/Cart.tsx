@@ -1,9 +1,8 @@
-import react, {useState, useEffect} from 'react';
+import react, {useState, useEffect, useContext} from 'react';
 import {Text, View, StyleSheet, SafeAreaView} from 'react-native';
 import { useDataContext } from '../context/DataContext';
 import animationData from '../assets/emptycartlottie.json'
 import LottieView from 'lottie-react-native';
-import { useTheme } from '../context/ThemeContext';
 import { Icon } from 'react-native-elements';
 import { ScrollView } from 'react-native-gesture-handler';
 import { IteminCartType } from '../interfaces/interfaces';
@@ -13,10 +12,13 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import Item from '../components/UIComps/Item';
 import StyledButton from '../components/UIComps/StyledButton';
 import BottomNavbar from '../components/UIComps/BottomNavbar';
+import { ThemeContext } from "../context/ThemeContext";
+
 import { CurrentUserType } from '../interfaces/interfaces';
 const Cart: React.FC = () => {
     const {setCurrentUser,currentUser, deleteItemAttempt, showToast, amountofitemsvariable, setamountofitemsvariable} = useDataContext();
-    const {theme} = useTheme();
+    const { theme } = useContext(ThemeContext);
+    const { primary, secondary, text, background } = theme.colors 
     const navigation = useNavigation<StackNavigationProp<any>>();
     
     const [totalamountvariable, settotalamountvariable] = useState<number>(0);
@@ -61,10 +63,10 @@ const Cart: React.FC = () => {
     
 
     return (
-        <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
+        <View style={[styles.container, {backgroundColor: background}]}>
             <View style={styles.titleandIcon}>
             <Text/>
-            <Text style={{color: theme.textColor, fontWeight: '600', fontSize: 18}}>Cart</Text>
+            <Text style={{color: text.primary, fontWeight: '600', fontSize: 18}}>Cart</Text>
             <Icon name="shopping-cart" size={30}/>
             </View>
             {
@@ -77,7 +79,7 @@ const Cart: React.FC = () => {
                 autoPlay
                 loop={true}
                 />
-                <Text style={[{color: theme.textColor, fontSize: 28, fontWeight: '600', marginTop: '15%'}]}>Your Cart is empty</Text>
+                <Text style={[{color: text.primary, fontSize: 28, fontWeight: '600', marginTop: '15%'}]}>Your Cart is empty</Text>
                 </SafeAreaView>) : 
                 
                 (<View style={styles.nonEmptyCartCon}>
@@ -96,8 +98,8 @@ const Cart: React.FC = () => {
                     </ScrollView>
                     <View style={styles.totalandcheckoutcon}>
                         <View style={styles.totalandpricecon}>
-                            <Text style={{color: theme.textColor}}>Total</Text>
-                            <Text style={{color: theme.textColor, fontWeight: 'bold'}}>{totalamountvariable}</Text>
+                            <Text style={{color: text.primary}}>Total</Text>
+                            <Text style={{color: text.primary, fontWeight: 'bold'}}>{totalamountvariable}</Text>
                         </View>
                         <StyledButton bigbutton text='Checkout' onPress={() => {navigation.navigate('CheckoutScreen', {totalAmount: totalamountvariable})}}/>
                     </View>

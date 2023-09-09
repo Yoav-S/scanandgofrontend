@@ -1,6 +1,5 @@
-import react, {useState} from 'react';
+import react, {useState, useContext} from 'react';
 import {Text, View, StyleSheet, SafeAreaView } from 'react-native'
-import { useTheme } from '../context/ThemeContext';
 import BottomNavbar from '../components/UIComps/BottomNavbar';
 import TitleAndArrowBack from '../components/UIComps/TitleAndArrowBack';
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -13,6 +12,7 @@ import AllCheckBoxCategories from '../components/UIComps/AllCheckboxCategories';
 import FormInput from '../components/UIComps/FormInput';
 import { emailSchema, fullnameSchema, genderSchema, birthDateSchema } from '../messages/Statements';
 import StyledButton from '../components/UIComps/StyledButton';
+import { ThemeContext } from '../context/ThemeContext';
 import Toast from "react-native-toast-message";
 import { useDataContext } from '../context/DataContext';
 import { ActivityIndicator } from '@react-native-material/core';
@@ -25,7 +25,8 @@ const validationSchema = Yup.object().shape({
 
 
 const EditProfile: React.FC = () => {
-    const {theme} = useTheme();
+    const { theme } = useContext(ThemeContext);
+    const { primary, secondary, text, background } = theme.colors 
     const navigation = useNavigation<StackNavigationProp<any, 'EditProfile'>>();
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
     const [openDateModal, setopenDateModal] = useState<boolean>(false);
@@ -52,7 +53,7 @@ const EditProfile: React.FC = () => {
     }
 
     return (
-        <SafeAreaView style={[styles.container,{backgroundColor: theme.backgroundColor}]}>
+        <SafeAreaView style={[styles.container,{backgroundColor: background}]}>
             <TitleAndArrowBack text='Edit Profile' onPress={() => {navigation.goBack()}}/>
             {
               isLoading ? (<ActivityIndicator size={60}/>) : (            <View style={styles.FormikCon}>

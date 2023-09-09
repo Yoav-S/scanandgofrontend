@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, StyleSheet, ScrollView, SafeAreaView, Image } from 'react-native';
 import { CreditCardAbstractCompType } from '../../interfaces/interfaces';
-import { useTheme } from '../../context/ThemeContext';
+import { ThemeContext } from '../../context/ThemeContext';
 import { CheckBox } from 'react-native-elements';
 
 const CreditCardAbstractComp: React.FC<CreditCardAbstractCompType> = ({creditCard, onPress}) => {
-  const { theme } = useTheme();
+  const { theme } = useContext(ThemeContext);
+  const { primary, secondary, text, background } = theme.colors   
   const { cardType, cardNumber } = creditCard;
   
   
@@ -24,13 +25,13 @@ const CreditCardAbstractComp: React.FC<CreditCardAbstractCompType> = ({creditCar
 
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: theme.backgroundColor }]}>
+    <SafeAreaView style={[styles.container, { backgroundColor: background }]}>
       <Image source={imageSource} style={styles.image}/>
       <View style={styles.contentCon}>
         <View style={styles.typeNumberCon}>
             <View style={{marginRight: '25%'}}>
-            <Text style={{color: theme.textColor, fontWeight: '600'}}>{creditCard.cardType}</Text>
-            <Text style={{color: theme.textColor, fontWeight: '300'}}>{creditCard.cardNumber}</Text>
+            <Text style={{color: text.primary, fontWeight: '600'}}>{creditCard.cardType}</Text>
+            <Text style={{color: text.primary, fontWeight: '300'}}>{creditCard.cardNumber}</Text>
             </View>
             <CheckBox onPress={() => onPress && onPress(creditCard._id)} checked={creditCard.isDefault} />
         </View>

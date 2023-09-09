@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { CheckBox } from 'react-native-elements';
-import { useTheme } from '../../context/ThemeContext';
+import { ThemeContext } from '../../context/ThemeContext';
 import { AllCheckBoxCategoriesProps } from '../../interfaces/interfaces';
 
 const AllCheckBoxCategories: React.FC<AllCheckBoxCategoriesProps> = (props) => {
-  const { theme } = useTheme();
+  const { theme } = useContext(ThemeContext);
+  const { primary, secondary, text, background } = theme.colors   
   const [categorySelections, setCategorySelections] = useState<{ [key: string]: boolean }>({});
 
   const isCategorySelected = (category: string) => {
@@ -27,9 +28,9 @@ const AllCheckBoxCategories: React.FC<AllCheckBoxCategoriesProps> = (props) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, {backgroundColor: background}]}>
       <View style={styles.titleCon}>
-        <Text style={{ color: theme.textColor }}>{props.title}</Text>
+        <Text style={{ color: text.primary }}>{props.title}</Text>
       </View>
       <View style={styles.categoriesMapView}>
         {props.categories.map((category, index) => (
@@ -42,7 +43,7 @@ const AllCheckBoxCategories: React.FC<AllCheckBoxCategoriesProps> = (props) => {
           />
         ))}
       </View>
-      {props.errorMessage && <Text style={{color: theme.textColor, width: '90%', alignSelf:'center'}}>{props.errorMessage}</Text>}
+      {props.errorMessage && <Text style={{color: text.primary, width: '90%', alignSelf:'center'}}>{props.errorMessage}</Text>}
     </View>
   );
 };

@@ -1,14 +1,15 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useContext} from "react";
 import {View, Text, StyleSheet} from 'react-native'
 import { useDataContext } from "../../context/DataContext";
 import { Modal, ModalContent, ModalFooter, ModalButton } from 'react-native-modals'
 import LottieView from "lottie-react-native";
 import logoutLottieAnimation from '../../assets/logoutlottie.json'
-import { useTheme } from "../../context/ThemeContext";
+import { ThemeContext } from "../../context/ThemeContext";
 
 const LogoutModal: React.FC = () => {
-    const {theme} = useTheme();
-    const {isLogoutModal, handleLogOut, setisLogoutModal} = useDataContext();
+  const { theme } = useContext(ThemeContext);
+  const { primary, secondary, text, background } = theme.colors     
+  const {isLogoutModal, handleLogOut, setisLogoutModal} = useDataContext();
     const lottieViewYoav = (<LottieView
         style={{width: 200, height: 200}}
         speed={1} 
@@ -26,7 +27,7 @@ const LogoutModal: React.FC = () => {
                 <ModalFooter style={styles.ModalFooter}>
                   <ModalButton
                   style={{height: 100}}
-                    textStyle={[{color: theme.textColor},styles.ModalButtonText]}
+                    textStyle={[{color: text.primary},styles.ModalButtonText]}
                     text="Are you sure ?"
                     onPress={() => 
                         {

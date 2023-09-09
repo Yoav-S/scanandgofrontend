@@ -1,23 +1,24 @@
-import React from "react";
+import React, {useContext} from "react";
 import { View, StyleSheet, Text, SafeAreaView, Image, Dimensions , ScrollView} from "react-native";
 import { HomeScreenType, recentItemType , recentTransaction} from "../interfaces/interfaces";
-import { useTheme } from "../context/ThemeContext";
 import BottomNavbar from "../components/UIComps/BottomNavbar";
 import { useDataContext } from "../context/DataContext";
 import TransactionItem from "../components/UIComps/TransactionItem";
+import { ThemeContext } from "../context/ThemeContext";
 import ImageCarousel from "../components/UIComps/ImageCarousel";
 const HomeScreen: React.FC<HomeScreenType> = (props) => {
-    const { theme } = useTheme();
+    const { theme } = useContext(ThemeContext);
+    const { primary, secondary, text, background } = theme.colors     
     const { currentUser } = useDataContext();
     const recentItemArray: recentItemType[] = currentUser?.recentItems || [];
     const recentTransactionArray: recentTransaction[] = currentUser?.recentTransactions || [];
 
     return (
         <SafeAreaView style={styles.container}>
-            <Text style={{color: theme.textColor, fontSize: 22, textAlign: 'center',
+            <Text style={{color: text.primary, fontSize: 22, textAlign: 'center',
         marginTop: '10%', fontWeight: '600' }}>Recent Items</Text>
             <ImageCarousel data={recentItemArray} />
-            <Text style={{color: theme.textColor, fontSize: 22, textAlign: 'center', fontWeight: '600', marginTop: '3%'}}>Recent Transactions</Text>
+            <Text style={{color: text.primary, fontSize: 22, textAlign: 'center', fontWeight: '600', marginTop: '3%'}}>Recent Transactions</Text>
             <View style={styles.scrollViewCon}>
 
             <ScrollView style={styles.scrollView}>

@@ -1,8 +1,7 @@
-import React, {useState} from "react";
+import React, {useState , useContext} from "react";
 import {View, Text, StyleSheet, SafeAreaView, KeyboardAvoidingView} from 'react-native'
 import TitleAndArrowBack from "../components/UIComps/TitleAndArrowBack";
 import BottomNavbar from "../components/UIComps/BottomNavbar";
-import { useTheme } from '../context/ThemeContext';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import CreditCard from 'react-native-credit-card';
@@ -16,6 +15,7 @@ import FormInput from "../components/UIComps/FormInput";
 import { useDataContext } from "../context/DataContext";
 import { creditCardFormType } from "../interfaces/interfaces";
 import { ScrollView } from "react-native-gesture-handler";
+import { ThemeContext } from "../context/ThemeContext";
 
 const validationSchema = Yup.object().shape({
 cvv: cvvSchema,
@@ -30,6 +30,8 @@ const AddCreditCardScreen: React.FC = () => {
     const navigation = useNavigation<StackNavigationProp<any, 'AddCreditCardScreen'>>();
     const [open, setOpen] = useState<boolean>(false);
     const [isDefault, setisDefault] = useState<boolean>(false);
+    const { theme } = useContext(ThemeContext);
+    const { primary, secondary, text, background } = theme.colors 
     const {addCreditCardAttempt, showToast, setisMessageModalVisible} = useDataContext();
     const [allCategoriesValues, setAllCategoriesValues] = useState<{ label: string; value: string }[]>([
         { label: 'dankort', value: 'dankort' },
@@ -39,7 +41,6 @@ const AddCreditCardScreen: React.FC = () => {
         { label: 'amex', value: 'amex' },
     ]);
     const [currentCategoryValue, setCurrentCategoryValue] = useState<string>('');
-    const {theme} = useTheme();
     const handleFormSubmit = async (values: {cardType: string, cardNumber: string, cardholderName: string, expirationDate: string, cvv: string, isDefault: boolean}) => {
         setisMessageModalVisible(true);
         const creditCardForm: creditCardFormType = values;
@@ -54,12 +55,9 @@ const AddCreditCardScreen: React.FC = () => {
     }
     
     return (
-        <SafeAreaView style={[{backgroundColor: theme.backgroundColor},styles.container]}>
+        <SafeAreaView style={[{backgroundColor: background},styles.container]}>
                 <TitleAndArrowBack text="Add new credit card" onPress={() => {navigation.goBack()}}/>
                     <View style={styles.formikCon}>
-{
-
-}
                     <Formik
                         initialValues={{cardType: "", cardNumber: "", cardholderName: "", expirationDate: "", cvv: "", isDefault: false}}
                         validationSchema={validationSchema}
@@ -93,7 +91,7 @@ const AddCreditCardScreen: React.FC = () => {
                                     placeholder="Select credit card"
                                     dropDownContainerStyle={{height: 300}}
                                     style={{
-                                        backgroundColor: '#fff',
+                                        backgroundColor: background,
                                         borderWidth: 1,
                                         paddingHorizontal: 12,
                                         borderRadius: 5,

@@ -1,12 +1,13 @@
-import react from 'react';
+import react, {useContext} from 'react';
 import {View , Text, StyleSheet, SafeAreaView, Image} from 'react-native';
 import {ItemCompInterface} from '../../interfaces/interfaces'
 import { Icon } from 'react-native-elements';
-import { useTheme } from '../../context/ThemeContext';
+import { ThemeContext } from '../../context/ThemeContext';
 import { useDataContext } from '../../context/DataContext';
 const Item: React.FC<ItemCompInterface> = (props) => {
     console.log(props.itemObj);
-    const {theme} = useTheme();
+    const { theme } = useContext(ThemeContext);
+    const { primary, secondary, text, background } = theme.colors     
     const {currentUser} = useDataContext();
 
      
@@ -15,9 +16,9 @@ const Item: React.FC<ItemCompInterface> = (props) => {
         <SafeAreaView style={styles.container}>
             <Image style={styles.image} source={{uri: props.itemObj.imageSource}}/>
             <View style={styles.contentCon}>
-            <Text style={[{color: theme.textColor},styles.nametext]}>{props.itemObj.name}</Text>
-            <Text style={[{color: theme.textColor},styles.wierlesstext]}>{props.itemObj.category}</Text>
-            <Text style={[{color: theme.textColor},styles.pricetext]}>{props.itemObj.price}</Text>
+            <Text style={[{color: text.primary},styles.nametext]}>{props.itemObj.name}</Text>
+            <Text style={[{color: text.primary},styles.wierlesstext]}>{props.itemObj.category}</Text>
+            <Text style={[{color: text.primary},styles.pricetext]}>{props.itemObj.price}</Text>
             </View>
             <Icon onPress={() => {props.handleDeleteItem && props.handleDeleteItem(currentUser ? currentUser?._id : '',props.itemObj.nfcTagCode)}} name="cancel" size={30}/>
         </SafeAreaView>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { View, StyleSheet, SafeAreaView, ScrollView , Text} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -9,10 +9,9 @@ import Toast from 'react-native-toast-message';
 import TitleAndArrowBack from '../components/UIComps/TitleAndArrowBack';
 import StyledButton from '../components/UIComps/StyledButton';
 import BottomNavbar from '../components/UIComps/BottomNavbar';
-import { useTheme } from '../context/ThemeContext';
 import { creditCardType } from '../interfaces/interfaces';
 import { Icon } from 'react-native-elements';
-
+import { ThemeContext } from '../context/ThemeContext';
 interface PaymentMethodsScreenProps {
     navigation: StackNavigationProp<any, 'PaymentMethodsScreen'>;
 }
@@ -20,7 +19,8 @@ interface PaymentMethodsScreenProps {
 const PaymentMethodsScreen: React.FC<PaymentMethodsScreenProps> = ({ navigation }) => {
     const { currentUser } = useDataContext();
     const [defaultCardIndex, setDefaultCardIndex] = useState<string | null>(null);
-    const {theme} = useTheme();
+    const { theme } = useContext(ThemeContext);
+    const { primary, secondary, text, background } = theme.colors     
     const {changeDefaultCardAttempt, showToast, deleteCardAttempt} = useDataContext();
     const handleDefaultCardChange = async (cardId: string) => {
             const isDefaultCardChanged = await changeDefaultCardAttempt(cardId);
@@ -44,7 +44,7 @@ const PaymentMethodsScreen: React.FC<PaymentMethodsScreenProps> = ({ navigation 
         }
     }
     return (
-        <SafeAreaView style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
+        <SafeAreaView style={[styles.container, {backgroundColor: background}]}>
             <View style={styles.titleCon}>
                 <TitleAndArrowBack text='Payment Methods' onPress={() => navigation.goBack()} />
                 <StyledButton smallbutton text='Add New' onPress={() => navigation.navigate('AddCreditCardScreen')} />
@@ -63,14 +63,14 @@ const PaymentMethodsScreen: React.FC<PaymentMethodsScreenProps> = ({ navigation 
                             cvc={card.cvv}
                         />
                         <View style={styles.trashiconCon}>
-                        <Icon style={styles.trashicon} name="settings" size={30} onPress={() => {handleDeleteCard(card._id)}} color={theme.textColor}/>
+                        <Icon style={styles.trashicon} name="settings" size={30} onPress={() => {handleDeleteCard(card._id)}} color={text.primary}/>
                         </View>
                         <View style={{flexDirection: 'row', alignItems: 'center'}}>
                         <CheckBox
                             checked={card.isDefault}
                             onPress={() => handleDefaultCardChange(card._id)}
                         />
-                        <Text style={{color: theme.textColor}}>Use as default payment credit card</Text>
+                        <Text style={{color: text.primary}}>Use as default payment credit card</Text>
                         </View>
                     </View>
                 ))}

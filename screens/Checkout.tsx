@@ -1,17 +1,17 @@
-import react, {useState, useEffect} from 'react';
+import react, {useState, useEffect , useContext} from 'react';
 import {Text, View, StyleSheet, SafeAreaView} from 'react-native';
-import { useTheme } from '../context/ThemeContext';
 import TitleAndArrowBack from '../components/UIComps/TitleAndArrowBack';
 import { useDataContext } from '../context/DataContext';
 import StyledButton from '../components/UIComps/StyledButton';
 import { ScrollView } from 'react-native-gesture-handler';
-import { creditCardType, IteminCartType, TransactionFormType, productInTransaction } from '../interfaces/interfaces';
+import { creditCardType, IteminCartType, TransactionFormType, productInTransaction , IText} from '../interfaces/interfaces';
 import { useNavigation, useRoute, RouteProp  } from "@react-navigation/native";
 import Toast from 'react-native-toast-message';
 import { StackNavigationProp } from '@react-navigation/stack';
 import CreditCardAbstractComp from '../components/UIComps/CreditCardAbstractComp';
 import BottomNavbar from '../components/UIComps/BottomNavbar';
 import CartCarusell from '../components/UIComps/CartCaruselle';
+import { ThemeContext } from "../context/ThemeContext";
 import CouponComp from '../components/UIComps/CouponComp';
 import { ActivityIndicator } from '@react-native-material/core';
 type NavigatorParamList = {
@@ -20,7 +20,9 @@ type NavigatorParamList = {
   
 const Checkout: React.FC = () => {
     const route = useRoute<RouteProp<NavigatorParamList, 'CheckoutScreen'>>();
-    const totalAmount = route.params.totalAmount;    const {theme} = useTheme();    
+    const totalAmount = route.params.totalAmount;  
+    const { theme } = useContext(ThemeContext);
+    const { primary, secondary, text, background } = theme.colors 
     const {currentUser, showToast, verifyCouponAttempt, PaymentAttempt} = useDataContext();
     const [isCouponValid, setisCouponValid] = useState<boolean>(false);
     const [isLoading, setisLoading] = useState<boolean>(false);
@@ -120,7 +122,7 @@ const Checkout: React.FC = () => {
     
 
     return (
-        <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
+        <View style={[{backgroundColor: background}, styles.container]}>
                         <TitleAndArrowBack text='Checkout' onPress={() => {navigation.goBack()}}/>
                         <ScrollView>
 
@@ -128,7 +130,7 @@ const Checkout: React.FC = () => {
                 isLoadingPayment ? (<ActivityIndicator style={{marginTop: '15%'}} size={70}/> ) : (
                 <View>
                 <View style={styles.paymentMethodsCon}>
-                    <Text style={{color: theme.textColor, padding: '3%', fontWeight: '600'}}>Payment Method</Text>
+                    <Text style={{color: text.primary, padding: '3%', fontWeight: '600'}}>Payment Method</Text>
                     {
                         isEmptyCreditCardArray ? (
                             <View style={{marginTop: '5%', marginBottom: '5%'}}>
@@ -143,7 +145,7 @@ const Checkout: React.FC = () => {
                         )
                     }
                 </View>
-                <View style={[styles.barrier, {backgroundColor: theme.backgroundColor, borderRadius: 8}]}/>
+                <View style={[styles.barrier, {backgroundColor: background, borderRadius: 8}]}/>
                 <View style={styles.cartCarusell}>
                     <CartCarusell/>
                 </View>
@@ -158,17 +160,17 @@ const Checkout: React.FC = () => {
                 </View>
                 <View style={styles.totalAmountCon}>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '95%'}}>
-                        <Text style={{color: theme.textColor, fontWeight: '300'}}>Items</Text>
-                        <Text style={{color: theme.textColor, fontWeight: '600'}}>{totalAmount}</Text>  
+                        <Text style={{color: text.primary, fontWeight: '300'}}>Items</Text>
+                        <Text style={{color: text.primary, fontWeight: '600'}}>{totalAmount}</Text>  
                     </View>
                     { isCouponValid && <View style={styles.coupondiscountcon}>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '95%', marginTop: '2%'}}>
-                    <Text style={{color: theme.textColor, fontWeight: '300'}}>Coupon</Text>
-                    <Text style={{color: theme.textColor, fontWeight: '600'}}>{couponDiscountAmount}</Text>  
+                    <Text style={{color: text.primary, fontWeight: '300'}}>Coupon</Text>
+                    <Text style={{color: text.primary, fontWeight: '600'}}>{couponDiscountAmount}</Text>  
                     </View>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '95%', marginTop: '2%'}}>
-                    <Text style={{color: theme.textColor, fontWeight: '300'}}>Total</Text>
-                      <Text style={{color: theme.textColor, fontWeight: '600'}}>{totalAmountToPay}</Text>  
+                    <Text style={{color: text.primary, fontWeight: '300'}}>Total</Text>
+                      <Text style={{color: text.primary, fontWeight: '600'}}>{totalAmountToPay}</Text>  
                     </View>
                     </View>
                     }

@@ -1,15 +1,16 @@
-import React from "react";
+import React, {useContext} from "react";
 import {View, Text, StyleSheet, SafeAreaView, Image} from 'react-native'
 import { ItemHorizontalType } from "../../interfaces/interfaces";
-import { useTheme } from "../../context/ThemeContext";
+import { ThemeContext } from "../../context/ThemeContext";
 import StyledButton from "./StyledButton";
 const ItemHorizontal: React.FC<ItemHorizontalType> = ({cartItem, totalAmount}) => {
-    const {theme} = useTheme();
+    const { theme } = useContext(ThemeContext);
+    const { primary, secondary, text, background } = theme.colors     
     return (
         <SafeAreaView style={[styles.container]}>
             <Image style={styles.image} source={{uri:cartItem.imageSource}}/>
-            <Text style={[styles.nametext, {color: theme.textColor, fontWeight: '300'}]}>{cartItem.name}</Text>
-            <Text style={[styles.pricetext, {color: theme.textColor , fontWeight: '600'}]}>{cartItem.price}</Text>
+            <Text style={[styles.nametext, {color: text.primary , fontWeight: '300'}]}>{cartItem.name}</Text>
+            <Text style={[styles.pricetext, {color: text.primary , fontWeight: '600'}]}>{cartItem.price}</Text>
         </SafeAreaView>
     )
 }

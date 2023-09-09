@@ -1,16 +1,17 @@
-import React from "react";
+import React, {useContext} from "react";
 import {View, SafeAreaView, Text, StyleSheet, Image} from 'react-native'
 import {ItemCompInterface} from '../../interfaces/interfaces'
-import { useTheme } from "../../context/ThemeContext";
+import { ThemeContext } from "../../context/ThemeContext";
 
 const CarusellItem: React.FC<ItemCompInterface> = (props) => {
-    const {theme} = useTheme();
+    const { theme } = useContext(ThemeContext);
+    const { primary, secondary, text, background } = theme.colors     
     return (
         <View style={styles.container}>
             <Image source={{uri: props.itemObj.imageSource}} style={styles.image}/>
             <View style={styles.detailscon}>
-                <Text style={{fontWeight: '300' , color: theme.textColor, fontSize: 13}}>{props.itemObj.name}</Text>
-                <Text style={{fontWeight: '600', color: theme.textColor, fontSize: 13}}>{props.itemObj.price}</Text>
+                <Text style={{fontWeight: '300' , color: text.primary, fontSize: 13}}>{props.itemObj.name}</Text>
+                <Text style={{fontWeight: '600', color: text.primary, fontSize: 13}}>{props.itemObj.price}</Text>
             </View>
         </View>
     )

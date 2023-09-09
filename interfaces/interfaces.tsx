@@ -1,14 +1,48 @@
 import { Asset } from "react-native-image-picker";
 export interface Theme {
-    backgroundColor: string;
-    textColor: string;
-    primaryColor: string;
-    secondaryColor: string;
+    colors:
+    {
+      primary: string;
+      secondary:string;
+      background: string;
+      text:{
+        primary: string;
+        secondary: string;
+      }
+    },
+    fonts:
+    {
+      regular: string;
+      bold: string; 
+    },
+  
   }
-export interface ThemeContextType {
+export  interface ThemeContextType {
     theme: Theme;
-    toggleTheme: () => void;
+    setTheme: React.Dispatch<React.SetStateAction<Theme>>;
+    lightTheme: Theme;
+    darkTheme: Theme;
+    buttonTheme:IButtonTheme
+
 }
+export interface IText{
+    primary: string;
+    secondary: string;
+}
+export interface IButtonTheme{
+    buttonMain:{
+      background: string; 
+      text: string; 
+    },
+    buttonAlt:{
+      background: string; 
+      text: string; 
+    },
+  }
+  export interface StyleButton{
+    background: string; 
+    text: string; 
+  }
 export interface Props {
     children?: React.ReactNode
 }

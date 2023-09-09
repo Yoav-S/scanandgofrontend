@@ -1,34 +1,65 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { Theme } from '../interfaces/interfaces';
-import { ThemeContextType } from '../interfaces/interfaces';
+import { Theme, IButtonTheme, ThemeContextType } from '../interfaces/interfaces';
 import { Props } from '../interfaces/interfaces';
-import { DayTheme, NightTheme } from '../themes/themes';
 
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+export const ThemeContext = createContext<ThemeContextType>({} as ThemeContextType);
 
 export const ThemeProvider: React.FC<Props> = ({ children }) => {
-  const [currentTheme, setCurrentTheme] = useState<Theme>(DayTheme);
 
-  const toggleTheme = () => {
-    setCurrentTheme(currentTheme === DayTheme ? NightTheme : DayTheme);
+
+  const lightTheme: Theme = {
+    colors: {
+      primary: '#702963',
+      secondary: '#e4e5f1',
+      text: {
+        primary: '#702963',
+        secondary: '#333333',
+      },
+      background: '#FCF5E5',
+      // Add more colors as needed
+    },
+    fonts: {
+      regular: 'Roboto-Regular',
+      bold: 'Roboto-Bold',
+      // Add more font styles as needed
+    },
   };
-
-  useEffect(() => {
-    // Update the theme in local storage or elsewhere as needed
-    // For example: localStorage.setItem('theme', currentTheme);
-  }, [currentTheme]);
-
-  return (
-    <ThemeContext.Provider value={{ theme: currentTheme, toggleTheme }}>
-      {children}
-    </ThemeContext.Provider>
-  );
-};
-
-export const useTheme = () => {
-  const context = useContext(ThemeContext);
-  if (context === undefined) {
-    throw new Error('useTheme must be used within a ThemeProvider');
+  const buttonTheme:IButtonTheme = {
+    buttonMain:{
+      background: '#702963',
+      text: '#ffffff'
+    },
+    buttonAlt:{
+      background: '#51414F',
+      text: '#ffffff'
+    },
   }
-  return context;
+  // Define the dark mode theme
+  const darkTheme: Theme = {
+    colors: {
+      primary: '#702963',
+      secondary: '#424549',
+      text: {
+        primary: '#ffffff',
+        secondary: '#cccccc',
+      },
+      background: '#343434',
+      // Add more colors as needed
+    },
+    fonts: {
+      regular: 'Roboto-Regular',
+      bold: 'Roboto-Bold',
+      // Add more font styles as needed
+    },
+  };
+  const [theme, setTheme] = useState(lightTheme);
+  const value: ThemeContextType = {
+    theme,
+    setTheme,
+    lightTheme,
+    darkTheme,
+    buttonTheme,
+  };
+  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
+
 };

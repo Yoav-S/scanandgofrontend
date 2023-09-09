@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {
     Dimensions,
     FlatList,
@@ -8,8 +8,8 @@ import {
     View,
   } from 'react-native';
 import {ImageCarouselProps} from '../../interfaces/interfaces';
-import { useTheme } from '../../context/ThemeContext';
-  const {width} = Dimensions.get('window');
+import { ThemeContext } from '../../context/ThemeContext';
+const {width} = Dimensions.get('window');
   
   const SPACING = 5;
   const ITEM_LENGTH = width * 1; // Item is a square. Therefore, its height and width are of the same length.
@@ -20,9 +20,10 @@ import { useTheme } from '../../context/ThemeContext';
 // ... (other imports and styles)
 
 const ImageCarousel: React.FC<ImageCarouselProps> = ({ data }) => {
-    const {theme} = useTheme();
-    return (
-      <View style={styles.container}>
+  const { theme } = useContext(ThemeContext);
+  const { primary, secondary, text, background } = theme.colors     
+  return (
+      <View style={[styles.container, {backgroundColor: background}]}>
         <FlatList
           data={data}
           renderItem={({ item, index }) => {
@@ -31,7 +32,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ data }) => {
                 <View >
                   <Image style={{width: 200, height: 200}} source={{ uri: item.imageSource }}  />
                   <View style={{position: 'absolute', zIndex: 10, backgroundColor: 'pink', padding: '3%', alignItems: 'center', justifyContent: 'center',borderBottomStartRadius: 18, borderTopEndRadius: 18, bottom: -5, left: -30}}>
-                  <Text style={{color: theme.textColor, fontWeight: '600'}} numberOfLines={1}>
+                  <Text style={{color: text.primary, fontWeight: '600'}} numberOfLines={1}>
                     {item.name}
                   </Text>
                   </View>

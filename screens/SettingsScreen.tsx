@@ -1,16 +1,17 @@
-import React from "react";
+import React, {useContext} from "react";
 import { TextInput, StyleSheet, SafeAreaView , Text, View} from "react-native";
 import { SettingsScreenType } from "../interfaces/interfaces";
-import { useTheme } from "../context/ThemeContext";
 import BottomNavbar from "../components/UIComps/BottomNavbar";
 import { Button } from 'react-native-elements';
 import { Icon } from 'react-native-elements';
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from '@react-navigation/stack';
+import { ThemeContext } from "../context/ThemeContext";
 import BigTitle from "../components/UIComps/BigTitle";
 import { useDataContext } from "../context/DataContext";
 const SettingsScreen: React.FC<SettingsScreenType> = (props) => {
-  const { theme } = useTheme();
+  const { theme } = useContext(ThemeContext);
+  const { primary, secondary, text, background } = theme.colors   
   const navigation = useNavigation<StackNavigationProp<any, 'SettingsScreen'>>();
   const {handleLogOut, isLogoutModal, setisLogoutModal} = useDataContext();
 
@@ -18,13 +19,13 @@ const SettingsScreen: React.FC<SettingsScreenType> = (props) => {
     setisLogoutModal(true);
   }
   return (
-    <SafeAreaView style={[{backgroundColor: theme.backgroundColor},styles.container]}>
+    <SafeAreaView style={[{backgroundColor: background},styles.container]}>
         <View style={styles.titleAndSettingsIcon}>
-        <Icon name="settings" size={30} color={theme.textColor}/>
+        <Icon name="settings" size={30} color={text.primary}/>
           <BigTitle title="Settings"/>
         </View>
         <View style={[styles.topCon,styles.marginTopCon]}>
-        <Text style={[styles.formTitle, {color: theme.textColor, fontWeight: '600'}]}>Account</Text>
+        <Text style={[styles.formTitle, {color: text.primary, fontWeight: '600'}]}>Account</Text>
         <View style={[styles.formCon, styles.firstCon]}>
         <Button
         icon={{
@@ -34,7 +35,7 @@ const SettingsScreen: React.FC<SettingsScreenType> = (props) => {
         }}
         onPress={() => {navigation.navigate('EditProfile', {cameFrom: 'EditProfile'})}}
         title="Edit Profile"
-        titleStyle={{color: theme.textColor, fontSize: 14, marginLeft: '5%'}}
+        titleStyle={{color: text.primary, fontSize: 14, marginLeft: '5%'}}
         buttonStyle={styles.button}
         />
         <Button
@@ -45,7 +46,7 @@ const SettingsScreen: React.FC<SettingsScreenType> = (props) => {
         }}
         onPress={() => {navigation.navigate('SecurityScreen', {cameFrom: 'SecurityScreen'})}}
         title="Security"
-        titleStyle={{color: theme.textColor, fontSize: 14, marginLeft: '5%'}}
+        titleStyle={{color: text.primary, fontSize: 14, marginLeft: '5%'}}
         buttonStyle={styles.button}
         />
         <Button
@@ -56,13 +57,13 @@ const SettingsScreen: React.FC<SettingsScreenType> = (props) => {
         }}
         onPress={() => {navigation.navigate('PaymentMethodsScreen', {cameFrom: 'PaymentMethodsScreen'})}}
         title="Payment Methods"
-        titleStyle={{color: theme.textColor, fontSize: 14, marginLeft: '5%'}}
+        titleStyle={{color: text.primary, fontSize: 14, marginLeft: '5%'}}
         buttonStyle={styles.button}
         />
         </View>
         </View>
         <View style={styles.topCon}>
-        <Text style={[styles.formTitle, {color: theme.textColor, fontWeight: '600'}]}>Support & About</Text>
+        <Text style={[styles.formTitle, {color: text.primary, fontWeight: '600'}]}>Support & About</Text>
         <View style={[styles.formCon, styles.firstCon]}>
         <Button
         icon={{
@@ -72,7 +73,7 @@ const SettingsScreen: React.FC<SettingsScreenType> = (props) => {
         }}
         onPress={() => {navigation.navigate('HelpAndSupportScreen', {cameFrom: 'HelpAndSupportScreen'})}}
         title="Help & Support"
-        titleStyle={{color: theme.textColor, fontSize: 14, marginLeft: '5%'}}
+        titleStyle={{color: text.primary, fontSize: 14, marginLeft: '5%'}}
         buttonStyle={styles.button}
         />
         <Button
@@ -83,13 +84,13 @@ const SettingsScreen: React.FC<SettingsScreenType> = (props) => {
         }}
         onPress={() => {navigation.navigate('TermsAndServicesScreen', {cameFrom: 'TermsAndServicesScreen'})}}
         title="Terms and Policies"
-        titleStyle={{color: theme.textColor, fontSize: 14, marginLeft: '5%'}}
+        titleStyle={{color: text.primary, fontSize: 14, marginLeft: '5%'}}
         buttonStyle={styles.button}
         />
         </View>
         </View>
         <View style={styles.topCon}>
-        <Text style={[styles.formTitle, {color: theme.textColor, fontWeight: '600'}]}>Actions</Text>
+        <Text style={[styles.formTitle, {color: text.primary, fontWeight: '600'}]}>Actions</Text>
         <View style={[styles.formCon, styles.firstCon]}>
         <Button
         icon={{
@@ -99,7 +100,7 @@ const SettingsScreen: React.FC<SettingsScreenType> = (props) => {
         }}
         onPress={() => {navigation.navigate('ProblemReport', {cameFrom: 'Settings'});}}
         title="Report a problem"
-        titleStyle={{color: theme.textColor, fontSize: 14, marginLeft: '5%'}}
+        titleStyle={{color: text.primary, fontSize: 14, marginLeft: '5%'}}
         buttonStyle={styles.button}
         />
         <Button
@@ -110,7 +111,7 @@ const SettingsScreen: React.FC<SettingsScreenType> = (props) => {
         }}
         onPress={handleLogOutModal}  
         title="Log out"
-        titleStyle={{color: theme.textColor, fontSize: 14, marginLeft: '5%'}}
+        titleStyle={{color: text.primary, fontSize: 14, marginLeft: '5%'}}
         buttonStyle={styles.button}
         />
         </View>

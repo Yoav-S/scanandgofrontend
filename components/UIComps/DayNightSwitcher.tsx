@@ -1,25 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { View, Switch, StyleSheet } from "react-native";
 import { DayNightSwitcherProps } from "../../interfaces/interfaces";
-import { useTheme } from "../../context/ThemeContext";
+import { ThemeContext } from "../../context/ThemeContext";
 import { NightTheme } from "../../themes/themes"; // Make sure to provide the correct relative path
 
 const DayNightSwitcher: React.FC<DayNightSwitcherProps> = () => {
-  const { toggleTheme, theme } = useTheme();
-  const [isEnabled, setisEnabled] = useState<boolean>(theme === NightTheme);
+  const { theme } = useContext(ThemeContext);
+  const { primary, secondary, text, background } = theme.colors 
 
-  useEffect(() => {
-    setisEnabled(theme === NightTheme);
-  }, [theme]);
 
   return (
     <View style={styles.container}>
       <Switch
         trackColor={{ false: "#767577", true: "#81b0ff" }}
-        thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
         ios_backgroundColor="#3e3e3e"
-        onValueChange={toggleTheme}
-        value={isEnabled}
       />
     </View>
   );

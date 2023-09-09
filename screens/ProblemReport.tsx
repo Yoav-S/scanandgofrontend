@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Text, View, SafeAreaView, StyleSheet, TextInput } from 'react-native'
 import { Icon } from 'react-native-elements';
 import DeviceInfo from 'react-native-device-info';
 import packageJson from '../package.json'; // Relative path to your package.json
-import { ProblemReportType, ProblemReportRouteParams } from "../interfaces/interfaces";
-import { useTheme } from "../context/ThemeContext";
+import { ProblemReportType, ProblemReportRouteParams, IText } from "../interfaces/interfaces";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useDataContext } from "../context/DataContext";
 import DropDownPicker from 'react-native-dropdown-picker';
 import TitleAndArrowBack from "../components/UIComps/TitleAndArrowBack";
 import Toast from "react-native-toast-message";
+import { ThemeContext } from "../context/ThemeContext";
 import {
     launchCamera,
     launchImageLibrary,
@@ -32,8 +32,10 @@ const validationSchema = Yup.object().shape({
 const ProblemReport: React.FC<ProblemReportType> = () => {
     const navigation = useNavigation<StackNavigationProp<any, 'ProblemReport'>>();
     const route = useRoute<any>(); // Using any type for route parameter
-    
-    const {theme} = useTheme();
+    const { theme } = useContext(ThemeContext);
+    const { primary, secondary, text, background } = theme.colors
+    const styles = createStyles(primary, secondary, text, background)
+
     const appVersion = packageJson.version;
     const [currentAsset, setCurrentAsset] = useState<Asset | null>(null);
     const [cameFrom, setCameFrom] = useState<string>();
@@ -120,7 +122,7 @@ const ProblemReport: React.FC<ProblemReportType> = () => {
         }
       }
     return (
-        <SafeAreaView style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
+        <SafeAreaView style={styles.container}>
 
                         <TitleAndArrowBack text="Report A Problem" onPress={() => {navigation.goBack()}}/>
                         <View style={styles.allbutNavbarCon}>
@@ -134,7 +136,7 @@ const ProblemReport: React.FC<ProblemReportType> = () => {
                     {({ handleChange, handleSubmit, values, errors, isValid }) => (
                     <>
                     <View style={styles.selectandAddImageCon}>
-                        <Text style={{color: theme.textColor, fontWeight: '500'}}>Select Problem Type</Text>
+                        <Text style={styles.problemtype}>Select Problem Type</Text>
                     <StyledButton  onPress={uploadPhotoHandler} text={selectedImage ? 'Image Added' : 'Add image'} />
     
                     </View>
@@ -150,18 +152,18 @@ const ProblemReport: React.FC<ProblemReportType> = () => {
                       setItems={setAllCategoriesValues}
                     />
                           <View style={styles.descriptionContainer}>
-                          <Text style={{ color: theme.textColor, fontWeight: '500' , marginBottom: '3%'}}>Description</Text>
+                          <Text style={{color: text.primary, fontWeight: '500' , marginBottom: '3%'}}>Description</Text>
                           <TextInput
                             multiline
                             numberOfLines={14} // Adjust this based on your design
-                            style={[{color: theme.textColor},
+                            style={[{color: text.primary},
                             styles.descriptionInput]}
                             placeholder="Please describe the problem..."
-                            placeholderTextColor={theme.textColor}
+                            placeholderTextColor={text.primary}
                             onChangeText={handleChange('description')}
                             value={values.description}
                           />
-                          {values.description.length < 20 && <Text style={{color: theme.textColor}}>{errors.description}</Text>}
+                          {values.description.length < 20 && <Text style={{color: text.primary}}>{errors.description}</Text>}
                         </View>
                         <StyledButton text="Save Report" onPress={handleSubmit} bigbutton disabled={values.description.length < 19 || !isValid}/>
                     </>
@@ -175,35 +177,40 @@ const ProblemReport: React.FC<ProblemReportType> = () => {
     );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (primary: string, secondary: string, text: IText, background: string) =>
+  StyleSheet.create({
     container: {
-        flex: 1,
+      flex: 1,
+      backgroundColor: background
+  },
+  titleandarrowcon: {
+      flexDirection: 'row',
+      width: '60%',
+      alignItems: 'center',
+      justifyContent: 'space-between'
+  },
+  problemtype: {
+    fontWeight: '500',
+    color: text.primary
+  },
+  selectandAddImageCon: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between'
+  },
+  allbutNavbarCon: {
+    margin: '4%'
+  },
+  descriptionContainer: {
+      marginTop: 20,
     },
-    titleandarrowcon: {
-        flexDirection: 'row',
-        width: '60%',
-        alignItems: 'center',
-        justifyContent: 'space-between'
+    descriptionInput: {
+      borderWidth: 1,
+      borderColor: '#ccc',
+      borderRadius: 8,
+      padding: 10,
+      height: 200, // Adjust this based on your design
+      textAlignVertical: 'top', // Start text from the top
     },
-    selectandAddImageCon: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between'
-    },
-    allbutNavbarCon: {
-      margin: '4%'
-    },
-    descriptionContainer: {
-        marginTop: 20,
-      },
-      descriptionInput: {
-        borderWidth: 1,
-        borderColor: '#ccc',
-        borderRadius: 8,
-        padding: 10,
-        height: 200, // Adjust this based on your design
-        textAlignVertical: 'top', // Start text from the top
-      },
-});
-
+  });
 export default ProblemReport;

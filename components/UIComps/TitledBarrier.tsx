@@ -1,15 +1,15 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {View, Text, StyleSheet} from 'react-native'
 import { StyledBarrierProps } from '../../interfaces/interfaces';
-import { useTheme } from '../../context/ThemeContext';
-
+import { ThemeContext } from '../../context/ThemeContext';
 const TitledBarrier: React.FC<StyledBarrierProps> = (props) => {
-    const {theme} = useTheme();
+    const { theme } = useContext(ThemeContext);
+    const { primary, secondary, text, background } = theme.colors 
     return (
         <View style={styles.container}>
-            <View style={[styles.line, {borderColor: theme.textColor, backgroundColor: theme.textColor}]}/>
-            <Text style={[styles.textstyle, {color: theme.textColor}]}>{props.text}</Text>
-            <View style={[styles.line, {borderColor: theme.textColor , backgroundColor: theme.textColor}]}/>
+            <View style={[styles.line, {borderColor: text.primary, backgroundColor: background}]}/>
+            <Text style={[styles.textstyle, {color: text.primary}]}>{props.text}</Text>
+            <View style={[styles.line, {borderColor: text.primary , backgroundColor: background}]}/>
         </View>
     )
 }

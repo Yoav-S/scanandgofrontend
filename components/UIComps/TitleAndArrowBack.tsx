@@ -1,15 +1,16 @@
-import react from 'react';
+import react, {useContext} from 'react';
 import {Text, StyleSheet, View} from 'react-native'
 import { TitleAndArrowBackProps } from '../../interfaces/interfaces';
 import { Icon } from 'react-native-elements';
-import { useTheme } from '../../context/ThemeContext';
+import { ThemeContext } from '../../context/ThemeContext';
 
 
 const TitleAndArrowBack: React.FC<TitleAndArrowBackProps> = (props) => {
 
-    const {theme} = useTheme();
+    const { theme } = useContext(ThemeContext);
+    const { primary, secondary, text, background } = theme.colors     
     return (
-        <View style={styles.titleandarrowcon}>
+        <View style={[styles.titleandarrowcon, {backgroundColor: background}]}>
                       <Icon 
                       onPress={props.onPress}
                       name="arrow-left" 
@@ -17,7 +18,7 @@ const TitleAndArrowBack: React.FC<TitleAndArrowBackProps> = (props) => {
                       size={30}
                       />
 
-            <Text style={{color: theme.textColor, fontWeight: '700'}}>{props.text}</Text>
+            <Text style={{color: text.primary, fontWeight: '700'}}>{props.text}</Text>
             </View>
     )
 } 
