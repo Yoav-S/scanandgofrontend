@@ -298,9 +298,6 @@ try{
 }
 }
   const getUserById = async (id: string, token: string): Promise<CurrentUserType | null> => {
-    console.log(id);
-    console.log(token);
-    
     const requestBody = {
       query: {
         _id: id,

@@ -34,11 +34,10 @@ const AddCreditCardScreen: React.FC = () => {
     const { primary, secondary, text, background } = theme.colors 
     const {addCreditCardAttempt, showToast, setisMessageModalVisible} = useDataContext();
     const [allCategoriesValues, setAllCategoriesValues] = useState<{ label: string; value: string }[]>([
-        { label: 'dankort', value: 'dankort' },
         { label: 'discover', value: 'discover' },
         { label: 'mastercard', value: 'mastercard' },
         { label: 'visa', value: 'visa' },
-        { label: 'amex', value: 'amex' },
+        { label: 'american express', value: 'amex' },
     ]);
     const [currentCategoryValue, setCurrentCategoryValue] = useState<string>('');
     const handleFormSubmit = async (values: {cardType: string, cardNumber: string, cardholderName: string, expirationDate: string, cvv: string, isDefault: boolean}) => {

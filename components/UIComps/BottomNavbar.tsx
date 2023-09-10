@@ -25,7 +25,7 @@ const BottomNavbar: React.FC<BottomNavbarInterface> = (props) => {
   navigation.navigate('Settings');
  }
  const navigateProfile = () => {
-  navigation.navigate('Profile');
+  navigation.navigate('Stats');
  }
  const triggerScan = () => {
   setisVisibleStatus(!isVisibleStatus);
@@ -49,11 +49,11 @@ setamountofitemsvariable(currentUser?.cart.length || 0)
       </View>
       <View style={styles.plusIconContainer}>
       <View style={styles.plusIconSecondCon}>
-        <Icon onPress={triggerScan} color="black" name="add" size={50} />
+        <Icon onPress={triggerScan} color="black" name="nfc" size={50} />
       </View>
       </View>
       <Icon name="settings" size={30} color={route.name === "Settings" ? 'lightblue' : 'white'} onPress={navigateSettings}/>
-      <Icon name="person" size={30} color={route.name === "Profile" ? 'lightblue' : 'white'} onPress={navigateProfile}/>
+      <Icon name="person" type='ion-icons' size={30} color={route.name === "Stats" ? 'lightblue' : 'white'} onPress={navigateProfile}/>
     </SafeAreaView>
   );
 };

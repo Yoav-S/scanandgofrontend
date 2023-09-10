@@ -100,7 +100,7 @@ const Checkout: React.FC = () => {
        cardId: chosenCreditCard[0]._id,
        amountToCharge: totalAmountToPay,
        products: newCart,
-       couponId: currentCoupon
+       couponId: currentCoupon,
    }
    setisLoadingPayment(true);       
    const paymentResult: boolean = await PaymentAttempt(transactionObject);   

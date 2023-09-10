@@ -26,7 +26,7 @@ const LogoutModal: React.FC = () => {
             footer={
                 <ModalFooter style={styles.ModalFooter}>
                   <ModalButton
-                  style={{height: 100}}
+                  style={{height: 100, backgroundColor: background}}
                     textStyle={[{color: text.primary},styles.ModalButtonText]}
                     text="Are you sure ?"
                     onPress={() => 

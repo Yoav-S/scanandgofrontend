@@ -2,7 +2,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 import StatsScreen from '../screens/StatsScreen';
 import HomeScreen from '../screens/HomeScreen';
 import SettingsScreen from '../screens/SettingsScreen';
-import ProfileScreen from '../screens/ProfileScreen';
 import EditProfile from '../screens/EditProfile';
 import SecurityScreen from '../screens/SecurityScreen';
 import PaymentMethodsScreen from '../screens/PaymentMethodsScreen';
@@ -14,6 +13,8 @@ import AddCreditCardScreen from '../screens/AddCreditCardScreen';
 import Checkout from '../screens/Checkout';
 import TransactionScreen from '../screens/TransactionScreen';
 import PurchaseDetailsScreen from '../screens/PurchaseDetailsScreen';
+import TransactionView from '../components/UIComps/TransactionView';
+import TransactionsList from '../components/UIComps/TransactionList';
 import { AuthenticatedStackType } from '../interfaces/interfaces';
 const AuthenticatedStack = createStackNavigator();
 export const AuthenticatedStackScreen: React.FC<AuthenticatedStackType> = () => {
@@ -36,12 +37,6 @@ export const AuthenticatedStackScreen: React.FC<AuthenticatedStackType> = () => 
         <AuthenticatedStack.Screen 
         name="Settings" 
         component={SettingsScreen}         
-        options={{
-          headerShown: false 
-        }} />
-        <AuthenticatedStack.Screen 
-        name="Profile" 
-        component={ProfileScreen}         
         options={{
           headerShown: false 
         }} />
@@ -110,13 +105,27 @@ export const AuthenticatedStackScreen: React.FC<AuthenticatedStackType> = () => 
         name="PurchaseScreen"   
         component={PurchaseDetailsScreen} 
         />
-                <AuthenticatedStack.Screen
+        <AuthenticatedStack.Screen
         options={{
           headerShown: false 
         }} 
         name="TransactionScreen"   
         component={TransactionScreen} 
         />
+      <AuthenticatedStack.Screen
+      options={{
+        headerShown: false 
+      }} 
+      name="TransactionView"   
+      component={TransactionView} 
+      />
+      <AuthenticatedStack.Screen
+      options={{
+        headerShown: false 
+      }} 
+      name="TransactionList"   
+      component={TransactionsList} 
+      />
       </AuthenticatedStack.Navigator>
     );
   };

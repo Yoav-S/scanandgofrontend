@@ -17,6 +17,47 @@ export interface Theme {
     },
   
   }
+export interface PaginationResponse<T> {
+    list: T[];
+    pageNumber: number;
+    isMore: boolean
+}
+export interface CurrentUserType {
+
+    _id: string;
+
+    fullName: string;
+
+    roles: string[]
+
+    email: string;
+
+    creditCards: creditCardType[];
+
+    password: string;
+
+    cart: IteminCartType[]
+
+    gender: string
+
+    birthDate: Date
+
+    isActive: boolean
+
+    schemaVersion: number
+
+    deviceToken: string
+
+    createdAt: Date
+
+    transactionsAmount: number
+
+    lastActivity: Date
+
+    recentItems: recentItemType[]
+
+    recentTransactions: recentTransaction[]
+}
 export  interface ThemeContextType {
     theme: Theme;
     setTheme: React.Dispatch<React.SetStateAction<Theme>>;
@@ -50,6 +91,12 @@ export interface CouponType{
 _id: string;
 discountPercentage: number;
 }
+export interface IStats {
+    year?: number
+    label: string
+    value: number
+    date?: Date
+}
 export interface TransactionFormType{
     userId: string;
     cardId: string;
@@ -57,11 +104,14 @@ export interface TransactionFormType{
     products: productInTransaction[];
     couponId: string;
 }
-export interface recentTransaction{
-_id: string;
-totalAmount: number;
-formattedDate: string;
-cardType: string;
+
+export interface recentTransaction {
+    _id: string;
+    totalAmount: number
+    formattedDate: string
+    cardType: string
+    cardNumber: string
+    couponDiscountAmount?: number
 }
 export interface ItemHorizontalType{
 cartItem: IteminCartType;
@@ -118,22 +168,39 @@ export interface ImageCarouselProps{
 export interface TransactionCompType{
 transaction: recentTransaction;
 }
-export interface CurrentUserType{
-    _id:string;
-    fullName:string;
-    email:string;
-    deviceToken:string;
-    gender: string;
-    creditCards: creditCardType[];
-    cart: IteminCartType[];
-    recentItems: recentItemType[];
-    recentTransactions: recentTransaction[];
-}
 // interfaces/interfaces.tsx
 export interface CreditCardAbstractCompType {
     creditCard: creditCardType;
     onPress?: (cardId: string) => void | undefined; // Make onPress an optional function
     isChecked?: boolean; // Add the isChecked prop
+}
+export interface CreateTransactionDto {
+    userId: string;
+    cardId: string;
+    couponId?: string;
+    totalAmount: number;
+    products: ITransactionItem[]
+    couponDiscountAmount?: number;
+}
+export interface ITransactionItem {
+    itemId: string
+    nfcTagCode: string
+    imageSource: string
+    name: string
+    price: number
+ }
+export interface ITransaction {
+    _id?: string;
+    userId: string
+    cardNumber: string
+    cardType: string
+    totalAmount: number
+    products: ITransactionItem[]
+    schemaVersion: number
+    formattedDate: string
+    createdAt: Date
+    couponDiscountAmount?: number
+
 }
 export interface Itemprop{
 _id: string
@@ -184,8 +251,14 @@ export interface creditCardType{
     expirationDate: string;
     cardholderName: string;
     cvv: string;
-    cardType: string;
+    cardType: cardType | string;
     isDefault: boolean;
+}
+export enum cardType {
+MASTERCARD = 'mastercard',
+VISA = 'visa',
+AMERICAN_EXPRESS = 'amex',
+DISCOVER = 'discover'
 }
 export interface LoginScreenType {
 
