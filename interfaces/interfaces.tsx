@@ -100,7 +100,7 @@ export interface IStats {
 export interface TransactionFormType{
     userId: string;
     cardId: string;
-    amountToCharge: number;
+    totalAmount: number;
     products: productInTransaction[];
     couponId: string;
 }
@@ -125,11 +125,14 @@ name: string;
 export interface DataContextType {
     currentUser: CurrentUserType | null;
     isMessageModalVisible: boolean;
+    getMoreAttemt: (pageNumber: string) => Promise<any>;
+    fetchStatsDataAttempt: (userId: string) => Promise<any>;
     setisMessageModalVisible: (value: boolean) => void;
     isLogoutModal: boolean;
     setisLogoutModal: (value: boolean) => void;
     setCurrentUser: (user: CurrentUserType | null) => void;
     getArrayOfDropDownCategories: () => Promise<string[]>;
+    getFullTransaction: (id: string) => Promise<[boolean,recentTransaction?]>;
     authenticated: boolean;
     addCreditCardAttempt: (values: creditCardFormType) => Promise<[boolean, string | null]>
     PaymentAttempt: (transactionObject: TransactionFormType) => Promise<boolean>;
@@ -167,6 +170,7 @@ export interface ImageCarouselProps{
 }
 export interface TransactionCompType{
 transaction: recentTransaction;
+handleshowToast: () => void;
 }
 // interfaces/interfaces.tsx
 export interface CreditCardAbstractCompType {

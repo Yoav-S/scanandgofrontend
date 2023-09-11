@@ -21,14 +21,16 @@ const LogoutModal: React.FC = () => {
         <View>
             <Modal
             visible={isLogoutModal}
+            swipeDirection={["down", "up", "right", "left"]}
             swipeThreshold={200} // default 100
             modalStyle={styles.modalStyle}
+            onSwipeOut={() => {setisLogoutModal(false);}}
             footer={
                 <ModalFooter style={styles.ModalFooter}>
                   <ModalButton
-                  style={{height: 100, backgroundColor: background}}
-                    textStyle={[{color: text.primary},styles.ModalButtonText]}
-                    text="Are you sure ?"
+                    style={{height: 100, backgroundColor: background}}
+                    textStyle={[{color: text.primary, padding: '3%'},styles.ModalButtonText]}
+                    text="Are you sure ? swipe to cancel"
                     onPress={() => 
                         {
                             setisLogoutModal(false);

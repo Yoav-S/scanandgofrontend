@@ -94,11 +94,11 @@ const Checkout: React.FC = () => {
     const newCart: productInTransaction[] = originalCart.map((item : IteminCartType) => {
       const { category, ...newItem } = item;
       return newItem;
-    });        
+    }); 
     const transactionObject: TransactionFormType = {
        userId: currentUser?._id || '',
        cardId: chosenCreditCard[0]._id,
-       amountToCharge: totalAmountToPay,
+       totalAmount: totalAmount,
        products: newCart,
        couponId: currentCoupon,
    }
@@ -109,16 +109,13 @@ const Checkout: React.FC = () => {
     setisAttempted(false);
     setisCouponValid(false);
     setCouponInputValue('');
-    showToast('You now about to move to recap', 'success', 'Purchase Completed');
-    setTimeout(() => {
-      navigation.navigate('PurchaseScreen', {totalAmount: totalAmount, cart: originalCart});
-     }, 2000);
+    showToast('You can watch purchase details', 'success', 'Purchase Completed');
+    navigation.navigate('PurchaseScreen', {totalAmount: totalAmount, cart: originalCart});
    }
    else{
     showToast('Please try again', 'error', 'Purchase Failed');
    }
     }
-
     
 
     return (

@@ -1,13 +1,21 @@
-import React,  { useEffect, useState }  from "react";
+import React,  { useEffect, useState , useContext}  from "react";
 import { TextInput, StyleSheet, SafeAreaView , Text, Dimensions} from "react-native";
 import { CurrentUserType, IStats, Role } from "../interfaces/interfaces";
 import BottomNavbar from "../components/UIComps/BottomNavbar";
 import TransactionsList from "../components/UIComps/TransactionList";
 import StatsChart from "../components/UIComps/StatsChart";
-
-
+import { useDataContext } from "../context/DataContext";
+import { ThemeContext } from "../context/ThemeContext";
+import TitleAndArrowBack from "../components/UIComps/TitleAndArrowBack";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { StackNavigationProp } from '@react-navigation/stack';
 const StatsScreen: React.FC = () => {
-  const user : CurrentUserType = {
+    const { theme } = useContext(ThemeContext);
+    const { primary, secondary, text, background } = theme.colors 
+const {currentUser, showToast} = useDataContext();
+const navigation = useNavigation<StackNavigationProp<any, 'EditProfile'>>();
+
+const user : CurrentUserType = {
     '_id': '64e4624cac9453ef60727a0c',
     'fullName': 'koren kaplan',
     'roles': [
@@ -208,10 +216,19 @@ const defaultStats: IStats[] = [
       'value': 0,
     },
 ];
+let userId: string = "";
+if(currentUser){
+userId = currentUser._id
+}
+
+const handleShowToast = () => {
+    showToast('Failed to retrieve data', 'error', 'Failed to fetch data')
+}
+
   return (
-    <SafeAreaView style={styles.container}>
-        <Text style={styles.colorBlack}>StatsScreen</Text>
-        <StatsChart userId={user._id}/>
+    <SafeAreaView style={[styles.container, {backgroundColor: background}]}>
+        <TitleAndArrowBack text="User Statistics" onPress={() => {navigation.navigate('Home')}}/>
+        <StatsChart handleShowToast={handleShowToast} userId={userId}/>
         <TransactionsList/>
         <BottomNavbar/>
       </SafeAreaView>
@@ -224,7 +241,6 @@ const styles = StyleSheet.create({
     },
     container: {
       flex: 1,
-      backgroundColor: 'white'
   }
 });
 

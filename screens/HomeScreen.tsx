@@ -6,15 +6,20 @@ import { useDataContext } from "../context/DataContext";
 import TransactionItem from "../components/UIComps/TransactionItem";
 import { ThemeContext } from "../context/ThemeContext";
 import ImageCarousel from "../components/UIComps/ImageCarousel";
+import Toast from "react-native-toast-message";
 const HomeScreen: React.FC<HomeScreenType> = (props) => {
     const { theme } = useContext(ThemeContext);
     const { primary, secondary, text, background } = theme.colors     
-    const { currentUser } = useDataContext();
+
+    const { currentUser, showToast } = useDataContext();
     const recentItemArray: recentItemType[] = currentUser?.recentItems || [];
     const recentTransactionArray: recentTransaction[] = currentUser?.recentTransactions || [];
-
+    const handleshowToast = () => {
+        showToast('please try again later', 'error', 'Cannot find transaction details')
+    }
+    
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={[styles.container,{ backgroundColor: background}]}>
             <Text style={{color: text.primary, fontSize: 22, textAlign: 'center',
         marginTop: '10%', fontWeight: '600' }}>Recent Items</Text>
             <ImageCarousel data={recentItemArray} />
@@ -25,7 +30,7 @@ const HomeScreen: React.FC<HomeScreenType> = (props) => {
                 {
                     recentTransactionArray.map((transaction: recentTransaction, index) => {
                         return (
-                            <TransactionItem key={index} transaction={transaction}/>
+                            <TransactionItem handleshowToast={handleshowToast} key={index} transaction={transaction}/>
                         )
                     })
                 }
@@ -33,6 +38,7 @@ const HomeScreen: React.FC<HomeScreenType> = (props) => {
             </View>
 
             <BottomNavbar />
+            <Toast/>
         </SafeAreaView>
     )
 }

@@ -1,16 +1,23 @@
 /* eslint-disable prettier/prettier */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState , useContext} from 'react';
 import { Dimensions, View, StyleSheet } from 'react-native';
 import { ButtonGroup } from '@rneui/themed';
+import { ThemeContext } from '../../context/ThemeContext';
 import { IStats} from '../../interfaces/interfaces';
+import Toast from 'react-native-toast-message';
 import {
   LineChart,
 } from 'react-native-chart-kit';
 import axios from 'axios';
+import { useDataContext } from '../../context/DataContext';
 interface Props {
-    userId: string
+    userId: string,
+    handleShowToast: () => void;
   }
-const StatsChart: React.FC<Props> = ({userId}) => {
+const StatsChart: React.FC<Props> = ({userId, handleShowToast}) => {
+  const { theme } = useContext(ThemeContext);
+  const { primary, secondary, text, background } = theme.colors 
+      const {currentUser, fetchStatsDataAttempt} = useDataContext();
     const defaultStats: IStats[] = [
         {
           'label': 'Jan',
@@ -51,13 +58,9 @@ const StatsChart: React.FC<Props> = ({userId}) => {
 
       useEffect(() => {
         const fetchData = async () => {
-          try {
-            const queryParams = {
-              id: userId,
-            };
-            const response = await axios.get('https://scan-and-go.onrender.com/transactions/allStats', { params: queryParams });
-            if (response.status === 200) {
-              const { weekly, monthly, yearly } = response.data;
+          const responseData = await fetchStatsDataAttempt(userId)
+          if(!responseData){ handleShowToast }                    
+              const { weekly, monthly, yearly } = responseData;
               if (monthly) {
                 setMonthlyStats(monthly);
               }
@@ -77,22 +80,6 @@ const StatsChart: React.FC<Props> = ({userId}) => {
                 setSelectedIndex(2);
               }
             }
-    
-          } catch (error: any) {
-            if (error.response) {
-              if (error.response.status === 500) {
-                console.error('500 Internal Server Error:', error.response.data.message);
-              }
-              else if (error.response.status === 404) {
-                console.error('404 Not Found:', error.response.data.message);
-              }
-              else {
-                // Handle other status codes
-                console.error('Other Error:', error.response.status, error.response.data);
-              }
-            }
-          }
-        };
         fetchData();
       }, []);
 

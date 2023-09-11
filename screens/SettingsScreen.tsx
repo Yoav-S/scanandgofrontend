@@ -138,7 +138,6 @@ const styles = StyleSheet.create({
       marginTop: '5%',
       alignSelf:'center',
       width: '80%',
-
     },
     firstCon: {
       borderRadius: 8

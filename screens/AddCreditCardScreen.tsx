@@ -88,20 +88,22 @@ const AddCreditCardScreen: React.FC = () => {
                                 <DropDownPicker
                                     listMode="SCROLLVIEW"
                                     placeholder="Select credit card"
-                                    dropDownContainerStyle={{height: 300}}
+                                    dropDownContainerStyle={{height: 200, backgroundColor: background, zIndex: 10}}
                                     style={{
+                                        
                                         backgroundColor: background,
                                         borderWidth: 1,
                                         paddingHorizontal: 12,
                                         borderRadius: 5,
                                         marginTop: '6%',
-                                        zIndex: 10
+                                        zIndex: 10,
                                     }}
+                                    containerStyle={{zIndex: 10}}
+                                    textStyle={{color: text.primary}}
                                     open={open}
                                     value={currentCategoryValue}
                                     items={allCategoriesValues}
                                     setOpen={setOpen}
-
                                     onChangeValue={(category) => {
                                     setCurrentCategoryValue(category?.toString() || '');
                                     handleChange('cardType')(category?.toString() || '');}}
@@ -112,6 +114,9 @@ const AddCreditCardScreen: React.FC = () => {
                         <CheckBox 
                         title={"set as default"} 
                         checked={isDefault}
+                        textStyle={{color: text.primary}}
+                        
+                        containerStyle={{borderWidth: 0,backgroundColor: background}}
                         onPress={() => {
                         setisDefault(!isDefault)
                         handleChange('isDefault')

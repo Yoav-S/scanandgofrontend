@@ -7,7 +7,7 @@ import jwt_decode from "jwt-decode";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { requestUserPermission } from '../utils/requests';
 import DropDownPicker from 'react-native-dropdown-picker';
-import {IteminCartType, CouponType, TransactionFormType} from '../interfaces/interfaces'
+import {IteminCartType, CouponType, TransactionFormType, recentTransaction} from '../interfaces/interfaces'
 import { Asset } from 'react-native-image-picker';
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
@@ -379,13 +379,14 @@ const addCreditCardAttempt = async (values: creditCardFormType): Promise<[boolea
 }
 
   const PaymentAttempt = async (transactionObject: TransactionFormType): Promise<boolean> => {
-    console.log(transactionObject);
     
     try{
       const response: AxiosResponse = await api.post('transactions/createTransaction', transactionObject, {headers: {Authorization: 'Bearer ' + token}});
-      console.log('status',response.status);
+      console.log(response.data);
       if(currentUser){
       const newUser = await getUserById(currentUser._id, token);
+      console.log('newuser',newUser);
+      
       if (newUser != null) {
         setCurrentUser(newUser);
         setAuthenticated(true);
@@ -467,7 +468,75 @@ return false;
 }
 }
 
-
+const getFullTransaction = async (id: string): Promise<[boolean,recentTransaction?]> => {
+const response: AxiosResponse = await api.get('transactions/getOneById', 
+{params: {id: id} ,         
+headers:{Authorization: "Bearer " + token}
+} );
+if(response.status !== 200) {return [false];}
+else{
+  console.log(response.data);
+  return [true,response.data];
+}
+}
+const getMoreAttemt = async (pageNumber: string):Promise<any> => {
+  console.log(pageNumber);
+  
+try {
+    const reqBody = {
+        query:
+        {
+            userId: currentUser?._id,
+        },
+        projection: {
+            cardType: 1,
+            totalAmount: 1,
+            formattedDate: 1
+        },
+        currentPage: pageNumber
+    }
+    const response = await axios.post('https://scan-and-go.onrender.com/transactions/getManyPagination', reqBody);
+    return response.data;
+} catch (error: any){
+  if (error.response) {
+    if (error.response.status === 500) {
+        console.error('500 Internal Server Error:', error.response.data.message);
+    }
+    else if (error.response.status === 404) {
+        console.error('404 Not Found:', error.response.data.message);
+    }
+    else {
+        // Handle other status codes
+        console.error('Other Error:', error.response.status, error.response.data);
+    }
+}
+}
+}
+const fetchStatsDataAttempt = async (userId: string):Promise<any> => {
+try{
+  const queryParams = {
+    id: userId,
+  };
+  const response = await axios.get('https://scan-and-go.onrender.com/transactions/allStats', { params: queryParams });
+  if(response.status === 200){
+    return response.data;
+  }
+  else return false;
+} catch (error: any) {
+  if (error.response) {
+    if (error.response.status === 500) {
+      console.error('500 Internal Server Error:', error.response.data.message);
+    }
+    else if (error.response.status === 404) {
+      console.error('404 Not Found:', error.response.data.message);
+    }
+    else {
+      // Handle other status codes
+      console.error('Other Error:', error.response.status, error.response.data);
+    }
+}
+}
+}
   const contextValue: DataContextType = {
     currentUser,
     setCurrentUser,
@@ -503,7 +572,10 @@ return false;
     isMessageModalVisible,
     setisMessageModalVisible,
     isLogoutModal,
-    setisLogoutModal
+    setisLogoutModal,
+    getFullTransaction,
+    getMoreAttemt,
+    fetchStatsDataAttempt
   };
 
   return (

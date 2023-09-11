@@ -3,6 +3,7 @@ import {Text, StyleSheet, View} from 'react-native'
 import { TitleAndArrowBackProps } from '../../interfaces/interfaces';
 import { Icon } from 'react-native-elements';
 import { ThemeContext } from '../../context/ThemeContext';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 
 
 const TitleAndArrowBack: React.FC<TitleAndArrowBackProps> = (props) => {
@@ -11,12 +12,11 @@ const TitleAndArrowBack: React.FC<TitleAndArrowBackProps> = (props) => {
     const { primary, secondary, text, background } = theme.colors     
     return (
         <View style={[styles.titleandarrowcon, {backgroundColor: background}]}>
-                      <Icon 
-                      onPress={props.onPress}
-                      name="arrow-left" 
-                      color={'black'} 
-                      size={30}
-                      />
+            <FontAwesomeIcon 
+            name="arrow-left" 
+            size={25} color={text.secondary}             
+            onPress={props.onPress}
+            />
 
             <Text style={{color: text.primary, fontWeight: '700'}}>{props.text}</Text>
             </View>

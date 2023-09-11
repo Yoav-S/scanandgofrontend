@@ -12,7 +12,7 @@ import { ThemeContext } from '../../context/ThemeContext';
 const {width} = Dimensions.get('window');
   
   const SPACING = 5;
-  const ITEM_LENGTH = width * 1; // Item is a square. Therefore, its height and width are of the same length.
+  const ITEM_LENGTH = width * 0.9; // Item is a square. Therefore, its height and width are of the same length.
   const BORDER_RADIUS = 20;
   
 // ... (other imports and styles)
@@ -23,7 +23,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ data }) => {
   const { theme } = useContext(ThemeContext);
   const { primary, secondary, text, background } = theme.colors     
   return (
-      <View style={[styles.container, {backgroundColor: background}]}>
+      <View style={[styles.container, {backgroundColor: 'white'}]}>
         <FlatList
           data={data}
           renderItem={({ item, index }) => {
@@ -54,6 +54,9 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ data }) => {
 export default ImageCarousel;
   const styles = StyleSheet.create({
     container: {
-        marginTop: '5%'
+        marginTop: '5%',
+        width: '90%',
+        alignSelf: 'center',
+        borderRadius: 18
     }
   });

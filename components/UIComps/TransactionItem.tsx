@@ -2,13 +2,15 @@ import React, {useContext} from "react";
 import {View, Text, SafeAreaView, StyleSheet, Image} from 'react-native';
 import {TransactionCompType} from '../../interfaces/interfaces'
 import { ThemeContext } from "../../context/ThemeContext";
-import { Icon } from 'react-native-elements';
+import Icon from "react-native-fontawesome";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { StackNavigationProp } from '@react-navigation/stack';
-
-const TransactionItem: React.FC<TransactionCompType> = ({transaction}) => {
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
+import { useDataContext } from "../../context/DataContext";
+import Toast from "react-native-toast-message";
+const TransactionItem: React.FC<TransactionCompType> = ({transaction, handleshowToast}) => {
     const navigation = useNavigation<StackNavigationProp<any, 'HomeScreen'>>();
-
+    const {currentUser, getFullTransaction, showToast} = useDataContext();
     const { cardType } = transaction;
     const { theme } = useContext(ThemeContext);
     const { primary, secondary, text, background } = theme.colors     
@@ -22,16 +24,27 @@ const TransactionItem: React.FC<TransactionCompType> = ({transaction}) => {
     } else if (cardType === 'visa') {
       imageSource = require('../../images/visa.png');
     }
+
+    const handlePressTransaction = async (id: string) => {
+      const [isExists, transaction] = await getFullTransaction(id);
+      if(isExists){
+          navigation.navigate('TransactionView',{transaction: transaction});
+      }
+      else{
+        handleshowToast
+      }
+  }
+
+
     return (
         <View style={[styles.container, {backgroundColor: background}]}>
             <Image source={imageSource}/>
             <Text style={{color: text.primary}}>{transaction.formattedDate}</Text>
             <Text style={{color: text.primary}}>{transaction.totalAmount}</Text>
-            <Icon 
-            onPress={() => {navigation.navigate('TransactionScreen', {transaction: transaction})}}
-            name="arrow-left" 
-            color={'black'} 
-            size={30}
+            <FontAwesomeIcon 
+            name="arrow-right" 
+            size={30} color={text.secondary}             
+            onPress={() => {handlePressTransaction(transaction._id)}}
             />
         </View>
     )
