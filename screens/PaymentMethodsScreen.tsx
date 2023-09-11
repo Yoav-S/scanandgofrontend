@@ -12,6 +12,8 @@ import BottomNavbar from '../components/UIComps/BottomNavbar';
 import { creditCardType } from '../interfaces/interfaces';
 import { Icon } from 'react-native-elements';
 import { ThemeContext } from '../context/ThemeContext';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
+
 interface PaymentMethodsScreenProps {
     navigation: StackNavigationProp<any, 'PaymentMethodsScreen'>;
 }
@@ -63,14 +65,20 @@ const PaymentMethodsScreen: React.FC<PaymentMethodsScreenProps> = ({ navigation 
                             cvc={card.cvv}
                         />
                         <View style={styles.trashiconCon}>
-                        <Icon style={styles.trashicon} name="settings" size={30} onPress={() => {handleDeleteCard(card._id)}} color={text.primary}/>
+                        <FontAwesomeIcon 
+                        style={styles.trashicon}
+                        name="trash" 
+                        size={30} 
+                        color={text.primary}             
+                        onPress={() => {handleDeleteCard(card._id)}}
+                        />
                         </View>
                         <View style={{flexDirection: 'row', alignItems: 'center'}}>
                         <CheckBox
                             checked={card.isDefault}
                             onPress={() => handleDefaultCardChange(card._id)}
                         />
-                        <Text style={{color: text.primary}}>Use as default payment credit card</Text>
+                        <Text style={{color: text.primary, fontWeight: 'bold'}}>Use as default payment method</Text>
                         </View>
                     </View>
                 ))}
@@ -89,13 +97,14 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     trashicon: {
+        width: 30,
+        textAlign: 'center',
     },
     titleCon: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingHorizontal: 16,
-        marginTop: 16,
+        paddingHorizontal: 8,
     },
     trashiconCon: {
         position: 'absolute',

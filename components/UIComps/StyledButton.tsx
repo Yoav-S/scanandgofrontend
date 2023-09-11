@@ -2,12 +2,18 @@ import React, {useState, useContext} from "react";
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import { StyledButtonType } from "../../interfaces/interfaces";
 import { ThemeContext } from "../../context/ThemeContext";
-import { ActivityIndicator } from "@react-native-material/core";
+import activitiIndicator from '../../assets/activitiindicator.json'
+import LottieView from "lottie-react-native";
 const StyledButton: React.FC<StyledButtonType> = (props) =>{
-    const { theme, buttonTheme } = useContext(ThemeContext);
+    const { buttonTheme } = useContext(ThemeContext);
     const {buttonMain,buttonAlt } = buttonTheme;
-
-    const { primary, secondary, text, background } = theme.colors     
+    const activitiIndicatorAnimation = (<LottieView
+        style={{width: 21, height: 21, alignSelf: 'center'}}
+        speed={1} 
+        source={activitiIndicator}
+        autoPlay
+        loop={true}
+        />)
     return (
         <TouchableOpacity 
         disabled={props.disabled} 
@@ -25,7 +31,7 @@ const StyledButton: React.FC<StyledButtonType> = (props) =>{
             || props.text === 'Verified' ? 'white' 
             : props.text === 'Image Added' ? buttonMain.text 
             : buttonAlt.text}]}>{props.text}</Text>)
-            :(<ActivityIndicator size={30}/>)}
+            :(activitiIndicatorAnimation)}
         </TouchableOpacity>
     )
 }

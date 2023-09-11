@@ -16,13 +16,7 @@ type NavigatorParamList = {
     TransactionList: {transaction: ITransaction}
 };
 
-const activitiIndicatorObject = (<LottieView
-    style={{width: 50, height: 50 , zIndex: 10}}
-    speed={1} 
-    source={activitiIndicator}
-    autoPlay
-    loop={true}
-    />)
+
 const TransactionsList: React.FC = () => {
     const { theme } = useContext(ThemeContext);
     const { primary, secondary, text, background } = theme.colors 
@@ -33,6 +27,13 @@ const TransactionsList: React.FC = () => {
     const [isMoreToFetch, setIsMoreToFetch] = useState(false);
     const route = useRoute<RouteProp<NavigatorParamList, 'TransactionList'>>();
     const navigation = useNavigation<StackNavigationProp<any>>();
+    const activitiIndicatorObject = (<LottieView
+        style={{width: 50, height: 50 , zIndex: 10}}
+        speed={1} 
+        source={activitiIndicator}
+        autoPlay
+        loop={true}
+        />)
     const transaction = {
         '_id': '64faebbccc82c8de3d122fd2',
         'userId': '64e4624cac9453ef60727a0c',
@@ -118,14 +119,14 @@ const TransactionsList: React.FC = () => {
     return (
         <View style={{ flex: 1 , borderRadius: 14}}>
             <Text style={styles.listHeader} >All Transaction ({currentUser?.transactionsAmount})</Text>
-            <View style={{height: 300, width: '90%', alignSelf: 'center', backgroundColor: background, borderRadius: 14}}>
+            <View style={{height: 280, width: '90%', alignSelf: 'center', backgroundColor: background, borderRadius: 14}}>
             <ScrollView contentContainerStyle={[styles.ScrollView, {backgroundColor: background}]}>
                 { transactionsList.length > 0 ? list : <Text>No Recent Transaction</Text>}
                 {isMoreToFetch ? (
                     isLoading ? (
-                    <View style={{alignSelf: 'center', marginTop: '3%'}}>
+                    <View style={{alignSelf: 'center', marginTop: '1%', borderRadius: 50}}>
                     {activitiIndicatorObject}
-                </View>
+                </View> 
                 ) : (
                 <Button buttonStyle={styles.button} onPress={handleGetMore} type={'outline'} title={'Get more'} />
                 ) ) : <></>}

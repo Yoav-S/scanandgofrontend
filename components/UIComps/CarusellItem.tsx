@@ -28,7 +28,8 @@ const styles = StyleSheet.create({
     image: {
         height: 100,
         width: 100,
-        marginRight: '2%'
+        marginRight: '4%',
+        borderRadius: 8
     },
     detailscon:  {
         width: '50%'

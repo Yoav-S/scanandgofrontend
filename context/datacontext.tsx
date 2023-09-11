@@ -61,6 +61,8 @@ const updatePasswordAttempts = async (password: string, newpassword: string): Pr
 }
 
 const deleteCardAttempt = async (cardId: string, userId: string): Promise<boolean> => {
+  console.log(cardId, userId);
+  
   const obj = {
     userId: userId,
     cardId: cardId
@@ -68,7 +70,15 @@ const deleteCardAttempt = async (cardId: string, userId: string): Promise<boolea
   try{
     const response: AxiosResponse = await api.patch('paymentMethods/deleteCreditCard', obj);
     console.log(response.data);
-    
+    if(currentUser){
+      const newUser = await getUserById(currentUser._id, token);
+      console.log('newuser',newUser);
+      
+      if (newUser != null) {
+        setCurrentUser(newUser);
+        setAuthenticated(true);
+      }
+     }
     if(response.status === 200 || response.status === 201){
       return true;
     }
@@ -378,7 +388,7 @@ const addCreditCardAttempt = async (values: creditCardFormType): Promise<[boolea
 
 }
 
-  const PaymentAttempt = async (transactionObject: TransactionFormType): Promise<boolean> => {
+const PaymentAttempt = async (transactionObject: TransactionFormType): Promise<boolean> => {
     
     try{
       const response: AxiosResponse = await api.post('transactions/createTransaction', transactionObject, {headers: {Authorization: 'Bearer ' + token}});
@@ -409,6 +419,25 @@ const addCreditCardAttempt = async (values: creditCardFormType): Promise<[boolea
     }
   }
 
+  const getItemAttempt = async (itemId: string):Promise <any> => {
+    try{
+      const requestBody = {
+        query: {
+          _id: itemId,
+        },
+        projection: {},
+      };
+      const response = await axios.post(
+        'https://scan-and-go.onrender.com/items/getOne',
+        requestBody,
+      );
+      if (response.status == 200 || response.status == 201) {
+        return response;
+    }
+  } catch (err) {
+    
+  }
+  } 
   const showToast = (message: string, status: string, header: string) => {
     Toast.show({
       type: status,
@@ -575,7 +604,8 @@ try{
     setisLogoutModal,
     getFullTransaction,
     getMoreAttemt,
-    fetchStatsDataAttempt
+    fetchStatsDataAttempt,
+    getItemAttempt
   };
 
   return (

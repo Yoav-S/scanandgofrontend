@@ -14,7 +14,7 @@ const CouponComp: React.FC<CouponCompProps> = ({isCouponValid, isAttempted, hand
 
     return(
         <SafeAreaView style={[styles.container, {backgroundColor: background}]}>
-        <Icon name="note" size={30}/>
+        <Icon color={text.primary} name="note" size={30}/>
         <FormInput isApplied isAttempted label="Enter Coupon" setInput={(input: string) => {changeInputHandler(input)}}/>
         <StyledButton isApplied isAttempted onPress={handleCouponCheck} isLoading={isLoading} smallbutton text={btnLabelText}/>
         </SafeAreaView>

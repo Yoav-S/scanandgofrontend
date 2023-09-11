@@ -67,7 +67,7 @@ const Cart: React.FC = () => {
             <View style={styles.titleandIcon}>
             <Text/>
             <Text style={{color: text.primary, fontWeight: '600', fontSize: 18}}>Cart</Text>
-            <Icon name="shopping-cart" size={30}/>
+            <Icon color={text.primary} name="shopping-cart" size={30}/>
             </View>
             {
                isCartEmpty ? (

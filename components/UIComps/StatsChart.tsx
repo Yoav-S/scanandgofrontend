@@ -60,7 +60,7 @@ const StatsChart: React.FC<Props> = ({userId, handleShowToast}) => {
         const fetchData = async () => {
           const responseData = await fetchStatsDataAttempt(userId)
           if(!responseData){ handleShowToast }                    
-              const { weekly, monthly, yearly } = responseData;
+              const { weekly, monthly, yearly } = responseData;              
               if (monthly) {
                 setMonthlyStats(monthly);
               }

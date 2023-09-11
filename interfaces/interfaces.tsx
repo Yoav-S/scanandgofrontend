@@ -126,6 +126,7 @@ export interface DataContextType {
     currentUser: CurrentUserType | null;
     isMessageModalVisible: boolean;
     getMoreAttemt: (pageNumber: string) => Promise<any>;
+    getItemAttempt: (itemId: string) => Promise<any>;
     fetchStatsDataAttempt: (userId: string) => Promise<any>;
     setisMessageModalVisible: (value: boolean) => void;
     isLogoutModal: boolean;

@@ -47,12 +47,22 @@ setamountofitemsvariable(currentUser?.cart.length || 0)
       )}
       <Icon color={route.name === "CartScreen" ? 'lightblue' : 'white'} name="shopping-cart" size={30} onPress={navigateCart}/>
       </View>
-      <View style={styles.plusIconContainer}>
+      <View style={[styles.plusIconContainer, {backgroundColor: background}]}>
       <View style={styles.plusIconSecondCon}>
         <Icon onPress={triggerScan} color="black" name="nfc" size={50} />
       </View>
       </View>
-      <Icon name="settings" size={30} color={route.name === "Settings" ? 'lightblue' : 'white'} onPress={navigateSettings}/>
+      <Icon 
+      name="settings" 
+      size={30} 
+      color={route.name === "Settings" 
+      || route.name === "EditProfile" 
+      || route.name === "SecurityScreen" 
+      || route.name === "PaymentMethodsScreen" 
+      || route.name === "TermsAndServicesScreen" 
+      || route.name === "ProblemReport"
+      ? 'lightblue' : 'white'} 
+      onPress={navigateSettings}/>
       <Icon name="person" type='ion-icons' size={30} color={route.name === "Stats" ? 'lightblue' : 'white'} onPress={navigateProfile}/>
     </SafeAreaView>
   );
@@ -76,7 +86,6 @@ const styles = StyleSheet.create({
   plusIconContainer: {
     width: 90,
     height: 90,
-    backgroundColor: 'white',
     borderRadius: 50,
     justifyContent: 'center',
     alignItems: 'center',

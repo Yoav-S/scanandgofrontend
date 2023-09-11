@@ -22,7 +22,7 @@ const ScanModel: React.FC<Props> = () => {
   const [isItemInCart, setIsItemInCart] = useState(false);
   const LottieRef = useRef(null); // <---------------- Create reference variable
   const [title, setTitle] = useState<string>( 'Hold Your Phone near the tag');
-  const {currentUser} = useDataContext();
+  const {currentUser, getItemAttempt} = useDataContext();
 
 
   const handleReadFromNFC = async () => {
@@ -42,17 +42,7 @@ const ScanModel: React.FC<Props> = () => {
         const payloadString = Buffer.from(payloadBytes).toString('utf-8');
         // Prefix to remove
         const itemId = payloadString.substring(3);
-
-        const requestBody = {
-          query: {
-            _id: itemId,
-          },
-          projection: {},
-        };
-        const response = await axios.post(
-          'https://scan-and-go.onrender.com/items/getOne',
-          requestBody,
-        );
+        const response = await getItemAttempt(itemId);
         if (response.status == 200 || response.status == 201) {
           const itemData:Itemprop = response.data[0];
           setTitle(`${itemData.name} ${itemData.price}`);
