@@ -9,7 +9,7 @@ import notFoundAnimation  from '../../assets/notFound.json'
 import cart  from '../../assets/cart.json'
 import { Buffer } from 'buffer'
 import LottieView from 'lottie-react-native';
-import {Itemprop} from '../../interfaces/interfaces'
+import {IteminCartType, Itemprop} from '../../interfaces/interfaces'
 import { Text } from '@rneui/base';
 import { useDataContext } from '../../context/DataContext';
 interface Props {
@@ -24,7 +24,14 @@ const ScanModel: React.FC<Props> = () => {
   const [title, setTitle] = useState<string>( 'Hold Your Phone near the tag');
   const {currentUser, getItemAttempt} = useDataContext();
 
-
+ const resetModel = () =>{
+  setisVisibleStatus(!isVisibleStatus);
+  setItem(null);
+  setTitle('Hold Your Phone near the tag');
+  setAnimation(scanAnimation);
+  setTagId('')
+  setIsItemInCart(false)
+ }
   const handleReadFromNFC = async () => {
     try {
       // register for the NFC tag with NDEF in it
@@ -69,14 +76,19 @@ const ScanModel: React.FC<Props> = () => {
       LottieRef.current.play()
     }
     setIsItemInCart(true);
-    const itemInCart = {
+    if(!item) { return false ; }
+    const itemInCart: IteminCartType = {
       itemId: item?._id || '',
       nfcTagCode: tagId,
+      name: item?.name,
+      category: item?.category,
+      price: item?.price,
+      imageSource: item?.imageSource
     }
-    const isItemAdded : boolean = await AddItemToCartAttempt(currentUser?._id || '', itemInCart );
+    const isItemAdded : boolean = await AddItemToCartAttempt(currentUser?._id || '', itemInCart ); 
     console.log(isItemAdded);
-    console.log(currentUser);
-  };
+    
+   };
   const scanned = (
     <ModalContent style={styles.modalContent}>
     <Image source={{ uri: item?.imageSource }} style={styles.image} />
@@ -131,7 +143,7 @@ const ScanModel: React.FC<Props> = () => {
     <View>
       <Modal
         onSwipeOut={() => {
-          setisVisibleStatus(!isVisibleStatus);
+          resetModel();
         }}
         visible={isVisibleStatus}
         swipeDirection={['up', 'down', 'left', 'right']} // can be string or an array

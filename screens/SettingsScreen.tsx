@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'none',
     color: 'black',
     fontSize: 14,
-    width: 200,
+    width: '100%',
     justifyContent: "flex-start",
   }
 });

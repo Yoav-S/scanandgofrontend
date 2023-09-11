@@ -485,14 +485,18 @@ const PaymentAttempt = async (transactionObject: TransactionFormType): Promise<b
 
 const AddItemToCartAttempt = async (userId: string, itemInCart: {itemId: string, nfcTagCode: string}): Promise<boolean> => {
 try{
-const response = await api.post('users/addToCart', { userId, itemInCart }, {headers: {Authorization: 'Bearer ' + userId}})
+const response = await api.post('users/addToCart', { userId, itemInCart }, {headers: {Authorization: 'Bearer ' + token}})
 if(currentUser){
+  console.log(response.data);
+
 let newUser: CurrentUserType = currentUser;
 newUser.cart = response.data;
 setCurrentUser(newUser);
 }
 return true;
 } catch (err: any){
+  console.log(err.message);
+  
 return false;
 }
 }
