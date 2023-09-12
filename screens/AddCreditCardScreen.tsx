@@ -1,12 +1,12 @@
-import React, {useState , useContext} from "react";
-import {View, Text, StyleSheet, SafeAreaView, KeyboardAvoidingView, TextInput} from 'react-native'
+import React, {useState , useContext, useEffect} from "react";
+import {View, Text, StyleSheet, SafeAreaView, KeyboardAvoidingView, TextInput, Platform, Keyboard} from 'react-native'
 import TitleAndArrowBack from "../components/UIComps/TitleAndArrowBack";
 import BottomNavbar from "../components/UIComps/BottomNavbar";
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import CreditCard from 'react-native-credit-card';
 import StyledButton from "../components/UIComps/StyledButton";
-import { cardNumberSchema, cardholderSchema, cvvSchema, expirationDateSchema, isDefaultSchema, cardTypeSchema } from "../messages/Statements";
+import { cardNumberSchema, cardholderSchema, cvvSchema, expirationDateSchema, isDefaultSchema, cardTypeSchema,  } from "../messages/Statements";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { StackNavigationProp } from '@react-navigation/stack';
 import { CheckBox } from "react-native-elements";
@@ -31,6 +31,7 @@ const AddCreditCardScreen: React.FC = () => {
     const [open, setOpen] = useState<boolean>(false);
     const [isDefault, setisDefault] = useState<boolean>(false);
     const [shouldAddSlash, setShouldAddSlash] = useState<boolean>(true);
+    const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
     const { theme, buttonTheme } = useContext(ThemeContext);
     const { primary, secondary, text, background } = theme.colors 
@@ -42,6 +43,11 @@ const AddCreditCardScreen: React.FC = () => {
         { label: 'american express', value: 'amex' },
     ]);
     const [currentCategoryValue, setCurrentCategoryValue] = useState<string>('');
+    const [expirationDateInputPlaceholder, setExpirationDateInputPlaceholder] = useState<string>("Expiration Date");
+
+
+
+
     const handleFormSubmit = async (values: {cardType: string, cardNumber: string, cardholderName: string, expirationDate: string, cvv: string, isDefault: boolean}) => {
         setisMessageModalVisible(true);
         console.log(values);
@@ -56,9 +62,38 @@ const AddCreditCardScreen: React.FC = () => {
             showToast(message || 'Something went wrong', 'error', 'Credit card added successfully');
         }
     }
-    
+
+    useEffect(() => {
+      const keyboardDidHideListener = Keyboard.addListener(
+        'keyboardDidHide',
+        () => {
+          setKeyboardVisible(false);
+        },
+      );
+      const keyboardDidShowListener = Keyboard.addListener(
+        'keyboardDidShow',
+        () => {
+          setKeyboardVisible(true);
+        },
+      );
+
+  
+      return () => {
+        keyboardDidHideListener.remove();
+        keyboardDidShowListener.remove();
+      };
+    }, []);
+
+
+
+
+
     return (
         <SafeAreaView style={[{backgroundColor: background},styles.container]}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        style={{ flex: 1 }}
+      >
                 <TitleAndArrowBack text="Add new credit card" onPress={() => {navigation.goBack()}}/>
                     <View style={styles.formikCon}>
                     <Formik
@@ -83,6 +118,7 @@ const AddCreditCardScreen: React.FC = () => {
                         <FormInput errorMessage={errors.cardNumber} setInput={handleChange('cardNumber')} label="Card Number" numeric/>
                         <FormInput errorMessage={errors.cardholderName} setInput={handleChange('cardholderName')} label="Card Holder Name"/>
                         <View style={styles.expireincvvCon}>
+                          <View>
                         <TextInput
                           style={styles.dateInput}
                           onChangeText={(text) => {
@@ -117,19 +153,22 @@ const AddCreditCardScreen: React.FC = () => {
                             handleChange('expirationDate')(formattedText);
                           }}
                           onBlur={() => setShouldAddSlash(true)}
-                          placeholder="mm/yy"
+                          placeholder={expirationDateInputPlaceholder}
                           value={values.expirationDate}
                           keyboardType="numeric"
                           maxLength={5}
+                          onFocus={() => {setExpirationDateInputPlaceholder("MM/YY")}}
                         />
+                        {!isValid && <Text style={{color: 'red', fontWeight: 'bold', width: 130}}>{errors.expirationDate}</Text>}
 
 
+                        </View>
 
-
-
-
+               <View>
 
                         <FormInput errorMessage={errors.cvv} setInput={handleChange('cvv')} label="CVV" numeric/>
+                      
+                        </View>
                         </View>
 
                     <View style={[ { width: '90%', alignSelf: 'center', height: 90 }]}>
@@ -178,7 +217,8 @@ const AddCreditCardScreen: React.FC = () => {
                         )}
                       </Formik>
                     </View>
-                <BottomNavbar/>
+                    {!isKeyboardVisible && <BottomNavbar />}
+</KeyboardAvoidingView>
         </SafeAreaView>
     )
 }
@@ -191,20 +231,19 @@ const styles = StyleSheet.create({
 
     },
     dateInput: {
-        height: 40,
-        width: 80, // Adjust width as needed
         borderColor: 'gray',
         borderWidth: 1,
         borderRadius: 5,
         paddingHorizontal: 10,
         marginBottom: 10,
+        width: 130
       },
       
     expireincvvCon: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center',
-        alignSelf: 'center',
+        width: '90%',
+        alignSelf: 'center'
 
     },
     cardContainer: {

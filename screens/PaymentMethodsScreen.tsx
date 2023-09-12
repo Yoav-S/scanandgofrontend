@@ -73,13 +73,14 @@ const PaymentMethodsScreen: React.FC<PaymentMethodsScreenProps> = ({ navigation 
                         onPress={() => {handleDeleteCard(card._id)}}
                         />
                         </View>
-                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                        <View style={{flexDirection: 'row', alignItems: 'center',}}>
                         <CheckBox
                             checked={card.isDefault}
                             onPress={() => handleDefaultCardChange(card._id)}
                         />
                         <Text style={{color: text.primary, fontWeight: 'bold'}}>Use as default payment method</Text>
                         </View>
+                        <View style={[styles.barrier, {borderColor: text.secondary, backgroundColor: text.secondary}]}/>
                     </View>
                 ))}
             </ScrollView>
@@ -95,6 +96,7 @@ export default PaymentMethodsScreen;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        alignItems: 'center'
     },
     trashicon: {
         width: 30,
@@ -106,9 +108,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingHorizontal: 8,
     },
+    barrier: {
+        borderWidth: 0.1,
+        marginBottom: '5%'
+    },
     trashiconCon: {
         position: 'absolute',
-        bottom: 40,
+        bottom: 55,
         right: 25,
         alignItems: 'center',
         justifyContent: 'center',

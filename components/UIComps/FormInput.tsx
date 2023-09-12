@@ -8,7 +8,8 @@ const FormInput: React.FC<FormInputType> = (props) => {
   const { theme } = useContext(ThemeContext);
   const { primary, secondary, text, background } = theme.colors   
   const onChangeTextHandler = (text: string) => {
-    if(props.label === 'Card Holder Name'){    props.setInput(text.toUpperCase());
+    if(props.label === 'Card Holder Name'){    
+      props.setInput(text.toUpperCase());
     }
     else{
       props.setInput(text);
@@ -19,13 +20,29 @@ const FormInput: React.FC<FormInputType> = (props) => {
     <View style={{marginTop: '1%', marginBottom: '10%'}}>
     <TextInput 
       keyboardType={props.numeric ? 'number-pad' : 'default'}
-      style={[styles.textInput, {width: props.label === "Exp Date" || props.label === "CVV" || props.label === 'Enter Coupon' ? 165 : 330}]}
+      style={
+        [
+          styles.textInput, 
+          {
+            width: props.label === "Exp Date" ||
+             props.label === "CVV" ||
+              props.label === 'Enter Coupon' ?
+               165 : 330
+          }
+        ]
+      }
       onChangeText={onChangeTextHandler}
       autoCapitalize="none"
       autoCorrect={false}
-      secureTextEntry={props.label === 'Password' || props.label === 'Repeat Password' || props.label === 'Current Password' || props.label === 'New Password'}
+      secureTextEntry={
+        props.label === 'Password' ||
+       props.label === 'Repeat Password' ||
+        props.label === 'Current Password' ||
+         props.label === 'New Password'
+      }
       placeholder={props.label}
       placeholderTextColor={text.primary}
+      maxLength={props.label === 'CVV' ? 3 : 100}
       selectionColor="white"
       variant='standard'
       inputContainerStyle={{}}

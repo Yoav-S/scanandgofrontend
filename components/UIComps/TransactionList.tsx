@@ -64,7 +64,6 @@ const TransactionsList: React.FC = () => {
     };
     const handlePressTransaction = async (id: string) => {
         const [isExists, transaction] = await getFullTransaction(id);
-        console.log(isExists);
         if(isExists){
             navigation.navigate('TransactionView',{transaction: transaction});
         }
@@ -92,7 +91,6 @@ const TransactionsList: React.FC = () => {
         setTransactionsList(updatedList);
         setIsMoreToFetch(isMore);
     };
-    console.log(isLoading);
     
     const list = transactionsList.map((transaction : recentTransaction, index) => {
         
