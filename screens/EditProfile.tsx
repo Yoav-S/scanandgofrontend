@@ -6,6 +6,8 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import { Icon } from 'react-native-elements';
+
 import DatePicker from 'react-native-date-picker';
 import TitleAndBtnCon from '../components/UIComps/TitleAndBtnCon';
 import AllCheckBoxCategories from '../components/UIComps/AllCheckboxCategories';
@@ -77,37 +79,49 @@ const EditProfile: React.FC = () => {
                   setInput={handleChange('email')}
                   label={'Email'}
                 />
-                    <View style={{marginTop: '10%'}}>
-                  <TitleAndBtnCon
-                    text="Date of birth"
-                    btnbold
-                    onPress={() => {
-                      setOpenModalHandler();
-                      // Mark the birthDate field as touched to trigger validation
-                      touched.birthDate = true;
-                    }}
-                    btnlabel="Open Date book"
-                  />
-                  <DatePicker
-                    modal
-                    open={openDateModal}
-                    date={date}
-                    mode="date"
-                    onConfirm={newDate => {
-                      setopenDateModal(false);
-                      setDate(newDate);
-                      const isoDate = newDate.toISOString();
-                      setFieldValue('birthDate', isoDate);
-                      setIsBirthDateValidated(true); // Update the validation flag
-                    }}
-                    onCancel={() => {
-                      setopenDateModal(false);
-                    }}
-                  />
-                  {isBirthDateValidated && touched.birthDate && errors.birthDate && (
-                    <Text style={{ color: 'red' }}>{errors.birthDate}</Text>
-                  )}
-                </View>
+            <View style={{marginTop: '10%', width: '90%'}}>
+              <View style={{flexDirection:'column'}}>
+                <Text style={{color: text.primary, fontWeight: 'bold', fontSize: 17,marginLeft: '7%'}}>Date Of Birth</Text>
+                <StyledButton 
+                text='Select birth Date'
+                smallbutton 
+                onPress={() => {
+                  setOpenModalHandler();
+                  // Mark the birthDate field as touched to trigger validation
+                  touched.birthDate = true;
+                }}/>
+              </View>
+              <View style={{flexDirection: 'row', width: '95%', justifyContent: 'space-between'}}>
+              <DatePicker
+                modal
+                maximumDate={new Date()}
+                open={openDateModal}
+                date={date}
+                mode="date"
+                onConfirm={newDate => {
+                  setopenDateModal(false);
+                  setDate(newDate);
+                  const isoDate = newDate.toISOString();
+                  setFieldValue('birthDate', isoDate);
+                  setIsBirthDateValidated(true); // Update the validation flag
+                }}
+                onCancel={() => {
+                  setopenDateModal(false);
+                }}
+              />
+              {!(values.birthDate?.length === 0) && (
+                <View style={{ marginLeft: '10%' , flexDirection: 'row'}}>
+              <Text style={{color: text.primary}}>{values.birthDate?.substring(0,10)}</Text>
+              <Icon name="settings"  size={30} color={'green'}/>
+
+              </View>
+              )}
+              </View>
+
+              {!isBirthDateValidated && touched.birthDate && errors.birthDate && (
+                <Text style={{ color: 'red' }}>{errors.birthDate}</Text>
+              )}
+            </View>
     
                 <AllCheckBoxCategories
                   title="Gender"

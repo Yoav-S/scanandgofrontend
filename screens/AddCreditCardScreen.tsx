@@ -1,5 +1,5 @@
 import React, {useState , useContext} from "react";
-import {View, Text, StyleSheet, SafeAreaView, KeyboardAvoidingView} from 'react-native'
+import {View, Text, StyleSheet, SafeAreaView, KeyboardAvoidingView, TextInput} from 'react-native'
 import TitleAndArrowBack from "../components/UIComps/TitleAndArrowBack";
 import BottomNavbar from "../components/UIComps/BottomNavbar";
 import { Formik } from 'formik';
@@ -30,7 +30,9 @@ const AddCreditCardScreen: React.FC = () => {
     const navigation = useNavigation<StackNavigationProp<any, 'AddCreditCardScreen'>>();
     const [open, setOpen] = useState<boolean>(false);
     const [isDefault, setisDefault] = useState<boolean>(false);
-    const { theme } = useContext(ThemeContext);
+    const [shouldAddSlash, setShouldAddSlash] = useState<boolean>(true);
+
+    const { theme, buttonTheme } = useContext(ThemeContext);
     const { primary, secondary, text, background } = theme.colors 
     const {addCreditCardAttempt, showToast, setisMessageModalVisible} = useDataContext();
     const [allCategoriesValues, setAllCategoriesValues] = useState<{ label: string; value: string }[]>([
@@ -42,6 +44,8 @@ const AddCreditCardScreen: React.FC = () => {
     const [currentCategoryValue, setCurrentCategoryValue] = useState<string>('');
     const handleFormSubmit = async (values: {cardType: string, cardNumber: string, cardholderName: string, expirationDate: string, cvv: string, isDefault: boolean}) => {
         setisMessageModalVisible(true);
+        console.log(values);
+        
         const creditCardForm: creditCardFormType = values;
         const [isAdded, message] = await addCreditCardAttempt(creditCardForm);
         setisMessageModalVisible(false);
@@ -79,8 +83,53 @@ const AddCreditCardScreen: React.FC = () => {
                         <FormInput errorMessage={errors.cardNumber} setInput={handleChange('cardNumber')} label="Card Number" numeric/>
                         <FormInput errorMessage={errors.cardholderName} setInput={handleChange('cardholderName')} label="Card Holder Name"/>
                         <View style={styles.expireincvvCon}>
-                        <FormInput errorMessage={errors.expirationDate} setInput={handleChange('expirationDate')} label="Exp Date"/>
-                        <FormInput errorMessage={errors.cvv} setInput={handleChange('cvv')} label="Cvv" numeric/>
+                        <TextInput
+                          style={styles.dateInput}
+                          onChangeText={(text) => {
+                            if (text.length === 2 && shouldAddSlash) {
+                              text += '/';
+                              setShouldAddSlash(false);
+                            } else if (text.length === 3 && text.charAt(2) !== '/') {
+                              text = text.substring(0, 2) + '/' + text.charAt(2);
+                              setShouldAddSlash(false);
+                            } else if (text.length === 2 && text.charAt(1) === '/') {
+                              setShouldAddSlash(true);
+                            }
+                        
+                            // Split the text into mm and yy parts
+                            const [mm, yy] = text.split('/');
+                        
+                            let updatedMM = mm;
+                            let updatedYY = yy;
+                        
+                            // Check if mm is greater than 12 and limit it to 12
+                            if (mm && parseInt(mm) > 12) {
+                              updatedMM = '12';
+                            }
+                        
+                            // Check if yy is greater than 43 and limit it to 43
+                            if (yy && parseInt(yy) > new Date().getFullYear() + 20 - 2000) {
+                              updatedYY = (new Date().getFullYear() + 20 - 2000).toString();
+                            }
+                        
+                            const formattedText = updatedMM + (updatedYY ? '/' + updatedYY : '');
+                        
+                            handleChange('expirationDate')(formattedText);
+                          }}
+                          onBlur={() => setShouldAddSlash(true)}
+                          placeholder="mm/yy"
+                          value={values.expirationDate}
+                          keyboardType="numeric"
+                          maxLength={5}
+                        />
+
+
+
+
+
+
+
+                        <FormInput errorMessage={errors.cvv} setInput={handleChange('cvv')} label="CVV" numeric/>
                         </View>
 
                     <View style={[ { width: '90%', alignSelf: 'center', height: 90 }]}>
@@ -88,7 +137,7 @@ const AddCreditCardScreen: React.FC = () => {
                                 <DropDownPicker
                                     listMode="SCROLLVIEW"
                                     placeholder="Select credit card"
-                                    dropDownContainerStyle={{height: 200, backgroundColor: background, zIndex: 10}}
+                                    dropDownContainerStyle={{height: 200, backgroundColor: buttonTheme.buttonMain.background, zIndex: 10}}
                                     style={{
                                         
                                         backgroundColor: background,
@@ -141,10 +190,22 @@ const styles = StyleSheet.create({
     mainCon: {
 
     },
+    dateInput: {
+        height: 40,
+        width: 80, // Adjust width as needed
+        borderColor: 'gray',
+        borderWidth: 1,
+        borderRadius: 5,
+        paddingHorizontal: 10,
+        marginBottom: 10,
+      },
+      
     expireincvvCon: {
         flexDirection: 'row',
+        justifyContent: 'space-between',
         alignItems: 'center',
-        alignSelf: 'center'
+        alignSelf: 'center',
+
     },
     cardContainer: {
         marginBottom: "5%",

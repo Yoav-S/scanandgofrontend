@@ -26,6 +26,9 @@ import Slider from 'react-native-slider';
 import { ActivityIndicator } from '@react-native-material/core';
 import Toast from 'react-native-toast-message';
 import { requestUserPermission } from '../utils/requests';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
+import { Icon } from 'react-native-elements';
+
 import { ThemeContext } from '../context/ThemeContext';
 const validationSchema = Yup.object().shape({
   email: emailSchema,
@@ -78,8 +81,9 @@ const SignupScreen: React.FC = () => {
 
   return (
     <View style={[styles.container, { backgroundColor: background }]}>
-
-{ isLoading ? (<ActivityIndicator size={60}/>) : (  <View><BigTitle title={'Signup'} />
+      <BigTitle title={'Signup'} />
+{ isLoading ? (<ActivityIndicator size={60}/>) : (<ScrollView style={{margin: '3%'}}>
+  <View>
       <Formik
         initialValues={{ email: '', password: '', confirmPassword: '', fullName: '', gender: '', birthDate: '', termsAndConditions: false }}
         validationSchema={validationSchema}
@@ -122,20 +126,23 @@ const SignupScreen: React.FC = () => {
               isSingleCategory
             />
 
-            <View style={{marginTop: '4%'}}>
-              <TitleAndBtnCon
-                text="Date of birth"
-                btnbold
+            <View style={{marginTop: '10%', width: '90%'}}>
+              <View style={{flexDirection:'column'}}>
+                <Text style={{color: text.primary, fontWeight: 'bold', fontSize: 17,marginLeft: '7%'}}>Date Of Birth</Text>
+                <StyledButton 
+                text='Select birth Date'
+                smallbutton 
                 onPress={() => {
                   setOpenModalHandler();
                   // Mark the birthDate field as touched to trigger validation
                   touched.birthDate = true;
-                }}
-                btnlabel="Open Date book"
-              />
+                }}/>
+              </View>
+              <View style={{flexDirection: 'row', width: '95%', justifyContent: 'space-between'}}>
               <DatePicker
                 style={styles.datemodal}
                 modal
+                maximumDate={new Date()}
                 open={openDateModal}
                 date={date}
                 mode="date"
@@ -150,11 +157,20 @@ const SignupScreen: React.FC = () => {
                   setopenDateModal(false);
                 }}
               />
-              {isBirthDateValidated && touched.birthDate && errors.birthDate && (
+              {!(values.birthDate?.length === 0) && (
+                <View style={{ marginLeft: '10%' , flexDirection: 'row'}}>
+              <Text style={{color: text.primary}}>{values.birthDate?.substring(0,10)}</Text>
+              <Icon name="settings"  size={30} color={'green'}/>
+
+              </View>
+              )}
+              </View>
+
+              {!isBirthDateValidated && touched.birthDate && errors.birthDate && (
                 <Text style={{ color: 'red' }}>{errors.birthDate}</Text>
               )}
             </View>
-            <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center' }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', marginTop: '5%' }}>
             <CheckBox
                 style={{ alignSelf: 'center' }}
                 center
@@ -214,9 +230,10 @@ const SignupScreen: React.FC = () => {
       </Formik>
       <StyledButton bigbutton disabled={false} onPress={() => {navigation.navigate('Login')}} text={'Back to login'} />
       </View>
+        </ScrollView>
+
      )}
   <Toast/>
-
 
     </View>
   );
@@ -225,7 +242,6 @@ const SignupScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
   },
   datemodal: {
   },

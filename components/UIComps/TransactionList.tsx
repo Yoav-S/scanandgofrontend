@@ -86,8 +86,6 @@ const TransactionsList: React.FC = () => {
         setIsLoading(true);
         const { list, isMore } = await getMoreRequest();
         setIsLoading(false);
-        console.log(list);
-        console.log(isMore);
         const updatedPage = pageNumber + 1;
         setPageNumber(updatedPage);
         const updatedList = [...transactionsList, ...list]; // Use the spread operator here

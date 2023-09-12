@@ -1,5 +1,5 @@
 import React, {useState, useContext} from "react";
-import { View, StyleSheet, Image, Text } from "react-native";
+import { View, StyleSheet, Image, Text , ScrollView} from "react-native";
 import { ThemeContext } from "../context/ThemeContext";
 import { useToken } from '../context/TokenContext'; // Import the TokenContext hook
 import { CheckBox } from 'react-native-elements'
@@ -20,23 +20,36 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { emailSchema, passwordSchema } from "../messages/Statements";
 import Toast from 'react-native-toast-message';
 import { useDataContext } from "../context/DataContext";
-import { ActivityIndicator } from "@react-native-material/core";
+import activityIndicator from '../assets/activitiindicator.json'
 
+import LottieView from "lottie-react-native";
+import loginAnimation from '../assets/loginscreenlottie.json'
 const validationSchema = Yup.object().shape({
   email: emailSchema,
   password: passwordSchema,
 });
 const LoginScreen: React.FC = () => {
   const navigation = useNavigation<StackNavigationProp<any, 'Login'>>();
-
   const [checkBoxValue, setCheckBoxValue] = useState<boolean>(false);
   const { theme } = useContext(ThemeContext);
   const { primary, secondary, text, background } = theme.colors   
   const [buttonStatus, setButtonStatus] = useState<boolean>(true);
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
   const {loginAttempt, setAuthenticated, showToast} = useDataContext();
-
-
+  const activitiIndicatorObject = (<LottieView
+    style={{width: 100, height: 100 , zIndex: 10}}
+    speed={1} 
+    source={activityIndicator}
+    autoPlay
+    loop={true}
+    />)
+  const loginAnimationObject = (<LottieView
+    style={{width: 250, height: 250}}
+    speed={1} 
+    source={loginAnimation}
+    autoPlay
+    loop={true}
+    />)
   const handleFormSubmit = async (values: { email: string; password: string; }) => {
     setIsLoading(true)
     const result = await loginAttempt(values.email, values.password, checkBoxValue);
@@ -57,14 +70,15 @@ const LoginScreen: React.FC = () => {
 
   return (
     <View style={[styles.container, { backgroundColor: background }]}>
+      <ScrollView>
       <View style={styles.imageCon}>
-        <Image style={styles.image} source={require("../images/3135715.png")} />
-      </View>
+        {loginAnimationObject}
+       </View>
       <BigTitle title="Login" />
       <View>
 
 {
-  isLoading ? (<ActivityIndicator size={60}/>) : (      
+  isLoading ? (<View style={{padding: '15%', alignItems: 'center', marginBottom: '10%'}}>{activitiIndicatorObject}</View>) : (      
   <Formik
     initialValues={{ email: '', password: '' }}
     validationSchema={validationSchema}
@@ -109,11 +123,12 @@ const LoginScreen: React.FC = () => {
 </View>
 
 
-      <TitleAndBtnCon text={"Dont have an account ?"} btnlabel={"Sign up"} btnbold  onPress={navigateToSignUp} />
-      <TitledBarrier text={"Or Sign in via"}/>
-      <Icon style={styles.icon} name="home" size={30} />
-      <TitleAndBtnCon text="Notice a bug in the app ?" btnlabel="Notice us" btnbold onPress={() => {navigation.navigate('ProblemReport', {cameFrom: 'LoginScreen'});}}/>
-      <Toast/>
+      {!isLoading && <TitleAndBtnCon text={"Dont have an account ?"} btnlabel={"Sign up"} btnbold  onPress={navigateToSignUp} />}
+      {!isLoading && <TitledBarrier text={"Or Sign in via"}/>}
+      {!isLoading && <Icon style={styles.icon} name="home" size={30} />}
+      {!isLoading && <TitleAndBtnCon text="Notice a bug in the app ?" btnlabel="Notice us" btnbold onPress={() => {navigation.navigate('ProblemReport', {cameFrom: 'LoginScreen'});}}/>}
+      <Toast/> 
+      </ScrollView>
     </View>
   );
 };
@@ -131,7 +146,6 @@ const styles = StyleSheet.create({
   },
   imageCon: {
     alignSelf: 'center',
-    padding: '10%',
   },
   bugCon: {
     flexDirection: 'row',

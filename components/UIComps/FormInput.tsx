@@ -8,14 +8,18 @@ const FormInput: React.FC<FormInputType> = (props) => {
   const { theme } = useContext(ThemeContext);
   const { primary, secondary, text, background } = theme.colors   
   const onChangeTextHandler = (text: string) => {
-    props.setInput(text);
+    if(props.label === 'Card Holder Name'){    props.setInput(text.toUpperCase());
+    }
+    else{
+      props.setInput(text);
+    }
   };
   
   return (
-    <View style={{marginTop: '1%'}}>
+    <View style={{marginTop: '1%', marginBottom: '10%'}}>
     <TextInput 
       keyboardType={props.numeric ? 'number-pad' : 'default'}
-      style={[styles.textInput, {width: props.label === "Exp Date" || props.label === "Cvv" || props.label === 'Enter Coupon' ? 165 : 330}]}
+      style={[styles.textInput, {width: props.label === "Exp Date" || props.label === "CVV" || props.label === 'Enter Coupon' ? 165 : 330}]}
       onChangeText={onChangeTextHandler}
       autoCapitalize="none"
       autoCorrect={false}
@@ -24,6 +28,7 @@ const FormInput: React.FC<FormInputType> = (props) => {
       placeholderTextColor={text.primary}
       selectionColor="white"
       variant='standard'
+      inputContainerStyle={{}}
       inputStyle={{ color: text.primary }}
     />
     {props.errorMessage && <Text style={{color: 'red', fontWeight: 'bold' , width: props.label === "Exp Date" || props.label === "Cvv" || props.label === 'Enter Coupon' ? 135 : '85%', alignSelf:'center'}}>{props.errorMessage}</Text>}

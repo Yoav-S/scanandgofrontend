@@ -35,7 +35,7 @@ const SettingsScreen: React.FC<SettingsScreenType> = (props) => {
         }}
         onPress={() => {navigation.navigate('EditProfile', {cameFrom: 'EditProfile'})}}
         title="Edit Profile"
-        titleStyle={{color: text.primary, fontSize: 14, marginLeft: '5%'}}
+        titleStyle={{color: 'black', fontSize: 14, marginLeft: '5%'}}
         buttonStyle={styles.button}
         />
         <Button
@@ -46,7 +46,7 @@ const SettingsScreen: React.FC<SettingsScreenType> = (props) => {
         }}
         onPress={() => {navigation.navigate('SecurityScreen', {cameFrom: 'SecurityScreen'})}}
         title="Security"
-        titleStyle={{color: text.primary, fontSize: 14, marginLeft: '5%'}}
+        titleStyle={{color: 'black', fontSize: 14, marginLeft: '5%'}}
         buttonStyle={styles.button}
         />
         <Button
@@ -57,7 +57,7 @@ const SettingsScreen: React.FC<SettingsScreenType> = (props) => {
         }}
         onPress={() => {navigation.navigate('PaymentMethodsScreen', {cameFrom: 'PaymentMethodsScreen'})}}
         title="Payment Methods"
-        titleStyle={{color: text.primary, fontSize: 14, marginLeft: '5%'}}
+        titleStyle={{color: 'black', fontSize: 14, marginLeft: '5%'}}
         buttonStyle={styles.button}
         />
         </View>
@@ -73,7 +73,7 @@ const SettingsScreen: React.FC<SettingsScreenType> = (props) => {
         }}
         onPress={() => {navigation.navigate('HelpAndSupportScreen', {cameFrom: 'HelpAndSupportScreen'})}}
         title="Help & Support"
-        titleStyle={{color: text.primary, fontSize: 14, marginLeft: '5%'}}
+        titleStyle={{color: 'black', fontSize: 14, marginLeft: '5%'}}
         buttonStyle={styles.button}
         />
         <Button
@@ -84,7 +84,7 @@ const SettingsScreen: React.FC<SettingsScreenType> = (props) => {
         }}
         onPress={() => {navigation.navigate('TermsAndServicesScreen', {cameFrom: 'TermsAndServicesScreen'})}}
         title="Terms and Policies"
-        titleStyle={{color: text.primary, fontSize: 14, marginLeft: '5%'}}
+        titleStyle={{color: 'black', fontSize: 14, marginLeft: '5%'}}
         buttonStyle={styles.button}
         />
         </View>
@@ -100,7 +100,7 @@ const SettingsScreen: React.FC<SettingsScreenType> = (props) => {
         }}
         onPress={() => {navigation.navigate('ProblemReport', {cameFrom: 'Settings'});}}
         title="Report a problem"
-        titleStyle={{color: text.primary, fontSize: 14, marginLeft: '5%'}}
+        titleStyle={{color: 'black', fontSize: 14, marginLeft: '5%'}}
         buttonStyle={styles.button}
         />
         <Button
@@ -111,7 +111,7 @@ const SettingsScreen: React.FC<SettingsScreenType> = (props) => {
         }}
         onPress={handleLogOutModal}  
         title="Log out"
-        titleStyle={{color: text.primary, fontSize: 14, marginLeft: '5%'}}
+        titleStyle={{color: 'black', fontSize: 14, marginLeft: '5%'}}
         buttonStyle={styles.button}
         />
         </View>

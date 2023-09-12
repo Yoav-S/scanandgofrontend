@@ -18,6 +18,8 @@ const StyledButton: React.FC<StyledButtonType> = (props) =>{
         <TouchableOpacity 
         disabled={props.disabled} 
         style={[styles.btnstyle, 
+        {marginLeft: props.text === 'Select birth Date' ? '10%' : '0%'},
+        {alignSelf: props.text === 'Select birth Date' ? 'flex-start' : 'center'},
         {backgroundColor : props.text === 'Invalid' ? 'red' 
         : props.text === 'Verified' ? 'green' 
         : props.text === 'Image Added' ? 'green' 

@@ -161,7 +161,7 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
           isOtpVerified ? (
             <View>
             <BigTitle key={1} title='Enter a new Password'/>
-             <Text style={{color: text.primary}}>Enter the new password for your account</Text>
+             <Text style={{color: text.primary, marginLeft: '5%'}}>Enter the new password for your account</Text>
             <View>
             <Formik
                       initialValues={{ password: '', confirmPassword: '' }}
@@ -184,7 +184,7 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
                                   label={'Confirm Password'}
                                   
                               />
-                              <StyledButton disabled={!isValid || !dirty} onPress={handleSubmit} text={"Change Password"} />
+                              <StyledButton bigbutton disabled={!isValid || !dirty} onPress={handleSubmit} text={"Change Password"} />
                           </>
                       )}
                   </Formik>
@@ -234,7 +234,7 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
                                     setInput={handleChange('email')}
                                     label={'Email'}
                                 />
-                                <StyledButton disabled={!isValid || !dirty} onPress={handleSubmit} text={"Send"} />
+                                <StyledButton bigbutton disabled={!isValid || !dirty} onPress={handleSubmit} text={"Send"} />
                             </>
                         )}
                     </Formik>
