@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Text, View, SafeAreaView, StyleSheet, TextInput } from 'react-native'
+import { Text, View, SafeAreaView, StyleSheet, TextInput , KeyboardAvoidingView, Keyboard, Platform} from 'react-native'
 import { Icon } from 'react-native-elements';
 import DeviceInfo from 'react-native-device-info';
 import packageJson from '../package.json'; // Relative path to your package.json
@@ -22,8 +22,10 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { categorySchema, descriptionSchema, imageSchema } from "../messages/Statements";
 import StyledButton from "../components/UIComps/StyledButton";
-import { ActivityIndicator } from "@react-native-material/core";
 import BottomNavbar from "../components/UIComps/BottomNavbar";
+import { ScrollView } from "react-native-gesture-handler";
+import LottieView from "lottie-react-native";
+import activityIndicator from '../assets/activitiindicator.json'
 const validationSchema = Yup.object().shape({
     image: imageSchema,
     category: categorySchema,
@@ -32,10 +34,9 @@ const validationSchema = Yup.object().shape({
 const ProblemReport: React.FC<ProblemReportType> = () => {
     const navigation = useNavigation<StackNavigationProp<any, 'ProblemReport'>>();
     const route = useRoute<any>(); // Using any type for route parameter
-    const { theme } = useContext(ThemeContext);
+    const { theme, buttonTheme } = useContext(ThemeContext);
     const { primary, secondary, text, background } = theme.colors
     const styles = createStyles(primary, secondary, text, background)
-
     const appVersion = packageJson.version;
     const [currentAsset, setCurrentAsset] = useState<Asset | null>(null);
     const [cameFrom, setCameFrom] = useState<string>();
@@ -50,7 +51,16 @@ const ProblemReport: React.FC<ProblemReportType> = () => {
     const [open, setOpen] = useState(false);
     const [allCategoriesValues, setAllCategoriesValues] = useState<{ label: string; value: string }[]>([]);
     const [currentCategoryValue, setCurrentCategoryValue] = useState<string>('');
-    const [isFormValidating, setIsFormValidating] = useState<boolean>(true);
+    const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+
+    const activitiIndicatorAnimation = (<LottieView
+      style={{width: 150, height: 150, alignSelf: 'center', zIndex: 20, position: 'relative'}}
+      speed={1} 
+      source={activityIndicator}
+      autoPlay
+      loop={true}
+      />)
+
     useEffect(() => {
         const bringAllDetails = async () => {
             const deviceId: string = DeviceInfo.getDeviceId();
@@ -71,7 +81,26 @@ const ProblemReport: React.FC<ProblemReportType> = () => {
             setCameFrom(route.params.cameFrom);
         }
     }, [route.params]);
-    
+    useEffect(() => {
+      const keyboardDidHideListener = Keyboard.addListener(
+        'keyboardDidHide',
+        () => {
+          setKeyboardVisible(false);
+        },
+      );
+      const keyboardDidShowListener = Keyboard.addListener(
+        'keyboardDidShow',
+        () => {
+          setKeyboardVisible(true);
+        },
+      );
+
+  
+      return () => {
+        keyboardDidHideListener.remove();
+        keyboardDidShowListener.remove();
+      };
+    }, []);
 
     const uploadPhotoHandler = async () => {
         const options: CameraOptions = {
@@ -105,17 +134,20 @@ const ProblemReport: React.FC<ProblemReportType> = () => {
       
       const handleFormSubmit = async (value: {description: string}) => {
         setIsLoading(true);
-        console.log(currentAsset);
-        console.log(selectedImage);
         try{
           const [isPostUploaded, uploadMessage]= await uploadReport(currentAsset, currentCategoryValue, value.description, osValue, systemVersionValue, deviceModel, appVersionValue)
+          setIsLoading(false);
+          setCurrentAsset(null);
+          setSelectedImage('');
+          setCurrentCategoryValue('');
           if(isPostUploaded) {
             showToast('We will contact you soon', 'success', 'Problem succesfully uploaded')
             setTimeout(() => {
               navigation.goBack();   
-            }, 3000)
+            }, 2000)
           }
         } catch(err : any) {
+          setIsLoading(false);
           setCurrentAsset(null);
           setCurrentCategoryValue('');
           showToast(err.message, 'error', 'Problem uploading failed !')
@@ -123,12 +155,18 @@ const ProblemReport: React.FC<ProblemReportType> = () => {
       }
     return (
         <SafeAreaView style={styles.container}>
+                          <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        style={{ flex: 1 }}
+      >
+          <View  style={{flex: 1}}>
+          <ScrollView>
 
                         <TitleAndArrowBack text="Report A Problem" onPress={() => {navigation.goBack()}}/>
                         <View style={styles.allbutNavbarCon}>
 
             {
-                isLoading ? (<ActivityIndicator style={{marginTop: '20%'}} size={70}/>) : (            <Formik
+                isLoading ? (<View style={{marginTop: '50%'}}>{activitiIndicatorAnimation}</View>) : (            <Formik
                     initialValues={{ category: '', image: '', description: '' }}
                     validationSchema={validationSchema}
                     onSubmit={handleFormSubmit}
@@ -141,9 +179,23 @@ const ProblemReport: React.FC<ProblemReportType> = () => {
     
                     </View>
                     <DropDownPicker
+                      listMode="SCROLLVIEW"
                       open={open}
                       value={currentCategoryValue}
                       items={allCategoriesValues}
+                      dropDownContainerStyle={{height: 200, backgroundColor: buttonTheme.buttonMain.background, zIndex: 10}}
+                      style={{
+                                        
+                        backgroundColor: background,
+                        borderWidth: 1,
+                        paddingHorizontal: 12,
+                        borderRadius: 5,
+                        marginTop: '6%',
+                        zIndex: 10,
+                        borderColor: currentCategoryValue !== '' ? 'green' : text.secondary
+                    }}
+                    textStyle={{color: text.primary}}
+                    containerStyle={{zIndex: 10}}
                       onChangeValue={(category) => {
                         setCurrentCategoryValue(category?.toString() || '');
                         handleChange('category')(category?.toString() || '');}}
@@ -152,7 +204,12 @@ const ProblemReport: React.FC<ProblemReportType> = () => {
                       setItems={setAllCategoriesValues}
                     />
                           <View style={styles.descriptionContainer}>
-                          <Text style={{color: text.primary, fontWeight: '500' , marginBottom: '3%'}}>Description</Text>
+                            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                            <Text style={{color: text.primary, fontWeight: '500' , marginBottom: '3%'}}>Description</Text>
+                            <View>
+                            <Text style={{color: values.description.length < 20 ? 'red' : 'lightgreen', fontWeight: 'bold'}}>Letters:  {values.description.length}</Text>
+                            </View>
+                            </View>
                           <TextInput
                             multiline
                             numberOfLines={14} // Adjust this based on your design
@@ -163,7 +220,7 @@ const ProblemReport: React.FC<ProblemReportType> = () => {
                             onChangeText={handleChange('description')}
                             value={values.description}
                           />
-                          {values.description.length < 20 && <Text style={{color: text.primary}}>{errors.description}</Text>}
+                          {(values.description.length < 20 && values.description.length > 0) && <Text style={{color: 'red', fontWeight: 'bold'}}>{errors.description}</Text>}
                         </View>
                         <StyledButton text="Save Report" onPress={handleSubmit} bigbutton disabled={values.description.length < 19 || !isValid}/>
                     </>
@@ -171,7 +228,15 @@ const ProblemReport: React.FC<ProblemReportType> = () => {
       </Formik>)
             }
 </View>
-            {route.params.cameFrom === "Settings" ? (<BottomNavbar/>) : (null)}
+</ScrollView>
+
+            </View>
+
+            {route.params.cameFrom === "Settings" ? (
+                                !isKeyboardVisible && <BottomNavbar />
+
+            ) : (null)}
+            </KeyboardAvoidingView>
             <Toast/>
         </SafeAreaView>
     );

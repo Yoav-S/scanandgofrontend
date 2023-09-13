@@ -17,6 +17,8 @@ export const DataProvider: React.FC<Props> = ({ children }) => {
   const [authenticated, setAuthenticated] = useState<boolean>(false);
   const [rememberMe, setRememberMe] = useState<boolean>(true);
   const [showError, setShowError] = useState(false);
+  const [isAreYouSureModalOpen, setisAreYouSureModalOpen] = useState<boolean>(false);   
+  const [triggerDeleteCard, setTriggerDeleteCard] = useState<boolean>(false);
   const [token, setToken] = useState<string>('');
   const [isVisibleStatus, setisVisibleStatus] = useState(false);
   const [isMessageModalVisible, setisMessageModalVisible] = useState(false);
@@ -32,8 +34,7 @@ export const DataProvider: React.FC<Props> = ({ children }) => {
  * @param rememberMeValue Whether to remember the user's login.
  * @returns A promise that resolves to a boolean indicating whether the login was successful.
  */
-const updatePasswordAttempts = async (password: string, newpassword: string): Promise<boolean> =>{
-  console.log(currentUser?._id);
+const updatePasswordAttempts = async (password: string, newpassword: string): Promise<[boolean, string | null]> =>{
   
   try{
     const response = await api.put('users/updatePassword', {
@@ -47,20 +48,20 @@ const updatePasswordAttempts = async (password: string, newpassword: string): Pr
         Authorization: 'Bearer ' + token, 
       } 
     })
-    console.log(response.data);
     
     if(response.status === 200 || response.status === 201){
-      return true;
+      return [true, null];
     }else{
-      return false;
+      return [false, null];
     }
   } catch (err: any) {
-    console.log(err.message);
-    return false;
+    
+    
+    return [false, err.message];
   }
 }
 
-const deleteCardAttempt = async (cardId: string, userId: string): Promise<boolean> => {
+const deleteCardAttempt = async (cardId: string, userId: string): Promise<[boolean, string | null]> => {
   console.log(cardId, userId);
   
   const obj = {
@@ -69,10 +70,8 @@ const deleteCardAttempt = async (cardId: string, userId: string): Promise<boolea
   }
   try{
     const response: AxiosResponse = await api.patch('paymentMethods/deleteCreditCard', obj);
-    console.log(response.data);
     if(currentUser){
       const newUser = await getUserById(currentUser._id, token);
-      console.log('newuser',newUser);
       
       if (newUser != null) {
         setCurrentUser(newUser);
@@ -80,14 +79,14 @@ const deleteCardAttempt = async (cardId: string, userId: string): Promise<boolea
       }
      }
     if(response.status === 200 || response.status === 201){
-      return true;
+      return [true, null];
     }
     else{
-      return false;
+      return [false, response.data.message];
     }
     
   } catch (err: any) {
-    return false;
+    return [false, err.message];
   }
 }
 
@@ -570,6 +569,11 @@ try{
 }
 }
 }
+
+
+
+
+
   const contextValue: DataContextType = {
     currentUser,
     setCurrentUser,
@@ -609,7 +613,11 @@ try{
     getFullTransaction,
     getMoreAttemt,
     fetchStatsDataAttempt,
-    getItemAttempt
+    getItemAttempt,
+    isAreYouSureModalOpen, 
+    setisAreYouSureModalOpen,
+    triggerDeleteCard,
+    setTriggerDeleteCard
   };
 
   return (

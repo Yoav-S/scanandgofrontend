@@ -1,4 +1,5 @@
 import { Asset } from "react-native-image-picker";
+import {TextInput} from 'react-native'
 export interface Theme {
     colors:
     {
@@ -125,6 +126,10 @@ name: string;
 export interface DataContextType {
     currentUser: CurrentUserType | null;
     isMessageModalVisible: boolean;
+    isAreYouSureModalOpen: boolean;
+    triggerDeleteCard: boolean;
+    setTriggerDeleteCard: (value: boolean) => void;
+    setisAreYouSureModalOpen: (value: boolean) => void;
     getMoreAttemt: (pageNumber: string) => Promise<any>;
     getItemAttempt: (itemId: string) => Promise<any>;
     fetchStatsDataAttempt: (userId: string) => Promise<any>;
@@ -141,11 +146,11 @@ export interface DataContextType {
     setamountofitemsvariable: (amount: number) => void;
     amountofitemsvariable: number;
     AddItemToCartAttempt: (userId: string, itemInCart: {itemId: string, nfcTagCode: string}) => Promise<boolean>;
-    deleteCardAttempt: (cardId: string, userId: string) => Promise<boolean>;
+    deleteCardAttempt: (cardId: string, userId: string) => Promise<[boolean, string | null]>;
     handleLogOut: () => void;
     deleteItemAttempt: (userId: string, nfcTagCode: string) => Promise<[boolean,IteminCartType[]?]>;
     changeDefaultCardAttempt: (cardId: string) => Promise<boolean>;
-    updatePasswordAttempts: (password: string, newpassword: string) => Promise<boolean>;
+    updatePasswordAttempts: (password: string, newpassword: string) => Promise<[boolean, string | null]>;
     updateDetailsAttempt: (email: string, fullName: string, gender: string, birthDate: string) => Promise<boolean>;
     resetPassword: (password: string, userId: string) => Promise<boolean>;
     signupAttempt: (newUser: Registergion_Form_Props) => Promise<[boolean, string, string?]>;
@@ -287,10 +292,14 @@ export interface FormInputType{
     startValue?: string;
     isApplied?: boolean;
     isAttempted?: boolean;
+    focus?: boolean;
     value?: string;
     numeric?: boolean;
     onChangeText?: (value: string) => void;
+    ref?: React.RefObject<TextInput>;
 }
+
+  
 export interface StatsScreenType{
 
 }

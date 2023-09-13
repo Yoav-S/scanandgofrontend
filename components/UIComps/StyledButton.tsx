@@ -23,8 +23,8 @@ const StyledButton: React.FC<StyledButtonType> = (props) =>{
         {backgroundColor : props.text === 'Invalid' ? 'red' 
         : props.text === 'Verified' ? 'green' 
         : props.text === 'Image Added' ? 'green' 
-        : props.disabled ? buttonMain.background 
-        : buttonAlt.background, width: props.bigbutton 
+        : props.disabled ? buttonAlt.background 
+        : buttonMain.background, width: props.bigbutton 
         ? 270 : props.smallbutton ? 90 : 120}]} 
         onPress={props.onPress}>
             {!props.isLoading ? (

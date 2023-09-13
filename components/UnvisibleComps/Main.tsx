@@ -9,6 +9,7 @@ import MessageModal from '../UIComps/MessageModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Token } from '../../interfaces/interfaces';
 import LogoutModal from '../UIComps/LogoutModal';
+import AreYouSureModal from '../UIComps/AreYouSureModal';
 import SplashScreen from '../../screens/SplashScreen';
 import { ThemeContext } from '../../context/ThemeContext';
 const Main: React.FC = () => {
@@ -65,6 +66,7 @@ if(isLoading){
                     <ScanModal/>
                     <MessageModal/>
                     <LogoutModal/>
+                    <AreYouSureModal/>
                     </View>
         ) : (
           <NotAuthenticatedStackScreen />

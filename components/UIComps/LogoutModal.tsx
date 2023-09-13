@@ -26,11 +26,12 @@ const LogoutModal: React.FC = () => {
             modalStyle={styles.modalStyle}
             onSwipeOut={() => {setisLogoutModal(false);}}
             footer={
-                <ModalFooter style={styles.ModalFooter}>
+                <ModalFooter style={[{backgroundColor: 'white'},styles.ModalFooter]}>
                   <ModalButton
-                    style={{height: 100, backgroundColor: background}}
-                    textStyle={[{color: text.primary, padding: '3%'},styles.ModalButtonText]}
-                    text="Are you sure ? swipe to cancel"
+                    style={{height: 70, backgroundColor: background, margin: '10%', borderRadius: 8}}
+                    textStyle={[{color: text.primary, fontSize: 14, flexWrap: 'wrap'},styles.ModalButtonText]}
+                    text="Are you sure ? 
+                    swipe to cancel"
                     onPress={() => 
                         {
                             setisLogoutModal(false);
@@ -60,7 +61,11 @@ const styles = StyleSheet.create({
       textStylePrice:{color:'white', fontSize:17},
       modalContent: {},
       ModalButtonText: {},
-      modalStyle: {},
-      ModalFooter: {},
+      modalStyle: {
+        width: 250
+      },
+      ModalFooter: {
+        height: 150
+      },
 })
 export default LogoutModal;

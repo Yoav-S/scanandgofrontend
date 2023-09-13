@@ -61,6 +61,7 @@ setamountofitemsvariable(currentUser?.cart.length || 0)
       || route.name === "PaymentMethodsScreen" 
       || route.name === "TermsAndServicesScreen" 
       || route.name === "ProblemReport"
+      || route.name === "HelpAndSupportScreen"
       ? 'lightblue' : 'white'} 
       onPress={navigateSettings}/>
       <Icon name="person" type='ion-icons' size={30} color={route.name === "Stats" ? 'lightblue' : 'white'} onPress={navigateProfile}/>

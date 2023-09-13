@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { View, StyleSheet, SafeAreaView, ScrollView , Text} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -22,8 +22,10 @@ const PaymentMethodsScreen: React.FC<PaymentMethodsScreenProps> = ({ navigation 
     const { currentUser } = useDataContext();
     const [defaultCardIndex, setDefaultCardIndex] = useState<string | null>(null);
     const { theme } = useContext(ThemeContext);
-    const { primary, secondary, text, background } = theme.colors     
-    const {changeDefaultCardAttempt, showToast, deleteCardAttempt} = useDataContext();
+    const { primary, secondary, text, background } = theme.colors  
+    const [cardId, setcardId] = useState<string>('');
+    const {changeDefaultCardAttempt,triggerDeleteCard, showToast, deleteCardAttempt, isAreYouSureModalOpen, setisAreYouSureModalOpen} = useDataContext();
+   
     const handleDefaultCardChange = async (cardId: string) => {
             const isDefaultCardChanged = await changeDefaultCardAttempt(cardId);
             if(isDefaultCardChanged){
@@ -34,17 +36,33 @@ const PaymentMethodsScreen: React.FC<PaymentMethodsScreenProps> = ({ navigation 
             }
         
     };
-    const handleDeleteCard = async (cardId: string) => {        
+    const handleDeleteCard = async () => {        
+        console.log('handled');
+        
         if(currentUser){
-            const isCardDeleted = await deleteCardAttempt(cardId, currentUser?._id);
+            const [isCardDeleted, message] = await deleteCardAttempt(cardId, currentUser?._id);
+            console.log(message);
+            
             if(isCardDeleted){
                 showToast("Card deleted succesffully", 'success', 'Deleted Successfully');
             }
             else{
-                showToast("Card delete failed", 'error', 'please try again');
+                if(message){
+                message === "Request failed with status code 404" ?
+                showToast("Card delete failed", 'error', 'please try again') : 
+                showToast(message, 'error', 'please try again');
+            }
             }
         }
     }
+
+
+    useEffect(() => {
+         handleDeleteCard();
+    },[triggerDeleteCard]);
+
+
+
     return (
         <SafeAreaView style={[styles.container, {backgroundColor: background}]}>
             <View style={styles.titleCon}>
@@ -70,7 +88,10 @@ const PaymentMethodsScreen: React.FC<PaymentMethodsScreenProps> = ({ navigation 
                         name="trash" 
                         size={30} 
                         color={text.primary}             
-                        onPress={() => {handleDeleteCard(card._id)}}
+                        onPress={() => {
+                            setcardId(card._id);
+                            setisAreYouSureModalOpen(true);
+                        }}
                         />
                         </View>
                         <View style={{flexDirection: 'row', alignItems: 'center',}}>

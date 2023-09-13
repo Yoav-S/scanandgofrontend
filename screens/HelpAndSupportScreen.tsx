@@ -5,8 +5,9 @@ import TitleAndArrowBack from '../components/UIComps/TitleAndArrowBack';
 import { ThemeContext } from '../context/ThemeContext';
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from '@react-navigation/stack';
+import BottomNavbar from '../components/UIComps/BottomNavbar';
 const HelpAndSupportScreen: React.FC = () => {
-  const { theme } = useContext(ThemeContext);
+  const { theme, buttonTheme } = useContext(ThemeContext);
   const { primary, secondary, text, background } = theme.colors 
     const [isForgotPasswordExpanded, setIsForgotPasswordExpanded] = useState(false);
     const [isEditInformationExpanded, setIsEditInformationExpanded] = useState(false);
@@ -133,14 +134,14 @@ const HelpAndSupportScreen: React.FC = () => {
               <Text style={[styles.explainText, {color: text.secondary}]}>1.3 - After the scan the item will appear on the screen.</Text>
               <Text style={[styles.explainText, {color: text.secondary}]}>1.4 - Press the cart icon below the image of the item.</Text>
               <Text style={[styles.explainText, {color: text.secondary}]}>1.5 - Repeat the process to add more items.</Text>
-              <Text style={[styles.explainText, {color: text.secondary}]}>1.6 - If you noticed an error message <Text onPress={() => { handleAccordionPress(setIsReportAProblemExpanded, isReportAProblemExpanded) }} style={styles.clickHere} >click here</Text> and refer to  "How To Report a Problem" Tab below.</Text>
+              <Text style={[styles.explainText, {color: text.secondary}]}>1.6 - If you noticed an error message <Text onPress={() => { handleAccordionPress(setIsReportAProblemExpanded, isReportAProblemExpanded) }} style={[styles.clickHere, {color: 'crimson'}]} >click here</Text> and refer to  "How To Report a Problem" Tab below.</Text>
             </View>
             <Text style={[styles.explainHeader, {color: text.primary}]}>Step 2: Checkout And Payment:</Text>
             <View style={styles.explainContainer}>
               <Text style={[styles.explainText, {color: text.secondary}]}>2.1 - Press the cart icon on the navigation bar.</Text>
               <Text style={[styles.explainText, {color: text.secondary}]}>2.2 - View your  items and press the Checkout button. </Text>
               <Text style={[styles.explainText, {color: text.secondary}]}>2.3 - Choose the credit card for the payment.</Text>
-              <Text style={[styles.explainText, {color: text.secondary}]}>2.4 - If you haven't added a credit card <Text onPress={() => { handleAccordionPress(setIsHandleCreditCardExpanded, isHandleCreditCardExpanded) }} style={styles.clickHere} >click here</Text> and refer to  "How To Add/Remove a Credit Card" Tab below. </Text>
+              <Text style={[styles.explainText, {color: text.secondary}]}>2.4 - If you haven't added a credit card <Text onPress={() => { handleAccordionPress(setIsHandleCreditCardExpanded, isHandleCreditCardExpanded) }} style={[styles.clickHere, {color: 'crimson'}]} >click here</Text> and refer to  "How To Add/Remove a Credit Card" Tab below. </Text>
               <Text style={[styles.explainText, {color: text.secondary}]}>2.5 - Enter a coupon to the field if you have one.</Text>
               <Text style={[styles.explainText, {color: text.secondary}]}>2.6 - Click the Pay Now button.</Text>
             </View>
@@ -198,7 +199,11 @@ const HelpAndSupportScreen: React.FC = () => {
       return (
         <View style={[styles.container, {backgroundColor: background}]}>
           <TitleAndArrowBack onPress={() => {navigation.goBack()}} text='Help And Support'/>
+          <View style={{flex: 1, marginBottom: '40%'}}>
           {list}
+
+          </View>
+          <BottomNavbar/>
         </View>
       );
 }

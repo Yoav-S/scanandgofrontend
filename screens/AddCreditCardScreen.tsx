@@ -1,4 +1,4 @@
-import React, {useState , useContext, useEffect} from "react";
+import React, {useState , useContext, useEffect, useRef } from "react";
 import {View, Text, StyleSheet, SafeAreaView, KeyboardAvoidingView, TextInput, Platform, Keyboard} from 'react-native'
 import TitleAndArrowBack from "../components/UIComps/TitleAndArrowBack";
 import BottomNavbar from "../components/UIComps/BottomNavbar";
@@ -16,7 +16,8 @@ import { useDataContext } from "../context/DataContext";
 import { creditCardFormType } from "../interfaces/interfaces";
 import { ScrollView } from "react-native-gesture-handler";
 import { ThemeContext } from "../context/ThemeContext";
-
+import { Icon } from 'react-native-elements';
+import Toast from "react-native-toast-message";
 const validationSchema = Yup.object().shape({
 cvv: cvvSchema,
 isDefault: isDefaultSchema,
@@ -32,8 +33,8 @@ const AddCreditCardScreen: React.FC = () => {
     const [isDefault, setisDefault] = useState<boolean>(false);
     const [shouldAddSlash, setShouldAddSlash] = useState<boolean>(true);
     const [isKeyboardVisible, setKeyboardVisible] = useState(false);
-
     const { theme, buttonTheme } = useContext(ThemeContext);
+    const [focusOnCvv, setFocusOnCvv] = useState(false);
     const { primary, secondary, text, background } = theme.colors 
     const {addCreditCardAttempt, showToast, setisMessageModalVisible} = useDataContext();
     const [allCategoriesValues, setAllCategoriesValues] = useState<{ label: string; value: string }[]>([
@@ -45,21 +46,17 @@ const AddCreditCardScreen: React.FC = () => {
     const [currentCategoryValue, setCurrentCategoryValue] = useState<string>('');
     const [expirationDateInputPlaceholder, setExpirationDateInputPlaceholder] = useState<string>("Expiration Date");
 
-
-
-
     const handleFormSubmit = async (values: {cardType: string, cardNumber: string, cardholderName: string, expirationDate: string, cvv: string, isDefault: boolean}) => {
-        setisMessageModalVisible(true);
-        console.log(values);
-        
+        setisMessageModalVisible(true);        
         const creditCardForm: creditCardFormType = values;
         const [isAdded, message] = await addCreditCardAttempt(creditCardForm);
+        console.log(isAdded, message);
         setisMessageModalVisible(false);
         if(isAdded){
             showToast('you can use it now', 'success', 'Credit card added successfully')
         }
         else{
-            showToast(message || 'Something went wrong', 'error', 'Credit card added successfully');
+            showToast(message || 'Something went wrong', 'error', 'Failed to add credit card');
         }
     }
 
@@ -83,7 +80,6 @@ const AddCreditCardScreen: React.FC = () => {
         keyboardDidShowListener.remove();
       };
     }, []);
-
 
 
 
@@ -115,13 +111,15 @@ const AddCreditCardScreen: React.FC = () => {
                         /></ScrollView>
                                                 <ScrollView style={[styles.cardContainer,]}>
 
-                        <FormInput errorMessage={errors.cardNumber} setInput={handleChange('cardNumber')} label="Card Number" numeric/>
-                        <FormInput errorMessage={errors.cardholderName} setInput={handleChange('cardholderName')} label="Card Holder Name"/>
+                        <FormInput startValue={values.cardNumber} errorMessage={errors.cardNumber} setInput={handleChange('cardNumber')} label="Card Number" numeric/>
+                        <FormInput startValue={values.cardholderName} errorMessage={errors.cardholderName} setInput={handleChange('cardholderName')} label="Card Holder Name"/>
                         <View style={styles.expireincvvCon}>
                           <View>
+                            <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '50%'}}>
                         <TextInput
                           style={styles.dateInput}
                           onChangeText={(text) => {
+                            if(text.length === 5) {setFocusOnCvv(true);}
                             if (text.length === 2 && shouldAddSlash) {
                               text += '/';
                               setShouldAddSlash(false);
@@ -152,21 +150,26 @@ const AddCreditCardScreen: React.FC = () => {
                         
                             handleChange('expirationDate')(formattedText);
                           }}
-                          onBlur={() => setShouldAddSlash(true)}
+                          onBlur={() => {
+                            setShouldAddSlash(true);
+                          }}
+                          autoFocus
                           placeholder={expirationDateInputPlaceholder}
                           value={values.expirationDate}
                           keyboardType="numeric"
                           maxLength={5}
                           onFocus={() => {setExpirationDateInputPlaceholder("MM/YY")}}
                         />
-                        {!isValid && <Text style={{color: 'red', fontWeight: 'bold', width: 130}}>{errors.expirationDate}</Text>}
+                        {(!errors.expirationDate && values.expirationDate !== '') && <View style={{padding: '1%', backgroundColor: 'green', borderRadius: 50, marginLeft: '15%'}}><Icon name="check" iconStyle={{fontWeight: 'bold'}} color={text.primary} size={20}/></View>}
+                                                </View>
 
+                        {(errors.expirationDate && values.expirationDate !== '') && <Text style={{color: 'red', fontWeight: 'bold', width: 130}}>{errors.expirationDate}</Text>}
 
                         </View>
 
-               <View>
+               <View style={{width: '45%'}}>
 
-                        <FormInput errorMessage={errors.cvv} setInput={handleChange('cvv')} label="CVV" numeric/>
+                        <FormInput startValue={values.cvv} errorMessage={errors.cvv} setInput={handleChange('cvv')} label="CVV" numeric/>
                       
                         </View>
                         </View>
@@ -185,10 +188,12 @@ const AddCreditCardScreen: React.FC = () => {
                                         borderRadius: 5,
                                         marginTop: '6%',
                                         zIndex: 10,
+                                        borderColor: currentCategoryValue !== '' ? 'green' : text.secondary
                                     }}
-                                    containerStyle={{zIndex: 10}}
                                     textStyle={{color: text.primary}}
+                                    containerStyle={{zIndex: 10}}
                                     open={open}
+                                    
                                     value={currentCategoryValue}
                                     items={allCategoriesValues}
                                     setOpen={setOpen}
@@ -200,7 +205,7 @@ const AddCreditCardScreen: React.FC = () => {
                                 />
                     </View>
                         <CheckBox 
-                        title={"set as default"} 
+                        title={"set as default payment method"} 
                         checked={isDefault}
                         textStyle={{color: text.primary}}
                         
@@ -219,6 +224,7 @@ const AddCreditCardScreen: React.FC = () => {
                     </View>
                     {!isKeyboardVisible && <BottomNavbar />}
 </KeyboardAvoidingView>
+<Toast/>
         </SafeAreaView>
     )
 }
@@ -231,12 +237,11 @@ const styles = StyleSheet.create({
 
     },
     dateInput: {
-        borderColor: 'gray',
-        borderWidth: 1,
         borderRadius: 5,
-        paddingHorizontal: 10,
         marginBottom: 10,
-        width: 130
+        borderBottomWidth: 1,
+        borderBottomColor: 'gray',
+        width: 120,
       },
       
     expireincvvCon: {

@@ -22,7 +22,7 @@ import * as Yup from 'yup';
 
   export const categorySchema = Yup.string().required()
 
-  export const descriptionSchema = Yup.string().required('Must Write Description').min(20, 'At list 20 characters')
+  export const descriptionSchema = Yup.string().required('Must Write Description').min(20, 'At list 20 letters')
 
   export const cardholderSchema = Yup.string().required('Must Write Cardholder').min(4, 'At list 4 characters')
 

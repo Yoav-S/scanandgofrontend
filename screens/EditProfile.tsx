@@ -1,5 +1,5 @@
-import react, {useState, useContext} from 'react';
-import {Text, View, StyleSheet, SafeAreaView } from 'react-native'
+import react, {useState, useContext, useEffect} from 'react';
+import {Text, View, StyleSheet, SafeAreaView, KeyboardAvoidingView, Keyboard, Platform } from 'react-native'
 import BottomNavbar from '../components/UIComps/BottomNavbar';
 import TitleAndArrowBack from '../components/UIComps/TitleAndArrowBack';
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -18,6 +18,7 @@ import { ThemeContext } from '../context/ThemeContext';
 import Toast from "react-native-toast-message";
 import { useDataContext } from '../context/DataContext';
 import { ActivityIndicator } from '@react-native-material/core';
+import { ScrollView } from 'react-native-gesture-handler';
 const validationSchema = Yup.object().shape({
     email: emailSchema,
     fullName: fullnameSchema,
@@ -36,6 +37,8 @@ const EditProfile: React.FC = () => {
     const [date, setDate] = useState<Date>(new Date());
     const [isBirthDateValidated, setIsBirthDateValidated] = useState<boolean>(false);
     const {showToast, updateDetailsAttempt} = useDataContext();
+    const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+
     const setOpenModalHandler = () => {
         setopenDateModal(!openDateModal);
       };
@@ -54,11 +57,41 @@ const EditProfile: React.FC = () => {
         
     }
 
+
+
+    useEffect(() => {
+      const keyboardDidHideListener = Keyboard.addListener(
+        'keyboardDidHide',
+        () => {
+          setKeyboardVisible(false);
+        },
+      );
+      const keyboardDidShowListener = Keyboard.addListener(
+        'keyboardDidShow',
+        () => {
+          setKeyboardVisible(true);
+        },
+      );
+
+  
+      return () => {
+        keyboardDidHideListener.remove();
+        keyboardDidShowListener.remove();
+      };
+    }, []);
+
+
+
     return (
         <SafeAreaView style={[styles.container,{backgroundColor: background}]}>
+                <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        style={{ flex: 1 }}
+      >
             <TitleAndArrowBack text='Edit Profile' onPress={() => {navigation.goBack()}}/>
             {
-              isLoading ? (<ActivityIndicator size={60}/>) : (            <View style={styles.FormikCon}>
+              isLoading ? (<ActivityIndicator size={60}/>) : (                   <ScrollView>
+                <View style={styles.FormikCon}>
                 <Formik
             initialValues={{ email: '', fullName: '', gender: '', birthDate: '' }}
             validationSchema={validationSchema}
@@ -70,28 +103,27 @@ const EditProfile: React.FC = () => {
                 <FormInput
                   value={values.fullName}
                   errorMessage={errors.fullName}
+                  startValue={values.fullName}
                   setInput={handleChange('fullName')}
                   label={'Full Name'}
                 />
                 <FormInput
                   value={values.email}
+                  startValue={values.email}
                   errorMessage={errors.email}
                   setInput={handleChange('email')}
                   label={'Email'}
                 />
             <View style={{marginTop: '10%', width: '90%'}}>
-              <View style={{flexDirection:'column'}}>
                 <Text style={{color: text.primary, fontWeight: 'bold', fontSize: 17,marginLeft: '7%'}}>Date Of Birth</Text>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <StyledButton 
-                text='Select birth Date'
-                smallbutton 
+                text='Select birth Date' 
                 onPress={() => {
                   setOpenModalHandler();
                   // Mark the birthDate field as touched to trigger validation
                   touched.birthDate = true;
                 }}/>
-              </View>
-              <View style={{flexDirection: 'row', width: '95%', justifyContent: 'space-between'}}>
               <DatePicker
                 modal
                 maximumDate={new Date()}
@@ -110,14 +142,13 @@ const EditProfile: React.FC = () => {
                 }}
               />
               {!(values.birthDate?.length === 0) && (
-                <View style={{ marginLeft: '10%' , flexDirection: 'row'}}>
+                <View style={{ marginLeft: '10%' , flexDirection: 'row', justifyContent: 'space-between'}}>
               <Text style={{color: text.primary}}>{values.birthDate?.substring(0,10)}</Text>
-              <Icon name="settings"  size={30} color={'green'}/>
-
+              <View style={{padding: '1%', backgroundColor: 'green', borderRadius: 50}}><Icon name="check" iconStyle={{fontWeight: 'bold'}} color={text.primary} size={20}/></View>
+              
               </View>
               )}
-              </View>
-
+</View>
               {!isBirthDateValidated && touched.birthDate && errors.birthDate && (
                 <Text style={{ color: 'red' }}>{errors.birthDate}</Text>
               )}
@@ -138,11 +169,13 @@ const EditProfile: React.FC = () => {
     
               </>
             )}
-          </Formik>   
-                </View>)
+          </Formik>
+                </View></ScrollView>
+)
             }
 
-            <BottomNavbar/>
+                    {!isKeyboardVisible && <BottomNavbar />}
+            </KeyboardAvoidingView>
             <Toast/>
         </SafeAreaView>
     )
