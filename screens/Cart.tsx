@@ -26,7 +26,7 @@ const Cart: React.FC = () => {
     const [currentUserItemsCart, setCurrentUserItemsCart] = useState<IteminCartType[] | undefined>(updatedCurrentUserCart);
 
     const handleDeleteItem = async (userId : string, nfcTagCode : string) => {
-        const newcurrentUserItemsCart: (IteminCartType[] | undefined) = currentUserItemsCart?.filter((item: IteminCartType) => item.nfcTagCode !== nfcTagCode);
+        const newcurrentUserItemsCart: (IteminCartType[] | undefined) = updatedCurrentUserCart?.filter((item: IteminCartType) => item.nfcTagCode !== nfcTagCode);
         setCurrentUserItemsCart(newcurrentUserItemsCart);
         setisLoading(true);
         const [isDeleted, arrayofItems] = await deleteItemAttempt(userId, nfcTagCode);
@@ -66,6 +66,9 @@ const Cart: React.FC = () => {
         setCurrentUserItemsCart(updatedCurrentUserCart);
       }, [updatedCurrentUserCart, currentUser]);   
           
+
+      console.log(updatedCurrentUserCart);
+      
     return (
         <View style={[styles.container, {backgroundColor: background}]}>
             <View style={styles.titleandIcon}>
@@ -89,7 +92,7 @@ const Cart: React.FC = () => {
                 (<View style={styles.nonEmptyCartCon}>
                     <ScrollView style={styles.scrollViewCon}>
                     {
-                        currentUserItemsCart && currentUserItemsCart.map((cartItem: IteminCartType, index) => {
+                        currentUserItemsCart && currentUserItemsCart.map((cartItem: IteminCartType) => {
                             return(
                                 <Item
                                 key={cartItem.itemId}

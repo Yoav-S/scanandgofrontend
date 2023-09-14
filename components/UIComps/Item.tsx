@@ -5,9 +5,8 @@ import { Icon } from 'react-native-elements';
 import { ThemeContext } from '../../context/ThemeContext';
 import { useDataContext } from '../../context/DataContext';
 const Item: React.FC<ItemCompInterface> = (props) => {
-    console.log(props.itemObj);
     const { theme } = useContext(ThemeContext);
-    const { primary, secondary, text, background } = theme.colors     
+    const { text } = theme.colors     
     const {currentUser} = useDataContext();
     return (
         <SafeAreaView style={styles.container}>

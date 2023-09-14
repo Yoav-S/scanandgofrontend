@@ -390,7 +390,6 @@ const addCreditCardAttempt = async (values: creditCardFormType): Promise<[boolea
       userId: currentUser?._id || '',
       creditCard: values
     } 
-    console.log('credit card' , creditCardObject);
     
     const response: AxiosResponse = await api.post('paymentMethods/addCreditCard', creditCardObject, {headers: {Authorization: 'Bearer ' + token}});
     if(currentUser){
