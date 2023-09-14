@@ -17,8 +17,9 @@ export const DataProvider: React.FC<Props> = ({ children }) => {
   const [authenticated, setAuthenticated] = useState<boolean>(false);
   const [rememberMe, setRememberMe] = useState<boolean>(true);
   const [showError, setShowError] = useState(false);
+  const [cardId, setcardId] = useState<string>('');
+
   const [isAreYouSureModalOpen, setisAreYouSureModalOpen] = useState<boolean>(false);   
-  const [triggerDeleteCard, setTriggerDeleteCard] = useState<boolean>(false);
   const [token, setToken] = useState<string>('');
   const [isVisibleStatus, setisVisibleStatus] = useState(false);
   const [isMessageModalVisible, setisMessageModalVisible] = useState(false);
@@ -60,7 +61,24 @@ const updatePasswordAttempts = async (password: string, newpassword: string): Pr
     return [false, err.message];
   }
 }
-
+const handleDeleteCard = async (cardId: string, userId: string) => {        
+  
+  if(currentUser){
+      const [isCardDeleted, message] = await deleteCardAttempt(cardId, currentUser?._id);
+      console.log(message);
+      
+      if(isCardDeleted){
+          showToast("Card deleted succesffully", 'success', 'Deleted Successfully');
+      }
+      else{
+          if(message){
+          message === "Request failed with status code 404" ?
+          showToast("Card delete failed", 'error', 'please try again') : 
+          showToast(message, 'error', 'please try again');
+      }
+      }
+  }
+}
 const deleteCardAttempt = async (cardId: string, userId: string): Promise<[boolean, string | null]> => {
   console.log(cardId, userId);
   
@@ -616,8 +634,9 @@ try{
     getItemAttempt,
     isAreYouSureModalOpen, 
     setisAreYouSureModalOpen,
-    triggerDeleteCard,
-    setTriggerDeleteCard
+    cardId,
+    setcardId,
+    handleDeleteCard
   };
 
   return (

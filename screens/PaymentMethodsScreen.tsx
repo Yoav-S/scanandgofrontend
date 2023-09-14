@@ -23,8 +23,7 @@ const PaymentMethodsScreen: React.FC<PaymentMethodsScreenProps> = ({ navigation 
     const [defaultCardIndex, setDefaultCardIndex] = useState<string | null>(null);
     const { theme } = useContext(ThemeContext);
     const { primary, secondary, text, background } = theme.colors  
-    const [cardId, setcardId] = useState<string>('');
-    const {changeDefaultCardAttempt,triggerDeleteCard, showToast, deleteCardAttempt, isAreYouSureModalOpen, setisAreYouSureModalOpen} = useDataContext();
+    const {changeDefaultCardAttempt, showToast, deleteCardAttempt, setisAreYouSureModalOpen, cardId, setcardId} = useDataContext();
    
     const handleDefaultCardChange = async (cardId: string) => {
             const isDefaultCardChanged = await changeDefaultCardAttempt(cardId);
@@ -36,30 +35,8 @@ const PaymentMethodsScreen: React.FC<PaymentMethodsScreenProps> = ({ navigation 
             }
         
     };
-    const handleDeleteCard = async () => {        
-        console.log('handled');
-        
-        if(currentUser){
-            const [isCardDeleted, message] = await deleteCardAttempt(cardId, currentUser?._id);
-            console.log(message);
-            
-            if(isCardDeleted){
-                showToast("Card deleted succesffully", 'success', 'Deleted Successfully');
-            }
-            else{
-                if(message){
-                message === "Request failed with status code 404" ?
-                showToast("Card delete failed", 'error', 'please try again') : 
-                showToast(message, 'error', 'please try again');
-            }
-            }
-        }
-    }
 
 
-    useEffect(() => {
-         handleDeleteCard();
-    },[triggerDeleteCard]);
 
 
 

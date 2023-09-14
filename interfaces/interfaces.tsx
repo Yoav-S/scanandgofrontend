@@ -127,8 +127,9 @@ export interface DataContextType {
     currentUser: CurrentUserType | null;
     isMessageModalVisible: boolean;
     isAreYouSureModalOpen: boolean;
-    triggerDeleteCard: boolean;
-    setTriggerDeleteCard: (value: boolean) => void;
+    handleDeleteCard: (cardId: string, userId: string) => void;
+    cardId: string;
+    setcardId: (cardId: string) => void;
     setisAreYouSureModalOpen: (value: boolean) => void;
     getMoreAttemt: (pageNumber: string) => Promise<any>;
     getItemAttempt: (itemId: string) => Promise<any>;
