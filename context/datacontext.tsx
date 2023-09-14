@@ -21,6 +21,7 @@ export const DataProvider: React.FC<Props> = ({ children }) => {
   const [isAreYouSureModalOpen, setisAreYouSureModalOpen] = useState<boolean>(false);   
   const [token, setToken] = useState<string>('');
   const [isVisibleStatus, setisVisibleStatus] = useState(false);
+  const [updatedCurrentUserCart, setupdatedCurrentUserCart] = useState<IteminCartType[] | undefined>(currentUser?.cart || []);
   const [isMessageModalVisible, setisMessageModalVisible] = useState(false);
   const [amountofitemsvariable, setamountofitemsvariable] = useState<number>(currentUser?.cart.length || 0);
   const [isLogoutModal, setisLogoutModal] = useState<boolean>(false);
@@ -503,29 +504,29 @@ const PaymentAttempt = async (transactionObject: TransactionFormType): Promise<b
   }
 }
 
-const AddItemToCartAttempt = async (userId: string, itemInCart: {itemId: string, nfcTagCode: string}): Promise<boolean> => {
+const AddItemToCartAttempt = async (userId: string, itemInCart: {itemId: string, nfcTagCode: string}): Promise<[boolean, IteminCartType | null]> => {
   
 try{
 const response = await api.post('users/addToCart', { userId, itemInCart }, {headers: {Authorization: 'Bearer ' + token}})
 
 if(response.status === 200 || response.status === 201){
   if(currentUser){
-    const newUser = await getUserById(currentUser._id, token);
-    
+    const newUser = await getUserById(currentUser._id, token);    
     if (newUser != null) {
       setCurrentUser(newUser);
       setAuthenticated(true);
     }
    }
-  return true;
+   setupdatedCurrentUserCart(response.data);
+  return [true,response.data];
 } else {
-  return false;
+  return [false, null];
 }
 
 } catch (err: any){
   console.log(err.message);
   
-return false;
+return [false, null];
 }
 }
 
@@ -647,6 +648,8 @@ try{
     setisAreYouSureModalOpen,
     cardId,
     setcardId,
+    updatedCurrentUserCart, 
+    setupdatedCurrentUserCart
   };
 
   return (

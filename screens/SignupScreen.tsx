@@ -95,23 +95,27 @@ const SignupScreen: React.FC = () => {
             <FormInput
               value={values.fullName}
               errorMessage={errors.fullName}
+              startValue={values.fullName}
               setInput={handleChange('fullName')}
               label={'Full Name'}
             />
             <FormInput
               value={values.email}
               errorMessage={errors.email}
+              startValue={values.email}
               setInput={handleChange('email')}
               label={'Email'}
             />
             <FormInput
               value={values.password}
               errorMessage={errors.password}
+              startValue={values.password}
               setInput={handleChange('password')}
               label={'Password'}
             />
             <FormInput
               value={values.confirmPassword}
+              startValue={values.confirmPassword}
               errorMessage={errors.confirmPassword}
               setInput={handleChange('confirmPassword')}
               label={'Confirm Password'}

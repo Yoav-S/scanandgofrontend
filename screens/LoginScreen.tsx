@@ -88,12 +88,14 @@ const LoginScreen: React.FC = () => {
       <>
         <FormInput
           value={values.email}
+          startValue={values.email}
           errorMessage={errors.email}
           setInput={handleChange('email')}
           label={'Email'}
         />
         <FormInput
           value={values.password}
+          startValue={values.password}
           errorMessage={errors.password}
           setInput={handleChange('password')}
           label={'Password'}

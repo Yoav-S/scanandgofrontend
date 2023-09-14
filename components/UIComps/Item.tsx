@@ -9,11 +9,6 @@ const Item: React.FC<ItemCompInterface> = (props) => {
     const { theme } = useContext(ThemeContext);
     const { primary, secondary, text, background } = theme.colors     
     const {currentUser} = useDataContext();
-
-     useEffect(() => {
-
-     }, [currentUser])
-
     return (
         <SafeAreaView style={styles.container}>
             <Image style={styles.image} source={{uri: props.itemObj.imageSource}}/>

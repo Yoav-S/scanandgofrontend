@@ -16,14 +16,14 @@ import { ThemeContext } from "../context/ThemeContext";
 
 import { CurrentUserType } from '../interfaces/interfaces';
 const Cart: React.FC = () => {
-    const {setCurrentUser,currentUser, deleteItemAttempt, showToast, amountofitemsvariable, setamountofitemsvariable} = useDataContext();
+    const {updatedCurrentUserCart,setCurrentUser,currentUser, deleteItemAttempt, showToast, amountofitemsvariable, setamountofitemsvariable} = useDataContext();
     const { theme } = useContext(ThemeContext);
     const { primary, secondary, text, background } = theme.colors 
     const navigation = useNavigation<StackNavigationProp<any>>();
     const [totalamountvariable, settotalamountvariable] = useState<number>(0);
     const [isLoading, setisLoading] = useState<boolean>(false);
     const [isCartEmpty, setisCartEmpty] = useState<boolean>(currentUser?.cart && currentUser.cart.length > 0 ? false : true);
-    const [currentUserItemsCart, setCurrentUserItemsCart] = useState<IteminCartType[] | undefined>(!isCartEmpty && currentUser?.cart ? currentUser.cart : []);
+    const [currentUserItemsCart, setCurrentUserItemsCart] = useState<IteminCartType[] | undefined>(updatedCurrentUserCart);
 
     const handleDeleteItem = async (userId : string, nfcTagCode : string) => {
         const newcurrentUserItemsCart: (IteminCartType[] | undefined) = currentUserItemsCart?.filter((item: IteminCartType) => item.nfcTagCode !== nfcTagCode);
@@ -63,8 +63,9 @@ const Cart: React.FC = () => {
       
       useEffect(() => {
         calculatePrice(); // Calculate the initial total price when the component mounts
-        setCurrentUserItemsCart(currentUser?.cart);
-      }, [currentUser]);       
+        setCurrentUserItemsCart(updatedCurrentUserCart);
+      }, [updatedCurrentUserCart, currentUser]);   
+          
     return (
         <View style={[styles.container, {backgroundColor: background}]}>
             <View style={styles.titleandIcon}>

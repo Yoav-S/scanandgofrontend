@@ -86,6 +86,7 @@ const ScanModel: React.FC<Props> = () => {
   setIsItemInCart(false)
  }
   const handleReadFromNFC = async () => {
+    
     try {
       // register for the NFC tag with NDEF in it
       await NfcManager.requestTechnology(NfcTech.Ndef);
@@ -152,7 +153,9 @@ const ScanModel: React.FC<Props> = () => {
       imageSource: item?.imageSource
     }
     setisLoading(true);
-    const isItemAdded : boolean = await AddItemToCartAttempt(currentUser?._id || '', itemInCart ); 
+    const [isItemAdded, newCart] : [boolean, IteminCartType | null] = await AddItemToCartAttempt(currentUser?._id || '', itemInCart ); 
+    console.log(newCart);
+    
     setisItemAddedCart(isItemAdded);
     setisLoading(false);
     setisShowingMessage(true);

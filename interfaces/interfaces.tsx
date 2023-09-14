@@ -135,6 +135,8 @@ export interface DataContextType {
     fetchStatsDataAttempt: (userId: string) => Promise<any>;
     setisMessageModalVisible: (value: boolean) => void;
     isLogoutModal: boolean;
+    updatedCurrentUserCart: IteminCartType[] | undefined;
+    setupdatedCurrentUserCart: (updatedCurrentUserCart:(IteminCartType[] | undefined)) => void;
     setisLogoutModal: (value: boolean) => void;
     setCurrentUser: (user: CurrentUserType | null) => void;
     getArrayOfDropDownCategories: () => Promise<string[]>;
@@ -145,7 +147,7 @@ export interface DataContextType {
     verifyCouponAttempt: (coupon: string) => Promise<[boolean, CouponType | null]>;
     setamountofitemsvariable: (amount: number) => void;
     amountofitemsvariable: number;
-    AddItemToCartAttempt: (userId: string, itemInCart: {itemId: string, nfcTagCode: string}) => Promise<boolean>;
+    AddItemToCartAttempt: (userId: string, itemInCart: {itemId: string, nfcTagCode: string}) => Promise<[boolean, IteminCartType | null]>;
     deleteCardAttempt: (cardId: string, userId: string) => Promise<[boolean, string | null]>;
     handleLogOut: () => void;
     deleteItemAttempt: (userId: string, nfcTagCode: string) => Promise<[boolean,IteminCartType[]?]>;
