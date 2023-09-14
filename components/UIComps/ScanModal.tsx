@@ -6,16 +6,21 @@ import axios from 'axios';
 import searchingAnimation   from '../../assets/searching.json'
 import scanAnimation  from '../../assets/scan.json'
 import notFoundAnimation  from '../../assets/notFound.json'
+import activityIndicator from '../../assets/insertcartloader.json'
+import cartbtnanimation from '../../assets/cartbuttonanimation.json'
+import successCartIndicator from '../../assets/successlottieanimation.json'
+import failureCartIndicator from '../../assets/failureaddtocart.json'
 import cart  from '../../assets/cart.json'
 import { Buffer } from 'buffer'
 import LottieView from 'lottie-react-native';
 import {IteminCartType, Itemprop} from '../../interfaces/interfaces'
 import { Text } from '@rneui/base';
 import { useDataContext } from '../../context/DataContext';
+import StyledButton from './StyledButton';
 interface Props {
 }
 const ScanModel: React.FC<Props> = () => {
-  const {isVisibleStatus, setisVisibleStatus, AddItemToCartAttempt} = useDataContext();
+  const {isVisibleStatus, setisVisibleStatus, AddItemToCartAttempt, showToast} = useDataContext();
   const [tagId, setTagId] = useState<string>('');
   const [item, setItem] = useState<Itemprop | null>(null);
   const [animation, setAnimation] = useState(scanAnimation)
@@ -23,13 +28,61 @@ const ScanModel: React.FC<Props> = () => {
   const LottieRef = useRef(null); // <---------------- Create reference variable
   const [title, setTitle] = useState<string>( 'Hold Your Phone near the tag');
   const {currentUser, getItemAttempt} = useDataContext();
-
+  const [previewSuccessMessage, setPreviewSuccessMessage] = useState<boolean>(false);
+  const [resultMessage, setResultMessage] = useState<string>('');
+  const [previewErrorMessage, setPreviewErrorMessage] = useState<boolean>(false);
+  const [isLoading, setisLoading] = useState<boolean>(false);
+  const [isItemAddedCart, setisItemAddedCart] = useState<boolean>(false);
+  const [isShowingMessage, setisShowingMessage] = useState<boolean>(false);
+  const activitiIndicatorAnimation = (<LottieView
+    style={{width: 50, height: 50, alignSelf: 'center'}}
+    speed={1} 
+    
+    source={activityIndicator}
+    autoPlay
+    loop={true}
+    />)
+    const successCartIndicatorObj = (<LottieView
+      style={{width: 50, height: 50, alignSelf: 'center'}}
+      speed={1} 
+      
+      source={successCartIndicator}
+      autoPlay
+      loop={false}
+      />)
+      const failureCartIndicatorObj = (<LottieView
+        style={{width: 50, height: 50, alignSelf: 'center'}}
+        speed={1} 
+        
+        source={failureCartIndicator}
+        autoPlay
+        loop={false}
+        />)
+    const cartbuttonanimation = (<LottieView
+      style={{width: 50, height: 50, alignSelf: 'center'}}
+      speed={1} 
+      source={cartbtnanimation}
+      autoPlay
+      loop={true}
+      />)
  const resetModel = () =>{
   setisVisibleStatus(!isVisibleStatus);
   setItem(null);
+  setisShowingMessage(false);
+  setPreviewSuccessMessage(false);
   setTitle('Hold Your Phone near the tag');
   setAnimation(scanAnimation);
   setTagId('')
+  setIsItemInCart(false)
+ }
+ const resetAbstractModel = () =>{
+  setItem(null);
+  setPreviewSuccessMessage(false);
+  setisShowingMessage(false);
+  setTitle('Hold Your Phone near the tag');
+  setAnimation(scanAnimation);
+  setTagId('')
+  setisItemAddedCart(false);
   setIsItemInCart(false)
  }
   const handleReadFromNFC = async () => {
@@ -72,8 +125,21 @@ const ScanModel: React.FC<Props> = () => {
     }
   };
   const handleAddToCart = async () => {
-    if(LottieRef != null){
-      LottieRef.current.play()
+    if(currentUser){
+    for(let i = 0; i < currentUser?.cart?.length; i ++){
+      if(currentUser.cart[i].itemId === item?._id){
+        setResultMessage('Item Failed to add');
+        setisShowingMessage(true);
+        setPreviewErrorMessage(true);
+        setTimeout(() => {
+          
+          setResultMessage('');
+          setisShowingMessage(false);
+          setPreviewErrorMessage(false);
+        }, 4000)
+        return;
+      }
+    }
     }
     setIsItemInCart(true);
     if(!item) { return false ; }
@@ -85,32 +151,65 @@ const ScanModel: React.FC<Props> = () => {
       price: item?.price,
       imageSource: item?.imageSource
     }
+    setisLoading(true);
     const isItemAdded : boolean = await AddItemToCartAttempt(currentUser?._id || '', itemInCart ); 
-    console.log(isItemAdded);
-    
+    setisItemAddedCart(isItemAdded);
+    setisLoading(false);
+    setisShowingMessage(true);
+    if(isItemAdded){
+      setResultMessage('Item Added Successfully');
+      setPreviewSuccessMessage(true);
+      setTimeout(() => {
+        setPreviewSuccessMessage(false);
+        setResultMessage('');
+        resetAbstractModel();
+      }, 3000)
+    }
+    else{
+      setResultMessage('Item Failed to add');
+      setPreviewErrorMessage(true);
+      setTimeout(() => {
+        setResultMessage('');
+        setPreviewErrorMessage(false);
+      }, 4000)
+    }
    };
   const scanned = (
     <ModalContent style={styles.modalContent}>
     <Image source={{ uri: item?.imageSource }} style={styles.image} />
+    <View style={{flexDirection: 'row', justifyContent: 'center'}}>
     <View style={styles.priceAndCartView}>
         <View style={styles.textContainer}>
         <Text style={styles.textStyleName}>{item?.name} </Text>
         <Text style={styles.textStylePrice}>${item?.price}</Text>
+        
         </View>
-        <TouchableOpacity disabled={isItemInCart}  onPress={handleAddToCart}>
-    <LottieView
-      style={{
-        width: 50, // Set the width to make it larger
-        height: 50, // Set the height to make it larger
-      }}
-      speed={1}
-      ref={LottieRef}
-      autoPlay={false} 
-      source={cart}
-      loop={false}
-    />
-      </TouchableOpacity>
-    </View>
+
+        {
+        isLoading ? (<View>{activitiIndicatorAnimation}</View>) : 
+        (
+        (!isLoading && !isShowingMessage) ? (<TouchableOpacity disabled={isItemInCart}  onPress={handleAddToCart}>
+        {cartbuttonanimation}
+        </TouchableOpacity>) : (
+          <View>
+            {isItemAddedCart ? (<View>
+              {successCartIndicatorObj}
+            </View>) : (<View>
+              {failureCartIndicatorObj}
+            </View>)}
+          </View>
+        )
+        )
+
+
+        }
+      </View>
+</View>
+{
+       (previewSuccessMessage || previewErrorMessage) &&  <View style={{marginTop: '5%'}}>
+          <Text style={{color: resultMessage === 'Item Added Successfully' ? 'green' : 'red', fontWeight: 'bold'}}>{resultMessage}</Text>
+        </View>
+      }
   </ModalContent>
   );
   const notScanned = (
@@ -171,19 +270,25 @@ const styles = StyleSheet.create({
     alignSelf:'center',
   },
   priceAndCartView:{
-    flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',marginTop:10
+    flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center',marginTop:10
   },
   textContainer:{
-    flexDirection: 'row',
     backgroundColor: 'rgba(128, 0, 128, 0.7)',
     padding:10,
+    width: 200,
     borderTopEndRadius:20,
     borderBottomLeftRadius:20,
-    textAlign:'center'
+    textAlign:'center',
+    marginRight: '3%',
   },
   textStyleName:{color:'white', fontSize:15},
   textStylePrice:{color:'white', fontSize:17},
-  modalContent: {},
+  modalContent: {
+    margin: '2%',
+    width: 300,
+    justifyContent: 'center',
+    alignSelf: 'center',
+  },
   ModalButtonText: {},
   modalStyle: {},
   ModalFooter: {},

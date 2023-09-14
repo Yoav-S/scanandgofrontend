@@ -1,5 +1,5 @@
 import react, {useState, useEffect , useContext} from 'react';
-import {Text, View, StyleSheet, SafeAreaView} from 'react-native';
+import {Text, View, StyleSheet, SafeAreaView, KeyboardAvoidingView, Keyboard, Platform} from 'react-native';
 import TitleAndArrowBack from '../components/UIComps/TitleAndArrowBack';
 import { useDataContext } from '../context/DataContext';
 import StyledButton from '../components/UIComps/StyledButton';
@@ -36,6 +36,7 @@ const Checkout: React.FC = () => {
     const [creditCards, setcreditCards] = useState<creditCardType[]>(currentUser?.creditCards || []);
     const [btnLabelText, setBtnLabelText] = useState<string>('Apply')
     const [currentCoupon, setCurrentCoupon] = useState<string>('');
+    const [isKeyboardVisible, setKeyboardVisible] = useState(false);
     const [isEmptyCreditCardArray, setisEmptyCreditCardArray] = useState<boolean>(currentUser?.creditCards && currentUser?.creditCards.length > 0 ? false : true);
     const cards = creditCards.map((creditCard: creditCardType) => {
         return(
@@ -54,6 +55,10 @@ const Checkout: React.FC = () => {
     }  
     
     const handleCouponCheck = async () => {
+        if(currentCouponInputValue.length < 4) {
+            showToast('Coupon should be at least 4 characters', 'error', 'Coupon check failed');
+            return;
+        }
         setisLoading(true);
         const [isValid, couponObject] = await verifyCouponAttempt(currentCouponInputValue);
         setisLoading(false);
@@ -116,10 +121,33 @@ const Checkout: React.FC = () => {
     showToast('Please try again', 'error', 'Purchase Failed');
    }
     }
+    useEffect(() => {
+        const keyboardDidHideListener = Keyboard.addListener(
+          'keyboardDidHide',
+          () => {
+            setKeyboardVisible(false);
+          },
+        );
+        const keyboardDidShowListener = Keyboard.addListener(
+          'keyboardDidShow',
+          () => {
+            setKeyboardVisible(true);
+          },
+        );
+  
     
+        return () => {
+          keyboardDidHideListener.remove();
+          keyboardDidShowListener.remove();
+        };
+      }, []);
 
     return (
         <View style={[{backgroundColor: background}, styles.container]}>
+                  <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        style={{ flex: 1 }}
+      >
                         <TitleAndArrowBack text='Checkout' onPress={() => {navigation.goBack()}}/>
                         <ScrollView>
 
@@ -153,7 +181,8 @@ const Checkout: React.FC = () => {
                     isLoading={isLoading}
                     handleCouponCheck={handleCouponCheck}
                     changeInputHandler={changeInputHandler}
-                    isCouponValid={isCouponValid}/>
+                    isCouponValid={isCouponValid}
+                    startValue={currentCoupon}/>
                 </View>
                 <View style={styles.totalAmountCon}>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '95%'}}>
@@ -177,7 +206,8 @@ const Checkout: React.FC = () => {
                 )
             }
 </ScrollView>
-            <BottomNavbar/>
+{!isKeyboardVisible && <BottomNavbar />}
+            </KeyboardAvoidingView>
             <Toast/>
         </View>
     )

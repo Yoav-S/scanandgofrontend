@@ -13,7 +13,8 @@ import { creditCardType } from '../interfaces/interfaces';
 import { Icon } from 'react-native-elements';
 import { ThemeContext } from '../context/ThemeContext';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
-
+import activityIndicatorAnimation from '../assets/activitiindicator.json'
+import LottieView from 'lottie-react-native';
 interface PaymentMethodsScreenProps {
     navigation: StackNavigationProp<any, 'PaymentMethodsScreen'>;
 }
@@ -23,10 +24,12 @@ const PaymentMethodsScreen: React.FC<PaymentMethodsScreenProps> = ({ navigation 
     const [defaultCardIndex, setDefaultCardIndex] = useState<string | null>(null);
     const { theme } = useContext(ThemeContext);
     const { primary, secondary, text, background } = theme.colors  
-    const {changeDefaultCardAttempt, showToast, deleteCardAttempt, setisAreYouSureModalOpen, cardId, setcardId} = useDataContext();
-   
+    const {changeDefaultCardAttempt, showToast,  setisAreYouSureModalOpen,  setcardId} = useDataContext();
+    const [isLoading, setisLoading] = useState<boolean>(false);
     const handleDefaultCardChange = async (cardId: string) => {
+            setisLoading(true);
             const isDefaultCardChanged = await changeDefaultCardAttempt(cardId);
+            setisLoading(false);
             if(isDefaultCardChanged){
                 showToast("You can now purchase", 'success', 'Default Card Changed Succesfully');
             }
@@ -35,7 +38,13 @@ const PaymentMethodsScreen: React.FC<PaymentMethodsScreenProps> = ({ navigation 
             }
         
     };
-
+    const activitiIndicatorAnimation = (<LottieView
+        style={{width: 21, height: 21, alignSelf: 'center'}}
+        speed={1} 
+        source={activityIndicatorAnimation}
+        autoPlay
+        loop={true}
+        />)
 
 
 
@@ -72,10 +81,15 @@ const PaymentMethodsScreen: React.FC<PaymentMethodsScreenProps> = ({ navigation 
                         />
                         </View>
                         <View style={{flexDirection: 'row', alignItems: 'center',}}>
-                        <CheckBox
-                            checked={card.isDefault}
-                            onPress={() => handleDefaultCardChange(card._id)}
-                        />
+                            {
+                                isLoading ? (<View style={{padding: '5%'}}>{activitiIndicatorAnimation}</View>) : (<CheckBox
+                                    checked={card.isDefault}
+                                    onPress={() => {
+                                        if(card.isDefault){return;}
+                                        handleDefaultCardChange(card._id)}}
+                                />)
+                            }
+
                         <Text style={{color: text.primary, fontWeight: 'bold'}}>Use as default payment method</Text>
                         </View>
                         <View style={[styles.barrier, {borderColor: text.secondary, backgroundColor: text.secondary}]}/>

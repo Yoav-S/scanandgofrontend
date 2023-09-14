@@ -18,7 +18,6 @@ export const DataProvider: React.FC<Props> = ({ children }) => {
   const [rememberMe, setRememberMe] = useState<boolean>(true);
   const [showError, setShowError] = useState(false);
   const [cardId, setcardId] = useState<string>('');
-
   const [isAreYouSureModalOpen, setisAreYouSureModalOpen] = useState<boolean>(false);   
   const [token, setToken] = useState<string>('');
   const [isVisibleStatus, setisVisibleStatus] = useState(false);
@@ -27,7 +26,7 @@ export const DataProvider: React.FC<Props> = ({ children }) => {
   const [isLogoutModal, setisLogoutModal] = useState<boolean>(false);
   const api: AxiosInstance = axios.create({
     baseURL: 'https://scan-and-go.onrender.com/', // Set your base URL
-  });  
+  });    
     /**
  * Attempts to log in the user.
  * @param email The user's email.
@@ -61,24 +60,7 @@ const updatePasswordAttempts = async (password: string, newpassword: string): Pr
     return [false, err.message];
   }
 }
-const handleDeleteCard = async (cardId: string, userId: string) => {        
-  
-  if(currentUser){
-      const [isCardDeleted, message] = await deleteCardAttempt(cardId, currentUser?._id);
-      console.log(message);
-      
-      if(isCardDeleted){
-          showToast("Card deleted succesffully", 'success', 'Deleted Successfully');
-      }
-      else{
-          if(message){
-          message === "Request failed with status code 404" ?
-          showToast("Card delete failed", 'error', 'please try again') : 
-          showToast(message, 'error', 'please try again');
-      }
-      }
-  }
-}
+
 const deleteCardAttempt = async (cardId: string, userId: string): Promise<[boolean, string | null]> => {
   console.log(cardId, userId);
   
@@ -87,7 +69,7 @@ const deleteCardAttempt = async (cardId: string, userId: string): Promise<[boole
     cardId: cardId
   }
   try{
-    const response: AxiosResponse = await api.patch('paymentMethods/deleteCreditCard', obj);
+    const response: AxiosResponse = await api.patch('paymentMethods/deleteCreditCard', obj, {headers: {Authorization: 'Bearer ' + token}});
     if(currentUser){
       const newUser = await getUserById(currentUser._id, token);
       
@@ -153,15 +135,18 @@ const verifyEmail = async (emailToSend: string): Promise<[boolean, string, Date?
   }
 };
 const resetPassword = async (password: string, userId: string): Promise<boolean> => {
-  console.log(password);
-  console.log(userId);
-  
+
   try {
-    const response = await api.put(`users/resetPassword`, { params: { newPassword: password, userId: userId } });
-    console.log(response.data);
-    console.log(response.status);
-    
+    const response = await api.put(`users/resetPassword`, { params: { newPassword: password, userId: userId } }); 
     if (response.status === 200) {
+      if(currentUser){
+        const newUser = await getUserById(currentUser._id, token);
+        
+        if (newUser != null) {
+          setCurrentUser(newUser);
+          setAuthenticated(true);
+        }
+       }
       return true;
     }
     else{
@@ -303,10 +288,7 @@ const signupAttempt = async (newUser: Registergion_Form_Props): Promise<[boolean
 
 }};
 const deleteItemAttempt = async (userId: string, nfcTagCode: string): Promise<[boolean, IteminCartType[]?]> => {
-  console.log(userId);
-  console.log(nfcTagCode);
-  
-  
+
 try{
   const response : AxiosResponse = await api.patch('users/removeFromCart', {
     userId,
@@ -316,6 +298,14 @@ try{
   console.log(response.data);
   
   if(response.status === 200 || response.status === 201){
+    if(currentUser){
+      const newUser = await getUserById(currentUser._id, token);
+      
+      if (newUser != null) {
+        setCurrentUser(newUser);
+        setAuthenticated(true);
+      }
+     }
     return [true, response.data];
   } else {
     return [false];
@@ -372,10 +362,16 @@ const autoLoginNewUser = async (newToken: string) => {
         userId: currentUser?._id
       },
       { headers: { Authorization: 'Bearer ' + token, } }
-      )
-      console.log(response.data);
-      
+      )      
       if(response.status == 200 || response.status === 201){
+        if(currentUser){
+          const newUser = await getUserById(currentUser._id, token);
+          
+          if (newUser != null) {
+            setCurrentUser(newUser);
+            setAuthenticated(true);
+          }
+         }
         return true;
       }
       else{
@@ -396,8 +392,15 @@ const addCreditCardAttempt = async (values: creditCardFormType): Promise<[boolea
     console.log('credit card' , creditCardObject);
     
     const response: AxiosResponse = await api.post('paymentMethods/addCreditCard', creditCardObject, {headers: {Authorization: 'Bearer ' + token}});
-    console.log(response.data);
-    return [true, null];
+    if(currentUser){
+      const newUser = await getUserById(currentUser._id, token);
+      
+      if (newUser != null) {
+        setCurrentUser(newUser);
+        setAuthenticated(true);
+      }
+     }    
+     return [true, null];
   } catch (err : any) {
     return [false, err.message]
   }
@@ -501,16 +504,24 @@ const PaymentAttempt = async (transactionObject: TransactionFormType): Promise<b
 }
 
 const AddItemToCartAttempt = async (userId: string, itemInCart: {itemId: string, nfcTagCode: string}): Promise<boolean> => {
+  
 try{
 const response = await api.post('users/addToCart', { userId, itemInCart }, {headers: {Authorization: 'Bearer ' + token}})
-if(currentUser){
-  console.log(response.data);
 
-let newUser: CurrentUserType = currentUser;
-newUser.cart = response.data;
-setCurrentUser(newUser);
+if(response.status === 200 || response.status === 201){
+  if(currentUser){
+    const newUser = await getUserById(currentUser._id, token);
+    
+    if (newUser != null) {
+      setCurrentUser(newUser);
+      setAuthenticated(true);
+    }
+   }
+  return true;
+} else {
+  return false;
 }
-return true;
+
 } catch (err: any){
   console.log(err.message);
   
@@ -636,7 +647,6 @@ try{
     setisAreYouSureModalOpen,
     cardId,
     setcardId,
-    handleDeleteCard
   };
 
   return (

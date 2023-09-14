@@ -20,13 +20,17 @@ const Cart: React.FC = () => {
     const { theme } = useContext(ThemeContext);
     const { primary, secondary, text, background } = theme.colors 
     const navigation = useNavigation<StackNavigationProp<any>>();
-    
     const [totalamountvariable, settotalamountvariable] = useState<number>(0);
+    const [isLoading, setisLoading] = useState<boolean>(false);
     const [isCartEmpty, setisCartEmpty] = useState<boolean>(currentUser?.cart && currentUser.cart.length > 0 ? false : true);
     const [currentUserItemsCart, setCurrentUserItemsCart] = useState<IteminCartType[] | undefined>(!isCartEmpty && currentUser?.cart ? currentUser.cart : []);
 
     const handleDeleteItem = async (userId : string, nfcTagCode : string) => {
+        const newcurrentUserItemsCart: (IteminCartType[] | undefined) = currentUserItemsCart?.filter((item: IteminCartType) => item.nfcTagCode !== nfcTagCode);
+        setCurrentUserItemsCart(newcurrentUserItemsCart);
+        setisLoading(true);
         const [isDeleted, arrayofItems] = await deleteItemAttempt(userId, nfcTagCode);
+        setisLoading(false);
         if(isDeleted) {
             if(arrayofItems?.length === 0){
                 if(currentUser){
@@ -59,9 +63,8 @@ const Cart: React.FC = () => {
       
       useEffect(() => {
         calculatePrice(); // Calculate the initial total price when the component mounts
-      }, [currentUser]); 
-    
-
+        setCurrentUserItemsCart(currentUser?.cart);
+      }, [currentUser]);       
     return (
         <View style={[styles.container, {backgroundColor: background}]}>
             <View style={styles.titleandIcon}>
@@ -101,7 +104,7 @@ const Cart: React.FC = () => {
                             <Text style={{color: text.primary}}>Total</Text>
                             <Text style={{color: text.primary, fontWeight: 'bold'}}>{totalamountvariable}</Text>
                         </View>
-                        <StyledButton bigbutton text='Checkout' onPress={() => {navigation.navigate('CheckoutScreen', {totalAmount: totalamountvariable})}}/>
+                        <StyledButton disabled={isLoading} bigbutton text='Checkout' onPress={() => {navigation.navigate('CheckoutScreen', {totalAmount: totalamountvariable})}}/>
                     </View>
                 </View>) 
             }

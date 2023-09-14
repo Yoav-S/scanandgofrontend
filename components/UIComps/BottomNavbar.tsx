@@ -31,10 +31,11 @@ const BottomNavbar: React.FC<BottomNavbarInterface> = (props) => {
   setisVisibleStatus(!isVisibleStatus);
 }
 
+console.log(amountofitemsvariable);
 
 useEffect(() => {
 setamountofitemsvariable(currentUser?.cart.length || 0)
-}, [amountofitemsvariable]); 
+}, [currentUser]); 
  
   return (
     <SafeAreaView style={styles.container}>
@@ -42,7 +43,7 @@ setamountofitemsvariable(currentUser?.cart.length || 0)
       <View style={{flexDirection: 'row'}}>
       {amountofitemsvariable > 0 && (
         <Text style={[{ color: 'red' }, styles.amountvariable]}>
-          {amountofitemsvariable}
+          {currentUser?.cart.length}
         </Text>
       )}
       <Icon color={route.name === "CartScreen" ? 'lightblue' : 'white'} name="shopping-cart" size={30} onPress={navigateCart}/>

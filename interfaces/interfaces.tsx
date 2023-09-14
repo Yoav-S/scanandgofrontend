@@ -127,7 +127,6 @@ export interface DataContextType {
     currentUser: CurrentUserType | null;
     isMessageModalVisible: boolean;
     isAreYouSureModalOpen: boolean;
-    handleDeleteCard: (cardId: string, userId: string) => void;
     cardId: string;
     setcardId: (cardId: string) => void;
     setisAreYouSureModalOpen: (value: boolean) => void;
@@ -415,4 +414,5 @@ export interface CouponCompProps{
     handleCouponCheck: () => void;
     btnLabelText: string;
     changeInputHandler: (input: string) => void;
+    startValue: string;
 }  

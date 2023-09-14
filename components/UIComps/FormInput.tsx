@@ -35,9 +35,9 @@ const FormInput: React.FC<FormInputType> = (props) => {
           styles.textInput, 
           {
             width: props.label === "Exp Date" ||
-             props.label === "CVV" ||
-              props.label === 'Enter Coupon' ?
-               120 : 300
+             props.label === "CVV" ? 
+               120 : props.label === 'Enter Coupon' ? 
+               150 : 300
           }
         ]
       }

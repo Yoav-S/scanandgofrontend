@@ -1,4 +1,4 @@
-import react, {useContext} from 'react';
+import react, {useContext, useEffect} from 'react';
 import {View , Text, StyleSheet, SafeAreaView, Image} from 'react-native';
 import {ItemCompInterface} from '../../interfaces/interfaces'
 import { Icon } from 'react-native-elements';
@@ -10,7 +10,9 @@ const Item: React.FC<ItemCompInterface> = (props) => {
     const { primary, secondary, text, background } = theme.colors     
     const {currentUser} = useDataContext();
 
-     
+     useEffect(() => {
+
+     }, [currentUser])
 
     return (
         <SafeAreaView style={styles.container}>
@@ -20,7 +22,11 @@ const Item: React.FC<ItemCompInterface> = (props) => {
             <Text style={[{color: text.primary},styles.wierlesstext]}>{props.itemObj.category}</Text>
             <Text style={[{color: text.primary},styles.pricetext]}>{props.itemObj.price}</Text>
             </View>
-            <Icon onPress={() => {props.handleDeleteItem && props.handleDeleteItem(currentUser ? currentUser?._id : '',props.itemObj.nfcTagCode)}} name="cancel" size={30}/>
+            <Icon 
+            onPress={() => {props.handleDeleteItem && props.handleDeleteItem(currentUser ? currentUser?._id : '',props.itemObj.nfcTagCode)}} 
+            name="cancel" 
+            size={30}
+            color={text.primary}/>
         </SafeAreaView>
     )
 }
