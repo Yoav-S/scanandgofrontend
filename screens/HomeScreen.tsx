@@ -7,6 +7,7 @@ import TransactionItem from "../components/UIComps/TransactionItem";
 import { ThemeContext } from "../context/ThemeContext";
 import ImageCarousel from "../components/UIComps/ImageCarousel";
 import Toast from "react-native-toast-message";
+import NoTransactionComp from "../components/UIComps/NoTransactionComp";
 const HomeScreen: React.FC<HomeScreenType> = (props) => {
     const { theme } = useContext(ThemeContext);
     const { primary, secondary, text, background } = theme.colors     
@@ -22,9 +23,9 @@ const HomeScreen: React.FC<HomeScreenType> = (props) => {
         <SafeAreaView style={[styles.container,{ backgroundColor: background}]}>
             {
                 (recentItemArray.length === 0 && recentTransactionArray.length === 0) ? 
-                (<View>
-
-                </View>)
+                (
+                    <NoTransactionComp/>
+                )
                  :
                 (<View>
                         <Text style={{color: text.primary, fontSize: 22, textAlign: 'center',
