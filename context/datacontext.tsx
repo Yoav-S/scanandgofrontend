@@ -296,7 +296,7 @@ try{
     nfcTagCode
   },
   { headers: { Authorization: 'Bearer ' + token, } });
-  console.log(response.data);
+  console.log('response',response.data);
   
   if(response.status === 200 || response.status === 201){
     if(currentUser){
@@ -522,9 +522,7 @@ if(response.status === 200 || response.status === 201){
   return [false, null];
 }
 
-} catch (err: any){
-  console.log(err.message);
-  
+} catch (err: any){  
 return [false, null];
 }
 }

@@ -16,28 +16,23 @@ import { ThemeContext } from "../context/ThemeContext";
 
 import { CurrentUserType } from '../interfaces/interfaces';
 const Cart: React.FC = () => {
-    const {updatedCurrentUserCart,setCurrentUser,currentUser, deleteItemAttempt, showToast, amountofitemsvariable, setamountofitemsvariable} = useDataContext();
+    const {setCurrentUser,currentUser, deleteItemAttempt, showToast, setamountofitemsvariable} = useDataContext();
     const { theme } = useContext(ThemeContext);
     const { primary, secondary, text, background } = theme.colors 
     const navigation = useNavigation<StackNavigationProp<any>>();
     const [totalamountvariable, settotalamountvariable] = useState<number>(0);
     const [isLoading, setisLoading] = useState<boolean>(false);
-    const [isCartEmpty, setisCartEmpty] = useState<boolean>(currentUser?.cart && currentUser.cart.length > 0 ? false : true);
-    const [currentUserItemsCart, setCurrentUserItemsCart] = useState<IteminCartType[] | undefined>(updatedCurrentUserCart);
-
+    const [isCartEmpty, setisCartEmpty] = useState<boolean>(!currentUser || currentUser.cart.length === 0);
+    const [currentUserItemsCart, setCurrentUserItemsCart] = useState<IteminCartType[] | undefined>(currentUser?.cart);
+    
     const handleDeleteItem = async (userId : string, nfcTagCode : string) => {
-        const newcurrentUserItemsCart: (IteminCartType[] | undefined) = updatedCurrentUserCart?.filter((item: IteminCartType) => item.nfcTagCode !== nfcTagCode);
+        const newcurrentUserItemsCart: (IteminCartType[] | undefined) = currentUserItemsCart?.filter((item: IteminCartType) => item.nfcTagCode !== nfcTagCode);
         setCurrentUserItemsCart(newcurrentUserItemsCart);
         setisLoading(true);
         const [isDeleted, arrayofItems] = await deleteItemAttempt(userId, nfcTagCode);
         setisLoading(false);
         if(isDeleted) {
             if(arrayofItems?.length === 0){
-                if(currentUser){
-                    let newUser: CurrentUserType = currentUser;
-                    newUser.cart = arrayofItems;
-                    setCurrentUser(newUser);
-                }
                 setisCartEmpty(true)
                 setamountofitemsvariable(0)
             }
@@ -45,7 +40,6 @@ const Cart: React.FC = () => {
             {
                 setamountofitemsvariable(arrayofItems.length)
             }
-            setCurrentUserItemsCart(arrayofItems);
             showToast('Enjoy Shopping !', 'success', 'Item Successfully deleted');
         }
         else{
@@ -62,12 +56,11 @@ const Cart: React.FC = () => {
       };
       
       useEffect(() => {
-        calculatePrice(); // Calculate the initial total price when the component mounts
-        setCurrentUserItemsCart(updatedCurrentUserCart);
-      }, [updatedCurrentUserCart, currentUser]);   
-          
-
-      console.log(updatedCurrentUserCart);
+        setisCartEmpty(!currentUser || currentUser.cart.length === 0);
+        setCurrentUserItemsCart(currentUser?.cart);
+        calculatePrice();
+      }, [currentUser]);
+      
       
     return (
         <View style={[styles.container, {backgroundColor: background}]}>
@@ -91,17 +84,16 @@ const Cart: React.FC = () => {
                 
                 (<View style={styles.nonEmptyCartCon}>
                     <ScrollView style={styles.scrollViewCon}>
-                    {
-                        currentUserItemsCart && currentUserItemsCart.map((cartItem: IteminCartType) => {
-                            return(
-                                <Item
-                                key={cartItem.itemId}
-                                itemObj={cartItem}
-                                handleDeleteItem={handleDeleteItem}
-                                />
-                            )
-                        })
-                    }
+                    {currentUserItemsCart && currentUserItemsCart.map((cartItem: IteminCartType) => {
+                                          return (
+                                            <Item
+                                              key={cartItem.itemId}
+                                              itemObj={cartItem}
+                                              handleDeleteItem={handleDeleteItem}
+                                            />
+                                          );
+                                        })}
+
                     </ScrollView>
                     <View style={styles.totalandcheckoutcon}>
                         <View style={styles.totalandpricecon}>

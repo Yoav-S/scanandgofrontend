@@ -46,7 +46,12 @@ setamountofitemsvariable(currentUser?.cart.length || 0)
           {currentUser?.cart.length}
         </Text>
       )}
-      <Icon color={route.name === "CartScreen" ? 'lightblue' : 'white'} name="shopping-cart" size={30} onPress={navigateCart}/>
+      <Icon color={route.name === "CartScreen" || 
+      route.name === 'CheckoutScreen' ||
+      route.name === 'PurchaseScreen' ? 
+      'lightblue' :
+       'white' } 
+       name="shopping-cart" size={30} onPress={navigateCart}/>
       </View>
       <View style={[styles.plusIconContainer, {backgroundColor: background}]}>
       <View style={styles.plusIconSecondCon}>

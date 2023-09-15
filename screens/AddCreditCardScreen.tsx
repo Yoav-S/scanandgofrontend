@@ -194,7 +194,7 @@ const AddCreditCardScreen: React.FC = () => {
                                     containerStyle={{zIndex: 10}}
                                     open={open}
                                     
-                                    value={currentCategoryValue}
+                                    value={values.cardNumber && values.cardNumber[0] === '4' ? 'visa' : currentCategoryValue}
                                     items={allCategoriesValues}
                                     setOpen={setOpen}
                                     onChangeValue={(category) => {

@@ -12,30 +12,40 @@ const HomeScreen: React.FC<HomeScreenType> = (props) => {
     const { primary, secondary, text, background } = theme.colors     
 
     const { currentUser, showToast } = useDataContext();
-    const recentItemArray: recentItemType[] = currentUser?.recentItems || [];
-    const recentTransactionArray: recentTransaction[] = currentUser?.recentTransactions || [];
+    const recentItemArray: recentItemType[] = [];
+    const recentTransactionArray: recentTransaction[] = [];
     const handleshowToast = () => {
         showToast('please try again later', 'error', 'Cannot find transaction details')
     }
     
     return (
         <SafeAreaView style={[styles.container,{ backgroundColor: background}]}>
-            <Text style={{color: text.primary, fontSize: 22, textAlign: 'center',
-        marginTop: '10%', fontWeight: '600' }}>Recent Items</Text>
-            <ImageCarousel data={recentItemArray} />
-            <Text style={{color: text.primary, fontSize: 22, textAlign: 'center', fontWeight: '600', marginTop: '3%'}}>Recent Transactions</Text>
-            <View style={styles.scrollViewCon}>
+            {
+                (recentItemArray.length === 0 && recentTransactionArray.length === 0) ? 
+                (<View>
 
-            <ScrollView style={styles.scrollView}>
-                {
-                    recentTransactionArray.map((transaction: recentTransaction, index) => {
-                        return (
-                            <TransactionItem handleshowToast={handleshowToast} key={index} transaction={transaction}/>
-                        )
-                    })
-                }
-            </ScrollView>
-            </View>
+                </View>)
+                 :
+                (<View>
+                        <Text style={{color: text.primary, fontSize: 22, textAlign: 'center',
+                    marginTop: '10%', fontWeight: '600' }}>Recent Items</Text>
+                        <ImageCarousel data={recentItemArray} />
+                        <Text style={{color: text.primary, fontSize: 22, textAlign: 'center', fontWeight: '600', marginTop: '3%'}}>Recent Transactions</Text>
+                        <View style={styles.scrollViewCon}>
+
+                        <ScrollView style={styles.scrollView}>
+                            {
+                                recentTransactionArray.map((transaction: recentTransaction, index) => {
+                                    return (
+                                        <TransactionItem handleshowToast={handleshowToast} key={index} transaction={transaction}/>
+                                    )
+                                })
+                            }
+                        </ScrollView>
+                        </View>
+                </View>)
+            }
+
 
             <BottomNavbar />
             <Toast/>
