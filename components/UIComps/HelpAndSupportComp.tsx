@@ -31,7 +31,7 @@ const HelpAndSupportComp: React.FC = () => {
         </TouchableOpacity>
         </View>
         <View style={{marginTop: '2%', width: '90%'}}>
-            <Text style={{color: background, lineHeight: 25}}>And suggests a complete instractions tour about Scan & Go.</Text>
+            <Text style={{color: background, lineHeight: 25}}>And suggests a complete instractions tour about Scan & Go application.</Text>
         </View>
     </View>
   );

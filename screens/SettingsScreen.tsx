@@ -10,7 +10,7 @@ import { ThemeContext } from "../context/ThemeContext";
 import BigTitle from "../components/UIComps/BigTitle";
 import { useDataContext } from "../context/DataContext";
 const SettingsScreen: React.FC<SettingsScreenType> = (props) => {
-  const { theme } = useContext(ThemeContext);
+  const { theme, buttonTheme } = useContext(ThemeContext);
   const { primary, secondary, text, background } = theme.colors   
   const navigation = useNavigation<StackNavigationProp<any, 'SettingsScreen'>>();
   const {handleLogOut, isLogoutModal, setisLogoutModal} = useDataContext();
@@ -26,7 +26,7 @@ const SettingsScreen: React.FC<SettingsScreenType> = (props) => {
         </View>
         <View style={[styles.topCon,styles.marginTopCon]}>
         <Text style={[styles.formTitle, {color: text.primary, fontWeight: '600'}]}>Account</Text>
-        <View style={[styles.formCon, styles.firstCon]}>
+        <View style={[styles.formCon, styles.firstCon, {backgroundColor: buttonTheme.buttonMain.background}]}>
         <Button
         icon={{
           name: "person",
@@ -64,7 +64,7 @@ const SettingsScreen: React.FC<SettingsScreenType> = (props) => {
         </View>
         <View style={styles.topCon}>
         <Text style={[styles.formTitle, {color: text.primary, fontWeight: '600'}]}>Support & About</Text>
-        <View style={[styles.formCon, styles.firstCon]}>
+        <View style={[styles.formCon, styles.firstCon, {backgroundColor: buttonTheme.buttonMain.background}]}>
         <Button
         icon={{
           name: "help",
@@ -91,7 +91,7 @@ const SettingsScreen: React.FC<SettingsScreenType> = (props) => {
         </View>
         <View style={styles.topCon}>
         <Text style={[styles.formTitle, {color: text.primary, fontWeight: '600'}]}>Actions</Text>
-        <View style={[styles.formCon, styles.firstCon]}>
+        <View style={[styles.formCon, styles.firstCon, {backgroundColor: buttonTheme.buttonMain.background}]}>
         <Button
         icon={{
           name: "report",
