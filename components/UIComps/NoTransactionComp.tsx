@@ -5,6 +5,8 @@ import { useDataContext } from '../../context/DataContext';
 import LottieView from "lottie-react-native";
 import welcomeGirlAnimation from '../../assets/welcomegirlanimation.json';
 import Svg, { Circle } from 'react-native-svg'; // Import SVG components
+import LetsStartScanComp from './LetsStartScanComp';
+import HelpAndSupportComp from './HelpAndSupportComp';
 
 const { width, height } = Dimensions.get('window');
 
@@ -29,7 +31,7 @@ const NoTransactionComp: React.FC<Props> = () => {
 
   const welcomeLottieObj = (
     <LottieView
-      style={{ width: 250, height: 250 }}
+      style={{ width: 250, height: 250}}
       speed={1} 
       source={welcomeGirlAnimation}
       autoPlay
@@ -46,7 +48,7 @@ const NoTransactionComp: React.FC<Props> = () => {
         <Text style={[{ color: text.primary, fontWeight: '600', fontSize: 30 }]}>
           Welcome
         </Text>
-        <View style={{ justifyContent: 'flex-end', marginBottom: '1%', marginLeft: '5%' }}>
+        <View style={{ justifyContent: 'flex-end',  marginLeft: '5%' }}>
           <Animated.Text
             style={[
               { color: text.secondary, fontWeight: '300', fontSize: 14 },
@@ -61,8 +63,9 @@ const NoTransactionComp: React.FC<Props> = () => {
         {welcomeLottieObj}
       </View>
       <View style={styles.transparentCon}>
-  <Svg height="100%" width={width}>
+  <Svg height={height * 0.6} width={width}>
     <Circle
+
       cx={width / 2}
       cy={width}
       r={width}
@@ -91,10 +94,10 @@ const NoTransactionComp: React.FC<Props> = () => {
         onScroll={handlePageChange}
       >
         <View style={styles.page}>
-          <Text style={{color: background, fontWeight: '500'}}>Step 1: Scan items</Text>
+          <LetsStartScanComp/>
         </View>
         <View style={styles.page}>
-          <Text style={{color: background, fontWeight: '500'}}>Step 2: Add to cart</Text>
+          <HelpAndSupportComp/>
         </View>
         <View style={styles.page}>
           <Text style={{color: background, fontWeight: '500'}}>Step 3: Make a purchase</Text>
@@ -119,10 +122,8 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   transparentCon: {
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
+    position: 'absolute',
+    top: "40%",
     alignItems: 'center',
     justifyContent: 'center'
   },

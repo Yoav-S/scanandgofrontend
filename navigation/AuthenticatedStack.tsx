@@ -15,6 +15,7 @@ import TransactionScreen from '../screens/TransactionScreen';
 import PurchaseDetailsScreen from '../screens/PurchaseDetailsScreen';
 import TransactionView from '../components/UIComps/TransactionView';
 import TransactionsList from '../components/UIComps/TransactionList';
+import ScanningTourComp from '../components/UIComps/ScanningTourComp';
 import { AuthenticatedStackType } from '../interfaces/interfaces';
 const AuthenticatedStack = createStackNavigator();
 export const AuthenticatedStackScreen: React.FC<AuthenticatedStackType> = () => {
@@ -125,6 +126,13 @@ export const AuthenticatedStackScreen: React.FC<AuthenticatedStackType> = () => 
       }} 
       name="TransactionList"   
       component={TransactionsList} 
+      />
+            <AuthenticatedStack.Screen
+      options={{
+        headerShown: false 
+      }} 
+      name="ScanningTour"   
+      component={ScanningTourComp} 
       />
       </AuthenticatedStack.Navigator>
     );
