@@ -1,14 +1,21 @@
-import React, { useContext, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, Animated } from 'react-native';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { View, Text, StyleSheet, Animated, Dimensions , ScrollView} from 'react-native';
 import { ThemeContext } from '../../context/ThemeContext';
 import { useDataContext } from '../../context/DataContext';
+import LottieView from "lottie-react-native";
+import welcomeGirlAnimation from '../../assets/welcomegirlanimation.json';
+import Svg, { Circle } from 'react-native-svg'; // Import SVG components
+
+const { width, height } = Dimensions.get('window');
 
 interface Props {}
 
 const NoTransactionComp: React.FC<Props> = () => {
-  const { theme } = useContext(ThemeContext);
+  const { theme, buttonTheme } = useContext(ThemeContext);
   const { primary, secondary, text, background } = theme.colors;
   const { currentUser } = useDataContext();
+  const scrollViewRef = useRef<ScrollView>(null);
+  const [currentPage, setCurrentPage] = useState<number>(0);
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
@@ -20,25 +27,79 @@ const NoTransactionComp: React.FC<Props> = () => {
     }).start();
   }, [fadeAnim]);
 
+  const welcomeLottieObj = (
+    <LottieView
+      style={{ width: 250, height: 250 }}
+      speed={1} 
+      source={welcomeGirlAnimation}
+      autoPlay
+      loop={true}
+    />
+  );
+  const handlePageChange = (event: any) => {
+    const page = Math.round(event.nativeEvent.contentOffset.x / width);
+    setCurrentPage(page);
+  };
   return (
     <View style={[styles.container, { backgroundColor: background }]}>
       <View style={styles.titleCon}>
-
-        <Text style={[{ color: text.primary, fontWeight: '600', fontSize: 30 }]} >
-        Welcome
-          </Text>
+        <Text style={[{ color: text.primary, fontWeight: '600', fontSize: 30 }]}>
+          Welcome
+        </Text>
         <View style={{ justifyContent: 'flex-end', marginBottom: '1%', marginLeft: '5%' }}>
-
           <Animated.Text
-          style={[
-            { color: text.secondary, fontWeight: '300', fontSize: 14 },
-            { opacity: fadeAnim },
-          ]}
-        >
-          
-          {currentUser?.fullName.toLocaleUpperCase()}
-        </Animated.Text>
+            style={[
+              { color: text.secondary, fontWeight: '300', fontSize: 14 },
+              { opacity: fadeAnim },
+            ]}
+          >
+            {currentUser?.fullName?.toLocaleUpperCase()}
+          </Animated.Text>
         </View>
+      </View>
+      <View style={styles.lottieCon}>
+        {welcomeLottieObj}
+      </View>
+      <View style={styles.transparentCon}>
+  <Svg height="100%" width={width}>
+    <Circle
+      cx={width / 2}
+      cy={width}
+      r={width}
+      fill={buttonTheme.buttonMain.background}
+      fill-opacity="0.3"
+    />
+  </Svg>
+</View>
+<View style={styles.dotsContainer}>
+        {[0, 1, 2].map((index) => (
+          <View
+            key={index}
+            style={[
+              styles.dot,
+              { backgroundColor: currentPage === index ? background : '#ccc' },
+            ]}
+          />
+        ))}
+      </View>
+      <View style={styles.scrollContainer}>
+      <ScrollView
+        ref={scrollViewRef}
+        horizontal
+        pagingEnabled
+        showsHorizontalScrollIndicator={false}
+        onScroll={handlePageChange}
+      >
+        <View style={styles.page}>
+          <Text style={{color: background, fontWeight: '500'}}>Step 1: Scan items</Text>
+        </View>
+        <View style={styles.page}>
+          <Text style={{color: background, fontWeight: '500'}}>Step 2: Add to cart</Text>
+        </View>
+        <View style={styles.page}>
+          <Text style={{color: background, fontWeight: '500'}}>Step 3: Make a purchase</Text>
+        </View>
+      </ScrollView>
       </View>
     </View>
   );
@@ -53,6 +114,49 @@ const styles = StyleSheet.create({
     width: '90%',
     alignSelf: 'center',
     marginTop: '5%',
+  },
+  lottieCon: {
+    alignItems: 'center'
+  },
+  transparentCon: {
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  dot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    marginHorizontal: 5,
+  },
+  page: {
+    width: width * 0.9,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  dotsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+    position: 'absolute',
+    bottom: height * 0.5,
+    height: 50,
+    width: 150,
+    alignSelf: 'center',
+  },
+  scrollContainer: {
+    position: 'absolute',
+    width: '90%',
+    height: height * 0.3,
+    alignSelf: 'center',
+    bottom: height * 0.18,
+  },
+
+  scrollViewContent: {
+    alignItems: 'center',
   },
 });
 

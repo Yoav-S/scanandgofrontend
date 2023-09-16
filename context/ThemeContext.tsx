@@ -26,7 +26,7 @@ export const ThemeProvider: React.FC<Props> = ({ children }) => {
   };
   const buttonTheme:IButtonTheme = {
     buttonMain:{
-      background: '#702963',
+      background: '#E6942B',
       text: '#ffffff'
     },
     buttonAlt:{
