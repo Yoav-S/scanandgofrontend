@@ -18,7 +18,10 @@ console.log('rendered');
             <View style={styles.contentCon}>
             <Text style={[{color: text.primary},styles.nametext]}>{props.itemObj.name}</Text>
             <Text style={[{color: text.primary},styles.wierlesstext]}>{props.itemObj.category}</Text>
-            <Text style={[{color: text.primary},styles.pricetext]}>{props.itemObj.price}</Text>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Text style={[{color: text.primary, marginRight: '3%'},styles.pricetext]}>{props.itemObj.price}</Text>
+            <Image source={require('../../images/shekel.png')} style={[styles.imageShekel]}/>
+            </View>
             </View>
             <Icon 
             onPress={() => {props.handleDeleteItem && props.handleDeleteItem(currentUser ? currentUser?._id : '',props.itemObj.nfcTagCode)}} 
@@ -38,6 +41,10 @@ const styles = StyleSheet.create({
     wierlesstext: {
         fontWeight: '300'
     },
+    imageShekel: {
+        height: 15,
+        width: 15,
+    },
     nametext: {
         fontSize: 16,
         fontWeight: '700'
@@ -45,7 +52,7 @@ const styles = StyleSheet.create({
     image: {
         width: '40%',
         height: 150,
-        marginRight: '3%'
+        marginRight: '3%',
     },
     pricetext: {
         fontWeight: '600'

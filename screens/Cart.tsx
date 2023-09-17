@@ -1,5 +1,5 @@
 import react, {useState, useEffect, useContext} from 'react';
-import {Text, View, StyleSheet, SafeAreaView} from 'react-native';
+import {Text, View, StyleSheet, SafeAreaView, Image} from 'react-native';
 import { useDataContext } from '../context/DataContext';
 import animationData from '../assets/emptycartlottie.json'
 import LottieView from 'lottie-react-native';
@@ -16,7 +16,7 @@ import { ThemeContext } from "../context/ThemeContext";
 
 import { CurrentUserType } from '../interfaces/interfaces';
 const Cart: React.FC = () => {
-    const {setCurrentUser,currentUser, deleteItemAttempt, showToast, setamountofitemsvariable} = useDataContext();
+    const {setCurrentUser,currentUser, deleteItemAttempt, showToast, amountofitemsvariable,setamountofitemsvariable} = useDataContext();
     const { theme } = useContext(ThemeContext);
     const { primary, secondary, text, background } = theme.colors 
     const navigation = useNavigation<StackNavigationProp<any>>();
@@ -59,15 +59,18 @@ const Cart: React.FC = () => {
         setisCartEmpty(!currentUser || currentUser.cart.length === 0);
         setCurrentUserItemsCart(currentUser?.cart);
         calculatePrice();
+        setamountofitemsvariable(currentUser?.cart.length || 0)
       }, [currentUser]);
-      
-      
+   
     return (
         <View style={[styles.container, {backgroundColor: background}]}>
             <View style={styles.titleandIcon}>
             <Text/>
             <Text style={{color: text.primary, fontWeight: '600', fontSize: 18}}>Cart</Text>
-            <Icon color={text.primary} name="shopping-cart" size={30}/>
+            <Icon style={{marginRight: '3%'}} color={text.primary} name="shopping-cart" size={30}/>
+            { amountofitemsvariable > 0 ? (<Text style={[{ color: 'red' }, styles.amountvariable]}>
+          {currentUser?.cart.length}
+        </Text>) : (<View/>)}
             </View>
             {
                isCartEmpty ? (
@@ -98,7 +101,12 @@ const Cart: React.FC = () => {
                     <View style={styles.totalandcheckoutcon}>
                         <View style={styles.totalandpricecon}>
                             <Text style={{color: text.primary}}>Total</Text>
+                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
                             <Text style={{color: text.primary, fontWeight: 'bold'}}>{totalamountvariable}</Text>
+                            <Image source={require('../images/shekel.png')} style={[styles.imageShekel]}/>
+                            </View>
+
+
                         </View>
                         <StyledButton disabled={isLoading} bigbutton text='Checkout' onPress={() => {navigation.navigate('CheckoutScreen', {totalAmount: totalamountvariable})}}/>
                     </View>
@@ -131,6 +139,11 @@ const styles = StyleSheet.create({
     nonEmptyCartCon: {
 
     },
+    imageShekel: {
+        marginLeft: '5%',
+            height: 15,
+            width: 15,
+    },
     lottieCon: {
         alignItems: 'center',
         marginTop: '5%'
@@ -139,5 +152,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         padding: '2%'
-    }
+    },    
+    amountvariable: {
+        position: 'absolute',
+        zIndex: 15,
+        fontWeight: 'bold',
+        right: '2%'
+      },
 });
