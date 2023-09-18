@@ -9,7 +9,9 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { StackNavigationProp } from '@react-navigation/stack';
 import BottomNavbar from './BottomNavbar';
 import ScannerOpenerSubComp from './ScannerOpenerSubComp';
-
+import ScanningItemGuideComp from './ScanningItemGuideComp';
+import AddToCart from './AddToCartScanTour';
+import TryYourSelfComp from './TryYourSelfComp'
 const { width, height } = Dimensions.get('window');
 
 const ScanningTourComp: React.FC = () => {
@@ -18,20 +20,15 @@ const ScanningTourComp: React.FC = () => {
     const navigation = useNavigation<StackNavigationProp<any, 'AddCreditCardScreen'>>();
 
     const [currentIndex, setCurrentIndex] = useState(0);
-
+    const [isLastIndex, setislastIndex] = useState<boolean>(false);
     const onIndexChanged = (index: number) => {
+        console.log(index);
+        
+        if(index === 3) { setislastIndex(true);}
+        else            { setislastIndex(false);}
         setCurrentIndex(index);
     };
 
-    const welcomeLottieObj = (
-        <LottieView
-            style={{ width: 250, height: 250 }}
-            speed={1}
-            source={welcomeGirlAnimation}
-            autoPlay
-            loop={true}
-        />
-    );
 
     return (
         <View style={[styles.container, { backgroundColor: background }]}>
@@ -48,22 +45,32 @@ const ScanningTourComp: React.FC = () => {
                 </View>
                 <View style={[styles.slide, { backgroundColor: background }]}>
                     <ScrollView style={{ flex: 1, width: '90%' }}>
-                        <Text>dsfsdfsdfsdfsdfd</Text>
+                        <ScanningItemGuideComp/>
                     </ScrollView>
                 </View>
-                {/* Add more views for additional screens */}
+                <View style={[styles.slide, { backgroundColor: background }]}>
+                    <ScrollView style={{ flex: 1, width: '90%' }}>
+                        <AddToCart/>
+                    </ScrollView>
+                </View>
+                <View style={[styles.tryyourselfslide ,{ backgroundColor: background }]}>
+                    <ScrollView style={{ flex: 1, width: '90%' }}>
+                        <TryYourSelfComp/>
+                    </ScrollView>
+                </View>
             </Swiper>
-            <View style={styles.dotsContainer}>
-              {Array.from({ length: 2 }, (_, index) => (
-                  <View
+            { !isLastIndex && <View style={styles.dotsContainer}>
+              {Array.from({ length: 4 }, (_, index) => (
+                   <View
                       key={index}
                       style={[
                           styles.dot,
                           { backgroundColor: index === currentIndex ? '#007AFF' : '#D8D8D8' },
+                          { width: index === currentIndex ? 40 : 20 },
                       ]}
                   />
               ))}
-            </View>
+            </View>}
             <BottomNavbar />
         </View>
     );
@@ -73,20 +80,28 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
-    titleCon: {
-        marginTop: '5%',
-        margin: '3%',
-    },
     titleText: {
         fontSize: 24,
         fontWeight: '500',
     },
-    wrapper: {},
-    slide: {
+    tryyourselfslide: {
+        maxHeight: height * 0.8,
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'transparent',
+        width: '100%',
+        alignSelf: 'center'
+    },
+    wrapper: {},
+    slide: {
+        flex: 1,
+        maxHeight: height * 0.7,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'transparent',
+        width: '100%',
+        alignSelf: 'center'
     },
     dotsContainer: {
         flexDirection: 'row',
@@ -94,7 +109,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         position: 'absolute',
         bottom: height * 0.15,
-        left: '43%'
+        left: '31%'
     },
     dot: {
       width: 20,    // Adjust width and height to change the shape

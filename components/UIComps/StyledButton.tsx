@@ -54,6 +54,7 @@ const styles  = StyleSheet.create({
     },
     textstyle: {
         textAlign: 'center',
+        fontWeight: 'bold'
     }
 });
 export default StyledButton

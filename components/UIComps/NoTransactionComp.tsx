@@ -75,12 +75,13 @@ const NoTransactionComp: React.FC<Props> = () => {
   </Svg>
 </View>
 <View style={styles.dotsContainer}>
-        {[0, 1, 2].map((index) => (
+        {[0, 1].map((index) => (
           <View
             key={index}
             style={[
               styles.dot,
               { backgroundColor: currentPage === index ? background : '#ccc' },
+              { width: currentPage === index ? 30 : 15 },
             ]}
           />
         ))}
@@ -130,8 +131,8 @@ const styles = StyleSheet.create({
   dot: {
     width: 10,
     height: 10,
-    borderRadius: 5,
     marginHorizontal: 5,
+    borderRadius: 3
   },
   page: {
     width: width * 0.9,
