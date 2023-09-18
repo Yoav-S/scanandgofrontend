@@ -52,6 +52,7 @@
     "react-native-snap-carousel": "^3.9.1",
     "react-native-splash-screen": "^3.3.0",
     "react-native-svg": "^13.13.0",
+    "react-native-swiper": "^1.6.0",
     "react-native-textinput-effects": "^0.6.3",
     "react-native-toast-message": "^2.1.6",
     "react-native-typescript-transformer": "^1.2.13",

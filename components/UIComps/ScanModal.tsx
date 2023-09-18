@@ -35,9 +35,8 @@ const ScanModel: React.FC<Props> = () => {
   const [isItemAddedCart, setisItemAddedCart] = useState<boolean>(false);
   const [isShowingMessage, setisShowingMessage] = useState<boolean>(false);
   const activitiIndicatorAnimation = (<LottieView
-    style={{width: 120, height: 120, position: 'absolute', right: -50, bottom: -20}}
+    style={{width: 120, height: 120, position: 'absolute', right: -50, bottom: -21}}
     speed={1} 
-    
     source={activityIndicator}
     autoPlay
     loop={true}

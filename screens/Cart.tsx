@@ -28,6 +28,12 @@ const Cart: React.FC = () => {
     const handleDeleteItem = async (userId : string, nfcTagCode : string) => {
         const newcurrentUserItemsCart: (IteminCartType[] | undefined) = currentUserItemsCart?.filter((item: IteminCartType) => item.nfcTagCode !== nfcTagCode);
         setCurrentUserItemsCart(newcurrentUserItemsCart);
+        calculatePrice();
+        if(currentUserItemsCart)
+        {
+        setamountofitemsvariable(currentUserItemsCart.length)
+        }
+        showToast('Enjoy Shopping !', 'success', 'Item Successfully deleted');
         setisLoading(true);
         const [isDeleted, arrayofItems] = await deleteItemAttempt(userId, nfcTagCode);
         setisLoading(false);
@@ -36,11 +42,6 @@ const Cart: React.FC = () => {
                 setisCartEmpty(true)
                 setamountofitemsvariable(0)
             }
-            else if(arrayofItems && arrayofItems?.length > 0)
-            {
-                setamountofitemsvariable(arrayofItems.length)
-            }
-            showToast('Enjoy Shopping !', 'success', 'Item Successfully deleted');
         }
         else{
             showToast('Please try again !', 'error', 'Failed to delete item');
@@ -68,9 +69,9 @@ const Cart: React.FC = () => {
             <Text/>
             <Text style={{color: text.primary, fontWeight: '600', fontSize: 18}}>Cart</Text>
             <Icon style={{marginRight: '3%'}} color={text.primary} name="shopping-cart" size={30}/>
-            { amountofitemsvariable > 0 ? (<Text style={[{ color: 'red' }, styles.amountvariable]}>
+            { amountofitemsvariable > 0 ? (<Text style={[{ color: 'red' , position: 'absolute'}, styles.amountvariable]}>
           {currentUser?.cart.length}
-        </Text>) : (<View/>)}
+        </Text>) : (<View style={{position: 'absolute'}}/>)}
             </View>
             {
                isCartEmpty ? (
@@ -102,7 +103,8 @@ const Cart: React.FC = () => {
                         <View style={styles.totalandpricecon}>
                             <Text style={{color: text.primary}}>Total</Text>
                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                            <Text style={{color: text.primary, fontWeight: 'bold'}}>{totalamountvariable}</Text>
+                            <Text style={{color: text.primary, fontWeight: 'bold'}}>  
+                            {currentUser?.cart.reduce((total, item) => total + item.price, 0)}</Text>
                             <Image source={require('../images/shekel.png')} style={[styles.imageShekel]}/>
                             </View>
 
