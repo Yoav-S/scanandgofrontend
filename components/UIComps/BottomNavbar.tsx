@@ -39,7 +39,10 @@ setamountofitemsvariable(currentUser?.cart.length || 0)
  
   return (
     <SafeAreaView style={styles.container}>
-      <Icon name="home" size={30} color={route.name === "Home" ? 'lightblue' : 'white'} onPress={navigateHome}/>
+      <Icon name="home" size={30} color={
+      route.name === "Home" || 
+      route.name === "ScanningTour"
+      ? 'lightblue' : 'white'} onPress={navigateHome}/>
       <View style={{flexDirection: 'row'}}>
       {amountofitemsvariable > 0 && (
         <Text style={[{ color: 'red' }, styles.amountvariable]}>

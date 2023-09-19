@@ -100,9 +100,6 @@ const NoTransactionComp: React.FC<Props> = () => {
         <View style={styles.page}>
           <HelpAndSupportComp/>
         </View>
-        <View style={styles.page}>
-          <Text style={{color: background, fontWeight: '500'}}>Step 3: Make a purchase</Text>
-        </View>
       </ScrollView>
       </View>
     </View>

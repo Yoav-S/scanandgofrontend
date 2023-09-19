@@ -28,21 +28,20 @@ confirmPassword: Yup.string().required('Field is required').oneOf([Yup.ref('pass
 
 const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
   const navigation = useNavigation<StackNavigationProp<any, 'ForgotPassword'>>();
-
-    const { theme } = useContext(ThemeContext);
-    const { primary, secondary, text, background } = theme.colors     
-    const [emailSended, setEmailSended] = useState<boolean>(false);
-    const [isOneMinuteBind, setisOneMinuteBind] = useState<boolean>(false);
-    const [oneMinuteBindEndTime, setOneMinuteBindEndTime] = useState<number>(0);
-    const [isLoadingForm, setisLoadingForm] = useState<boolean>(false);
-    const [isLoadingResendEmail, setisLoadingResendEmail] = useState<boolean>(false);
-    const [emailValue, setEmailValue] = useState<string>('');
-    const [Digits, setDigits] = useState<string>('');
-    const [otpExpireInTime, setotpExpireInTime] = useState<Date>();
-    const [userId, setUserId] = useState<string>('');
-    const [isOtpVerified, setisOtpVerified] = useState<boolean>(false);
-    const {verifyEmail, showToast, resetPassword} = useDataContext();
-    const [remainingTime, setRemainingTime] = useState<number>(60); // Initialize with 60 seconds
+  const { theme } = useContext(ThemeContext);
+  const { primary, secondary, text, background } = theme.colors     
+  const [emailSended, setEmailSended] = useState<boolean>(false);
+  const [isOneMinuteBind, setisOneMinuteBind] = useState<boolean>(false);
+  const [oneMinuteBindEndTime, setOneMinuteBindEndTime] = useState<number>(0);
+  const [isLoadingForm, setisLoadingForm] = useState<boolean>(false);
+  const [isLoadingResendEmail, setisLoadingResendEmail] = useState<boolean>(false);
+  const [emailValue, setEmailValue] = useState<string>('');
+  const [Digits, setDigits] = useState<string>('');
+  const [otpExpireInTime, setotpExpireInTime] = useState<Date>();
+  const [userId, setUserId] = useState<string>('');
+  const [isOtpVerified, setisOtpVerified] = useState<boolean>(false);
+  const {verifyEmail, showToast, resetPassword} = useDataContext();
+  const [remainingTime, setRemainingTime] = useState<number>(60); // Initialize with 60 seconds
 
     useEffect(() => {
         if (isOneMinuteBind) {
@@ -174,15 +173,17 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
                                   value={values.password}
                                   errorMessage={errors.password}
                                   setInput={handleChange('password')}
+                                  startValue={values.password}
                                   label={'Password'}
-                                  
+                                  onPress={() => {handleChange('password')('')}}
                               />
                               <FormInput
                                   value={values.confirmPassword}
                                   errorMessage={errors.confirmPassword}
+                                  startValue={values.confirmPassword}
                                   setInput={handleChange('confirmPassword')}
                                   label={'Confirm Password'}
-                                  
+                                  onPress={() => {handleChange('confirmPassword')('')}}
                               />
                               <StyledButton bigbutton disabled={!isValid || !dirty} onPress={handleSubmit} text={"Change Password"} />
                           </>
@@ -231,8 +232,10 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
                                 <FormInput
                                     value={values.email}
                                     errorMessage={errors.email}
+                                    startValue={values.email}
                                     setInput={handleChange('email')}
                                     label={'Email'}
+                                    onPress={() => {handleChange('email')('')}}
                                 />
                                 <StyledButton bigbutton disabled={!isValid || !dirty} onPress={handleSubmit} text={"Send"} />
                             </>

@@ -8,7 +8,7 @@ import * as Yup from 'yup';
 
   export const passwordSchema = Yup.string() .required('field is required') .min(6, 'Password must be at least 6 characters');
  
-  export const fullnameSchema =  Yup.string().required('field is required').min(1,'Name must be have at least one letter');
+  export const fullnameSchema =  Yup.string().required('field is required').min(2,'Name must be have at least one letter');
   
   export const genderSchema = Yup.string() .required('field is required')
 

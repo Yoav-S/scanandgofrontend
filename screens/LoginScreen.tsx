@@ -70,11 +70,12 @@ const LoginScreen: React.FC = () => {
 
   return (
     <View style={[styles.container, { backgroundColor: background }]}>
+            <BigTitle title="Login" />
       <ScrollView>
       <View style={styles.imageCon}>
         {loginAnimationObject}
        </View>
-      <BigTitle title="Login" />
+
       <View>
 
 {
@@ -84,7 +85,7 @@ const LoginScreen: React.FC = () => {
     validationSchema={validationSchema}
     onSubmit={handleFormSubmit}
   >
-    {({ handleChange, handleSubmit, values, errors }) => (
+    {({ handleChange, handleSubmit, values, errors, isValid, dirty }) => (
       <>
         <FormInput
           value={values.email}
@@ -92,6 +93,8 @@ const LoginScreen: React.FC = () => {
           errorMessage={errors.email}
           setInput={handleChange('email')}
           label={'Email'}
+          onPress={() => {handleChange('email')('')}}
+
         />
         <FormInput
           value={values.password}
@@ -99,6 +102,7 @@ const LoginScreen: React.FC = () => {
           errorMessage={errors.password}
           setInput={handleChange('password')}
           label={'Password'}
+          onPress={() => {handleChange('password')('')}}
         />
   <View style={styles.checkBoxBtnCon}>
   <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -115,7 +119,7 @@ const LoginScreen: React.FC = () => {
     <Text style={[{color: text.primary},styles.forgotPasswordText]}>Forgot Password ?</Text>
   </TouchableOpacity>
   </View>
-  <StyledButton disabled={isLoading} onPress={handleSubmit} text={"Login"} bigbutton/>
+  <StyledButton disabled={!isValid && dirty} onPress={handleSubmit} text={"Login"} bigbutton/>
 
       </>
     )}

@@ -28,6 +28,7 @@ import Toast from 'react-native-toast-message';
 import { requestUserPermission } from '../utils/requests';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { Icon } from 'react-native-elements';
+import { Input } from '@rneui/themed';
 
 import { ThemeContext } from '../context/ThemeContext';
 const validationSchema = Yup.object().shape({
@@ -49,12 +50,16 @@ const SignupScreen: React.FC = () => {
   const [isBirthDateValidated, setIsBirthDateValidated] = useState<boolean>(false);
   const { signupAttempt, showToast , autoLoginNewUser} = useDataContext();
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const inputRef = useRef(null);
+  const [isInputFocused, setIsInputFocused] = useState(false);
+
   const [isLoading, setisLoading] = useState<boolean>(false);
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
   const [readTerms, setReadTerms] = useState<boolean>(false);
   const [modalStatus, setModalStatus] = useState<boolean>(false);
   const [openDateModal, setopenDateModal] = useState<boolean>(false);
   const [date, setDate] = useState<Date>(new Date());
+  const [previewedDate, setPreviewedDate] = useState<string>('');
   const setOpenModalHandler = () => {
     setopenDateModal(!openDateModal);
   };
@@ -79,9 +84,11 @@ const SignupScreen: React.FC = () => {
 
 
 
+  
+    
   return (
     <View style={[styles.container, { backgroundColor: background }]}>
-      <BigTitle title={'Signup'} />
+      <BigTitle title={'Create An Account'} />
 { isLoading ? (<ActivityIndicator size={60}/>) : (<ScrollView style={{margin: '3%'}}>
   <View>
       <Formik
@@ -98,6 +105,8 @@ const SignupScreen: React.FC = () => {
               startValue={values.fullName}
               setInput={handleChange('fullName')}
               label={'Full Name'}
+              onPress={() => {handleChange('fullName')('')}}
+
             />
             <FormInput
               value={values.email}
@@ -105,6 +114,8 @@ const SignupScreen: React.FC = () => {
               startValue={values.email}
               setInput={handleChange('email')}
               label={'Email'}
+              onPress={() => {handleChange('email')('')}}
+
             />
             <FormInput
               value={values.password}
@@ -112,12 +123,16 @@ const SignupScreen: React.FC = () => {
               startValue={values.password}
               setInput={handleChange('password')}
               label={'Password'}
+              onPress={() => {handleChange('password')('')}}
             />
             <FormInput
               value={values.confirmPassword}
               startValue={values.confirmPassword}
               errorMessage={errors.confirmPassword}
-              setInput={handleChange('confirmPassword')}
+              setInput={
+                handleChange('confirmPassword')
+              }
+              onPress={() => {handleChange('confirmPassword')('')}}
               label={'Confirm Password'}
             />
             <AllCheckBoxCategories
@@ -133,14 +148,18 @@ const SignupScreen: React.FC = () => {
             <View style={{marginTop: '10%', width: '90%'}}>
               <View style={{flexDirection:'column'}}>
                 <Text style={{color: text.primary, fontWeight: 'bold', fontSize: 17,marginLeft: '7%'}}>Date Of Birth</Text>
-                <StyledButton 
-                text='Select birth Date'
-                smallbutton 
-                onPress={() => {
-                  setOpenModalHandler();
-                  // Mark the birthDate field as touched to trigger validation
-                  touched.birthDate = true;
-                }}/>
+                <Input
+                 placeholder='mm/dd/yyyy'
+                 inputContainerStyle={{width: screen.width * 0.5, marginLeft: '4%'}}
+                 onFocus={() => {
+                   setopenDateModal(true);
+                   setIsInputFocused(true); // Set input focus to true when focused
+                 }}
+                 onBlur={() => setIsInputFocused(false)} // Set input focus to false when blurred
+                 value={previewedDate}
+                 inputStyle={{color: text.primary}}
+                 // Remove ref={inputRef}
+                  />
               </View>
               <View style={{flexDirection: 'row', width: '95%', justifyContent: 'space-between'}}>
               <DatePicker
@@ -154,17 +173,28 @@ const SignupScreen: React.FC = () => {
                   setopenDateModal(false);
                   setDate(newDate);
                   const isoDate = newDate.toISOString();
+                  console.log(isoDate);
+                  const formattedDate = newDate.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit'
+                  });
+                  setPreviewedDate(formattedDate);
                   setFieldValue('birthDate', isoDate);
                   setIsBirthDateValidated(true); // Update the validation flag
                 }}
                 onCancel={() => {
+                  setIsInputFocused(false);
                   setopenDateModal(false);
                 }}
               />
               {!(values.birthDate?.length === 0) && (
                 <View style={{ marginLeft: '10%' , flexDirection: 'row'}}>
               <Text style={{color: text.primary}}>{values.birthDate?.substring(0,10)}</Text>
-              <Icon name="settings"  size={30} color={'green'}/>
+              <View style={{backgroundColor: text.primary, borderRadius: 50, marginLeft: '5%'}}>
+              <Icon name="check"  size={20} color={'green'}/>
+
+              </View>
 
               </View>
               )}
@@ -192,10 +222,12 @@ const SignupScreen: React.FC = () => {
               </TouchableOpacity>
             </View>
             <Modal
-             style={[styles.modal, {backgroundColor: background}]}
+             style={[styles.modal, {backgroundColor: 'red'}]}
              isOpen={isModalOpen}
              onClosed={() => setModalOpen(false)}
             >
+              <View style={{height: screen.height}}>
+
               <ScrollView style={styles.modalContent}>
                 <Text style={{color: text.primary, lineHeight: 25}}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,
                           molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum
@@ -211,8 +243,24 @@ const SignupScreen: React.FC = () => {
                           quibusdam sed amet tempora. Sit laborum ab, eius fugit doloribus tenetur 
                           fugiat, temporibus enim commodi iusto libero magni deleniti quod quam 
                           consequuntur! Commodi minima excepturi repudiandae velit hic maxime
+                          Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,
+                          molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum
+                          numquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium
+                          optio, eaque rerum! Provident similique accusantium nemo autem. Veritatis
+                          obcaecati tenetur iure eius earum ut molestias architecto voluptate aliquam
+                          nihil, eveniet aliquid culpa officia aut! Impedit sit sunt quaerat, odit,
+                          tenetur error, harum nesciunt ipsum debitis quas aliquid. Reprehenderit,
+                          quia. Quo neque error repudiandae fuga? Ipsa laudantium molestias eos 
+                          sapiente officiis modi at sunt excepturi expedita sint? Sed quibusdam
+                          recusandae alias error harum maxime adipisci amet laborum. Perspiciatis 
+                          minima nesciunt dolorem! Officiis iure rerum voluptates a cumque velit 
+                          quibusdam sed amet tempora. Sit laborum ab, eius fugit doloribus tenetur 
+                          fugiat, temporibus enim commodi iusto libero magni deleniti quod quam 
+                          consequuntur! Commodi minima excepturi repudiandae velit hic maxime
                           </Text>
               </ScrollView>
+              </View>
+
               <StyledButton
               bigbutton
                 text="I have read and agree"
@@ -252,10 +300,12 @@ const styles = StyleSheet.create({
   modal: {
     height: screen.height,
     width: screen.width,
-    padding: '5%'
+    padding: '5%',
   },
   modalContent: {
-    margin: '2%'
+    margin: '2%',
+    height: '100%',
+    flex: 1
   }
 });
 
