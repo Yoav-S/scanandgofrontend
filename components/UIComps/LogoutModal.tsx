@@ -10,6 +10,7 @@ const LogoutModal: React.FC = () => {
   const { theme } = useContext(ThemeContext);
   const { primary, secondary, text, background } = theme.colors     
   const {isLogoutModal, handleLogOut, setisLogoutModal} = useDataContext();
+  
     const lottieViewYoav = (<LottieView
         style={{width: 200, height: 200}}
         speed={1} 

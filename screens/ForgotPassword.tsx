@@ -18,19 +18,17 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { ThemeContext } from '../context/ThemeContext'
 import TitleAndBtnCon from '../components/UIComps/TitleAndBtnCon'
 import Toast from 'react-native-toast-message'
-const validationSchema = Yup.object().shape({
-    email: emailSchema,
-  });
-const passwordValidationSchema = Yup.object().shape({
-password: passwordSchema,
-confirmPassword: Yup.string().required('Field is required').oneOf([Yup.ref('password')], 'Must match the password'),
-})
+import EmailVerifyComp from '../components/UIComps/EmailVerifyComp'
+import OtpComp from '../components/UIComps/OtpComp'
+import ResetPasswordComp from '../components/UIComps/ResetPasswordComp'
+
+
 
 const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
   const navigation = useNavigation<StackNavigationProp<any, 'ForgotPassword'>>();
   const { theme } = useContext(ThemeContext);
   const { primary, secondary, text, background } = theme.colors     
-  const [emailSended, setEmailSended] = useState<boolean>(false);
+  const [emailSended, setEmailSended] = useState<boolean>(true);
   const [isOneMinuteBind, setisOneMinuteBind] = useState<boolean>(false);
   const [oneMinuteBindEndTime, setOneMinuteBindEndTime] = useState<number>(0);
   const [isLoadingForm, setisLoadingForm] = useState<boolean>(false);
@@ -133,6 +131,8 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
         ['Email sent Failed', 'error', 'Please try again'];
         setisLoadingForm(false);
         if (isEmailSended && userId != null) {
+          console.log('success');
+          
           setDigits(digits);
           setUserId(userId);
           setotpExpireInTime(expireIn);
@@ -154,98 +154,19 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: background }]}>
-        
-        {emailSended ? (
-          isOtpVerified ? (
-            <View>
-            <BigTitle key={1} title='Enter a new Password'/>
-             <Text style={{color: text.primary, marginLeft: '5%'}}>Enter the new password for your account</Text>
-            <View>
-            <Formik
-                      initialValues={{ password: '', confirmPassword: '' }}
-                      validationSchema={passwordValidationSchema}
-                      onSubmit={({ password }) => handleChangePassword({ password })}
-                  >
-                      {({ handleChange, handleSubmit, values, errors, isValid, dirty, setFieldValue }) => (
-                          <>
-                              <FormInput
-                                  value={values.password}
-                                  errorMessage={errors.password}
-                                  setInput={handleChange('password')}
-                                  startValue={values.password}
-                                  label={'Password'}
-                                  onPress={() => {handleChange('password')('')}}
-                              />
-                              <FormInput
-                                  value={values.confirmPassword}
-                                  errorMessage={errors.confirmPassword}
-                                  startValue={values.confirmPassword}
-                                  setInput={handleChange('confirmPassword')}
-                                  label={'Confirm Password'}
-                                  onPress={() => {handleChange('confirmPassword')('')}}
-                              />
-                              <StyledButton bigbutton disabled={!isValid || !dirty} onPress={handleSubmit} text={"Change Password"} />
-                          </>
-                      )}
-                  </Formik>
-            </View>
-            </View>
-          ) : (            
-          <View style={styles.otpCon}>
-                        <BigTitle key={2} title='Verify your OTP'/>
-                        <OTPInputView
-                          style={styles.otp}
-                          pinCount={4}
-                          autoFocusOnLoad={false} // Make sure this is set to true
-                          codeInputFieldStyle={styles.underlineStyleBase}
-                          onCodeFilled={(code: string) => verifyOtpCode({ otpCode: code })}
-                          />
-      <View>
-          {!isOneMinuteBind && emailSended && (
-              <TouchableOpacity onPress={resendEmail}>
-                  <Text style={{ color: text.primary }}>Didn’t receive an OTP? Resend OTP!</Text>
-              </TouchableOpacity>
-          )}
-          {isOneMinuteBind && (
-              <Text style={{ color: text.primary }}>
-                    Resend OTP in {formatTime(remainingTime)}
-              </Text>
-          )}
-      </View>
-  </View>)
-
-        ) : (
-            <View>
-              <BigTitle key={3} title='Lets verify your email !'/>
-
-                {isLoadingForm ? (
-                    <ActivityIndicator size={60} />
-                ) : (
-                    <Formik
-                        initialValues={{ email: '' }}
-                        validationSchema={validationSchema}
-                        onSubmit={handleFormSubmit}
-                    >
-                        {({ handleChange, handleSubmit, values, errors, isValid, dirty }) => (
-                            <>
-                                <FormInput
-                                    value={values.email}
-                                    errorMessage={errors.email}
-                                    startValue={values.email}
-                                    setInput={handleChange('email')}
-                                    label={'Email'}
-                                    onPress={() => {handleChange('email')('')}}
-                                />
-                                <StyledButton bigbutton disabled={!isValid || !dirty} onPress={handleSubmit} text={"Send"} />
-                            </>
-                        )}
-                    </Formik>
-                )}
-            </View>
-        )}
-              <Toast/>
-
+    <View style={[styles.container, { backgroundColor: background }]}>  
+        {emailSended ? (isOtpVerified ? ( <ResetPasswordComp handleChangePassword={handleChangePassword}/>) : 
+        (            
+          <OtpComp 
+          emailSended={emailSended} 
+          isOneMinuteBind={isOneMinuteBind} 
+          verifyOtpCode={verifyOtpCode}
+          resendEmail={resendEmail}
+          formatTime={formatTime}
+          remainingTime={remainingTime}
+          />
+        ) ) : ( <EmailVerifyComp handleFormSubmit={handleFormSubmit} isLoadingForm={isLoadingForm}/> )}
+        <Toast/>
     </View>
 )
 
@@ -261,25 +182,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         
-    },
-    otpCon: {
-      width: '100%',
-      position: 'absolute',
-      marginTop: '25%',
-      alignItems: 'center',
-    },
-    otp: {
-      width: 250,
-      backgroundColor: 'lightGray',
-    },
-    underlineStyleBase: {
-        color: 'red'
-      },
-      otpinputs: {
-        width: 30,
-        height: 45,
-        borderWidth: 1,
-        borderBottomWidth: 1,
-      }
+    }
 })
 export default ForgotPassword

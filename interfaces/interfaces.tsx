@@ -128,6 +128,10 @@ export interface DataContextType {
     isMessageModalVisible: boolean;
     isAreYouSureModalOpen: boolean;
     cardId: string;
+    isTermsModal: boolean;
+    isTermsButtonPressed: boolean;
+    setisTermsButtonPressed: (isTermsButtonPressed: boolean) => void;
+    setisTermsModal: (isTermsModal: boolean) => void;
     setcardId: (cardId: string) => void;
     setisAreYouSureModalOpen: (value: boolean) => void;
     getMoreAttemt: (pageNumber: string) => Promise<any>;
@@ -360,8 +364,21 @@ export interface AllCheckBoxCategoriesProps {
     value: string;
     errorMessage?: string | undefined;
 }
-
-  
+export interface EmailVerifyCompProps{
+    isLoadingForm: boolean;
+    handleFormSubmit: (value: {email: string}) => Promise<void>;
+  }
+export interface ResetPasswordCompProps{
+    handleChangePassword: (value: {password: string}) => Promise<void>;
+}
+export interface OtpCompProps{
+verifyOtpCode: (value: {otpCode: string}) => Promise<void>;
+isOneMinuteBind: boolean;
+emailSended: boolean;
+resendEmail: () => void;
+formatTime: (time: number) => string;
+remainingTime: number;
+}
 export interface Registergion_Form_Props{
 fullName: string;
 email: string;

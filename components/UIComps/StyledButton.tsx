@@ -1,9 +1,11 @@
 import React, {useState, useContext} from "react";
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet,Dimensions} from 'react-native';
 import { StyledButtonType } from "../../interfaces/interfaces";
 import { ThemeContext } from "../../context/ThemeContext";
 import activitiIndicator from '../../assets/activitiindicator.json'
 import LottieView from "lottie-react-native";
+const screen = Dimensions.get('window');
+
 const StyledButton: React.FC<StyledButtonType> = (props) =>{
     const { buttonTheme } = useContext(ThemeContext);
     const {buttonMain,buttonAlt } = buttonTheme;
@@ -23,7 +25,7 @@ const StyledButton: React.FC<StyledButtonType> = (props) =>{
         disabled={props.disabled} 
         style={[styles.btnstyle, 
         {padding: props.text === 'Scan Again' ? '1%' : '3%'},
-        {borderRadius: props.text === 'Delete anyway' ? 50 : 8},
+        {borderRadius: props.text === 'Delete anyway' ? 50 : 4},
         {marginLeft: props.text === 'Select birth Date' ? '10%' : '0%'},
         {padding: props.text === 'Delete anyway' ? '10%' : '2%'},
         {alignSelf: props.text === 'Select birth Date' ? 'flex-start' : 'center'},
@@ -34,7 +36,7 @@ const StyledButton: React.FC<StyledButtonType> = (props) =>{
         : props.disabled ? buttonAlt.background 
         : buttonMain.background, 
         width: props.bigbutton 
-        ? 270 : props.smallbutton ? 90 : props.smallbutton && props.text === 'Scan Again' ? 60 : 120}]} 
+        ? screen.width * 0.85 : props.smallbutton ? 90 : props.smallbutton && props.text === 'Scan Again' ? 60 : 120}]} 
         onPress={props.onPress}>
             {!props.isLoading ? (
             <Text style={[styles.textstyle, 
@@ -50,7 +52,8 @@ const StyledButton: React.FC<StyledButtonType> = (props) =>{
 const styles  = StyleSheet.create({
     btnstyle: {
         alignSelf: 'center',
-        margin: '5%',
+        marginTop: '2%',
+        marginBottom: '2%'
     },
     textstyle: {
         textAlign: 'center',

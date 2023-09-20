@@ -12,6 +12,7 @@ import LogoutModal from '../UIComps/LogoutModal';
 import AreYouSureModal from '../UIComps/AreYouSureModal';
 import SplashScreen from '../../screens/SplashScreen';
 import { ThemeContext } from '../../context/ThemeContext';
+import TermsAndConditionsModal from '../UIComps/TermsAndConditionsModal';
 const Main: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true); // Add isLoading state
   const {setTheme, lightTheme, darkTheme, buttonTheme} = useContext(ThemeContext);
@@ -69,7 +70,10 @@ if(isLoading){
                     <AreYouSureModal/>
                     </View>
         ) : (
-          <NotAuthenticatedStackScreen />
+          <View style={{flex: 1}}>
+                    <NotAuthenticatedStackScreen />
+                    <TermsAndConditionsModal/>
+          </View>
         )}
 
     </View>

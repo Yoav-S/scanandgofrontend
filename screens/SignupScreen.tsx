@@ -46,6 +46,7 @@ const SignupScreen: React.FC = () => {
   const navigation = useNavigation<StackNavigationProp<any, 'Signup'>>();
   const { setToken } = useToken();
   const { theme } = useContext(ThemeContext);
+  const { setisTermsModal, isTermsButtonPressed , setisTermsButtonPressed,isTermsModal} = useDataContext();
   const { primary, secondary, text, background } = theme.colors 
   const [isBirthDateValidated, setIsBirthDateValidated] = useState<boolean>(false);
   const { signupAttempt, showToast , autoLoginNewUser} = useDataContext();
@@ -54,37 +55,38 @@ const SignupScreen: React.FC = () => {
   const [isInputFocused, setIsInputFocused] = useState(false);
 
   const [isLoading, setisLoading] = useState<boolean>(false);
-  const [isModalOpen, setModalOpen] = useState<boolean>(false);
   const [readTerms, setReadTerms] = useState<boolean>(false);
   const [modalStatus, setModalStatus] = useState<boolean>(false);
   const [openDateModal, setopenDateModal] = useState<boolean>(false);
   const [date, setDate] = useState<Date>(new Date());
   const [previewedDate, setPreviewedDate] = useState<string>('');
-  const setOpenModalHandler = () => {
-    setopenDateModal(!openDateModal);
-  };
+  const isMounted = useRef(false);
 
 
-  const handleFormSubmit = async (values: Registergion_Form_Props) => {
-    console.log(values);
-    setIsBirthDateValidated(true);
-    setisLoading(true);
-      const deviceToken = await requestUserPermission();
-        values.deviceToken = deviceToken;
-        const [isRegistered, message, token] = await signupAttempt(values);
-        const [messageToast, statusToast, headerToast] = isRegistered ? [`${message} moving to homepage`, 'success', 'Sign-Up Successfully 👋'] : [message, 'error', 'Sign-Up failed'];
-        console.log(values);  
-        setisLoading(false);  
-        showToast(messageToast, statusToast, headerToast);
-        if (!isRegistered || !token) return
-        setTimeout(() => {
-          autoLoginNewUser(token)
-        }, 3000)
-  };
+const handleFormSubmit = async ({ confirmPassword, ...values } : Registergion_Form_Props) => {
+  setIsBirthDateValidated(true);
+  setisLoading(true);
+  const deviceToken = await requestUserPermission();
+  values.deviceToken = deviceToken;
+  const [isRegistered, message, token] = await signupAttempt(values);
+  const [messageToast, statusToast, headerToast] = isRegistered ? [`${message} moving to homepage`, 'success', 'Sign-Up Successfully 👋'] : [message, 'error', 'Sign-Up failed'];
+  console.log(values);  
+  setisLoading(false);  
+  showToast(messageToast, statusToast, headerToast);
+  if (!isRegistered || !token) return;
+  setTimeout(() => {
+    autoLoginNewUser(token)
+  }, 3000);
+};
 
 
+  const handleModal = () => {    
+    setisTermsModal(true)
+  }
 
-  
+console.log('rendered');
+console.log(isTermsButtonPressed);
+
     
   return (
     <View style={[styles.container, { backgroundColor: background }]}>
@@ -92,7 +94,7 @@ const SignupScreen: React.FC = () => {
 { isLoading ? (<ActivityIndicator size={60}/>) : (<ScrollView style={{margin: '3%'}}>
   <View>
       <Formik
-        initialValues={{ email: '', password: '', confirmPassword: '', fullName: '', gender: '', birthDate: '', termsAndConditions: false }}
+        initialValues={{ email: '', password: '', confirmPassword: '', fullName: '', gender: '', birthDate: '', termsAndConditions: isTermsButtonPressed }}
         validationSchema={validationSchema}
         onSubmit={handleFormSubmit}
       >
@@ -149,14 +151,23 @@ const SignupScreen: React.FC = () => {
               <View style={{flexDirection:'column'}}>
                 <Text style={{color: text.primary, fontWeight: 'bold', fontSize: 17,marginLeft: '7%'}}>Date Of Birth</Text>
                 <Input
+                 rightIcon={previewedDate.length > 0 && <Icon color={'green'} type={"ionicon"} name="checkmark-done-circle-outline" size={20}/>}
                  placeholder='mm/dd/yyyy'
                  inputContainerStyle={{width: screen.width * 0.5, marginLeft: '4%'}}
                  onFocus={() => {
                    setopenDateModal(true);
                    setIsInputFocused(true); // Set input focus to true when focused
                  }}
+                 onPressIn={() => {setopenDateModal(true);}}
                  onBlur={() => setIsInputFocused(false)} // Set input focus to false when blurred
                  value={previewedDate}
+                 onChangeText={(text: string) => {
+                  if(text.length > previewedDate.length){
+                    setopenDateModal(true);
+                    return;
+                  }
+                    setPreviewedDate(text);
+                 }}
                  inputStyle={{color: text.primary}}
                  // Remove ref={inputRef}
                   />
@@ -169,117 +180,64 @@ const SignupScreen: React.FC = () => {
                 open={openDateModal}
                 date={date}
                 mode="date"
-                onConfirm={newDate => {
+                onConfirm={(newDate : Date) => {
                   setopenDateModal(false);
                   setDate(newDate);
                   const isoDate = newDate.toISOString();
-                  console.log(isoDate);
-                  const formattedDate = newDate.toLocaleDateString('en-US', {
-                    year: 'numeric',
+                
+                  const formattedDate = newDate.toLocaleDateString('en-GB', {
                     month: '2-digit',
-                    day: '2-digit'
+                    day: '2-digit',
+                    year: 'numeric'
                   });
+
+                
                   setPreviewedDate(formattedDate);
                   setFieldValue('birthDate', isoDate);
-                  setIsBirthDateValidated(true); // Update the validation flag
+                  setIsBirthDateValidated(true);
                 }}
                 onCancel={() => {
-                  setIsInputFocused(false);
                   setopenDateModal(false);
                 }}
               />
-              {!(values.birthDate?.length === 0) && (
-                <View style={{ marginLeft: '10%' , flexDirection: 'row'}}>
-              <Text style={{color: text.primary}}>{values.birthDate?.substring(0,10)}</Text>
-              <View style={{backgroundColor: text.primary, borderRadius: 50, marginLeft: '5%'}}>
-              <Icon name="check"  size={20} color={'green'}/>
 
-              </View>
 
-              </View>
-              )}
+
               </View>
 
               {!isBirthDateValidated && touched.birthDate && errors.birthDate && (
                 <Text style={{ color: 'red' }}>{errors.birthDate}</Text>
               )}
             </View>
-            <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', marginTop: '5%' }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', marginTop: '5%'}}>
             <CheckBox
                 style={{ alignSelf: 'center' }}
                 center
                 checkedColor='green'
-                checked={values.termsAndConditions && readTerms}
-                onPress={() => {
-                  if (readTerms) {
-                    setFieldValue('termsAndConditions', !values.termsAndConditions);
-                  }
+                checked={isTermsButtonPressed}
+                onPress={() => {    
+                  if(isTermsButtonPressed){
+                    handleChange('termsAndConditions')
+                    setisTermsButtonPressed(false);
+                  }              
                 }}
-                disabled={!readTerms}
+                disabled={!isTermsButtonPressed}
               />
-              <TouchableOpacity onPress={() => setModalOpen(true)}>
+              <TouchableOpacity onPress={handleModal} >
                 <Text style={{ color: text.secondary, textDecorationLine: 'underline' }}>View Terms and Conditions</Text>
               </TouchableOpacity>
             </View>
-            <Modal
-             style={[styles.modal, {backgroundColor: 'red'}]}
-             isOpen={isModalOpen}
-             onClosed={() => setModalOpen(false)}
-            >
-              <View style={{height: screen.height}}>
 
-              <ScrollView style={styles.modalContent}>
-                <Text style={{color: text.primary, lineHeight: 25}}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,
-                          molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum
-                          numquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium
-                          optio, eaque rerum! Provident similique accusantium nemo autem. Veritatis
-                          obcaecati tenetur iure eius earum ut molestias architecto voluptate aliquam
-                          nihil, eveniet aliquid culpa officia aut! Impedit sit sunt quaerat, odit,
-                          tenetur error, harum nesciunt ipsum debitis quas aliquid. Reprehenderit,
-                          quia. Quo neque error repudiandae fuga? Ipsa laudantium molestias eos 
-                          sapiente officiis modi at sunt excepturi expedita sint? Sed quibusdam
-                          recusandae alias error harum maxime adipisci amet laborum. Perspiciatis 
-                          minima nesciunt dolorem! Officiis iure rerum voluptates a cumque velit 
-                          quibusdam sed amet tempora. Sit laborum ab, eius fugit doloribus tenetur 
-                          fugiat, temporibus enim commodi iusto libero magni deleniti quod quam 
-                          consequuntur! Commodi minima excepturi repudiandae velit hic maxime
-                          Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,
-                          molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum
-                          numquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium
-                          optio, eaque rerum! Provident similique accusantium nemo autem. Veritatis
-                          obcaecati tenetur iure eius earum ut molestias architecto voluptate aliquam
-                          nihil, eveniet aliquid culpa officia aut! Impedit sit sunt quaerat, odit,
-                          tenetur error, harum nesciunt ipsum debitis quas aliquid. Reprehenderit,
-                          quia. Quo neque error repudiandae fuga? Ipsa laudantium molestias eos 
-                          sapiente officiis modi at sunt excepturi expedita sint? Sed quibusdam
-                          recusandae alias error harum maxime adipisci amet laborum. Perspiciatis 
-                          minima nesciunt dolorem! Officiis iure rerum voluptates a cumque velit 
-                          quibusdam sed amet tempora. Sit laborum ab, eius fugit doloribus tenetur 
-                          fugiat, temporibus enim commodi iusto libero magni deleniti quod quam 
-                          consequuntur! Commodi minima excepturi repudiandae velit hic maxime
-                          </Text>
-              </ScrollView>
-              </View>
-
-              <StyledButton
-              bigbutton
-                text="I have read and agree"
-                onPress={() => {
-                setModalOpen(false);
-                setFieldValue('termsAndConditions', true);
-                setReadTerms(true); // Set readTerms to true when the user agrees
-              }}
-              />
-
-            </Modal>
             <StyledButton
             bigbutton              
-            disabled={!isValid || !dirty || (!values.termsAndConditions && !readTerms)}
+            disabled={!isValid || !dirty || (!isTermsButtonPressed)}
             onPress={handleSubmit}
             text={'Sign up'}/>
           </>
         )}
       </Formik>
+
+      <View style={[styles.border, {backgroundColor: text.primary}]}/>
       <StyledButton bigbutton disabled={false} onPress={() => {navigation.navigate('Login')}} text={'Back to login'} />
       </View>
         </ScrollView>
@@ -306,6 +264,13 @@ const styles = StyleSheet.create({
     margin: '2%',
     height: '100%',
     flex: 1
+  },
+  border: {
+    width:screen.width * 0.9 ,
+    alignSelf: 'center',
+    borderWidth: 1,
+    marginTop: '4%',
+    marginBottom: '4%'
   }
 });
 

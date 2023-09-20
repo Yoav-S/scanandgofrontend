@@ -24,7 +24,6 @@ const FormInput: React.FC<FormInputType> = (props) => {
   const clearInput = () => {
     props.setInput(""); // Clear the input
   };
-  console.log('issecure', isSecureText);
   
   return (
     <View style={{marginTop: '1%', marginBottom: '2%'}}>
@@ -62,6 +61,7 @@ const FormInput: React.FC<FormInputType> = (props) => {
       secureTextEntry={
         (props.label === 'Password' ||
        props.label === 'Repeat Password' ||
+       props.label === 'Confirm Password' ||
         props.label === 'Current Password' ||
          props.label === 'New Password') && isSecureText
       }

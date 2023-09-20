@@ -25,6 +25,8 @@ export const DataProvider: React.FC<Props> = ({ children }) => {
   const [isMessageModalVisible, setisMessageModalVisible] = useState(false);
   const [amountofitemsvariable, setamountofitemsvariable] = useState<number>(currentUser?.cart.length || 0);
   const [isLogoutModal, setisLogoutModal] = useState<boolean>(false);
+  const [isTermsModal, setisTermsModal] = useState<boolean>(false);
+  const [isTermsButtonPressed, setisTermsButtonPressed] = useState<boolean>(false);
   const api: AxiosInstance = axios.create({
     baseURL: 'https://scan-and-go.onrender.com/', // Set your base URL
   });    
@@ -270,8 +272,7 @@ const updateDeviceTokenInDb = async (deviceToken: string, userId: string): Promi
       return [false, error.response.data.error];
     };
 };
-const signupAttempt = async (newUser: Registergion_Form_Props): Promise<[boolean, string, string?]> => {
-    
+const signupAttempt = async (newUser: Registergion_Form_Props): Promise<[boolean, string, string?]> => {    
     try {
       const requestBody = {
         fullName: newUser.fullName,
@@ -646,7 +647,11 @@ try{
     cardId,
     setcardId,
     updatedCurrentUserCart, 
-    setupdatedCurrentUserCart
+    setupdatedCurrentUserCart,
+    isTermsModal,
+    setisTermsModal,
+    isTermsButtonPressed,
+    setisTermsButtonPressed
   };
 
   return (

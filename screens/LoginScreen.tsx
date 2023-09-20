@@ -1,12 +1,8 @@
 import React, {useState, useContext} from "react";
-import { View, StyleSheet, Image, Text , ScrollView} from "react-native";
+import { View, StyleSheet, Text , ScrollView} from "react-native";
 import { ThemeContext } from "../context/ThemeContext";
-import { useToken } from '../context/TokenContext'; // Import the TokenContext hook
 import { CheckBox } from 'react-native-elements'
-import axios from "axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import BigTitle from "../components/UIComps/BigTitle";
-import DayNightSwitcher from "../components/UIComps/DayNightSwitcher";
 import FormInput from "../components/UIComps/FormInput";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import TitledBarrier from "../components/UIComps/TitledBarrier";
