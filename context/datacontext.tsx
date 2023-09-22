@@ -63,8 +63,10 @@ const updatePasswordAttempts = async (password: string, newpassword: string): Pr
     return [false, err.message];
   }
 }
+console.log(currentUser);
 
 const deleteCardAttempt = async (cardId: string, userId: string): Promise<[boolean, string | null]> => {
+
   console.log(cardId, userId);
   
   const obj = {
@@ -73,19 +75,17 @@ const deleteCardAttempt = async (cardId: string, userId: string): Promise<[boole
   }
   try{
     const response: AxiosResponse = await api.patch('paymentMethods/deleteCreditCard', obj, {headers: {Authorization: 'Bearer ' + token}});
+    console.log(response.status);
     if(currentUser){
-      const newUser = await getUserById(currentUser._id, token);
-      
-      if (newUser != null) {
-        setCurrentUser(newUser);
-        setAuthenticated(true);
-      }
-     }
+    let newCurrentUser = currentUser;
+    newCurrentUser.cart = response.data || [];
+    setCurrentUser(newCurrentUser);
+    }
     if(response.status === 200 || response.status === 201){
       return [true, null];
     }
     else{
-      return [false, response.data.message];
+      return [false, response.data];
     }
     
   } catch (err: any) {
@@ -386,11 +386,13 @@ const autoLoginNewUser = async (newToken: string) => {
 
 const addCreditCardAttempt = async (values: creditCardFormType): Promise<[boolean, string | null]> => {
 
+
   try{
     const creditCardObject: creditCardRegisterionType = {
       userId: currentUser?._id || '',
       creditCard: values
     } 
+    console.log(creditCardObject);
     
     const response: AxiosResponse = await api.post('paymentMethods/addCreditCard', creditCardObject, {headers: {Authorization: 'Bearer ' + token}});
     if(currentUser){

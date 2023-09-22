@@ -50,8 +50,8 @@ const AreYouSureModal: React.FC = () => {
   const handleDeleteCardProcess = async () => {
     setisLoading(true);
     const [isDeleted, message] = await deleteCardAttempt(cardId, currentUser?._id || '');
+    console.log(isDeleted);
     setisLoading(false);
-
     setresultMessage(message || '');
     if(isDeleted){
       setisPreviewSuccessAnimation(true);
