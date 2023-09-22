@@ -1,7 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React, {useContext} from 'react';
 import {View, Text, Dimensions} from 'react-native';
-import BigTitle from './BigTitle';
 import activityIndicatorAnimation from '../../assets/activitiindicator.json'
 import LottieView from 'lottie-react-native';
 import { Formik } from 'formik'
@@ -14,6 +13,8 @@ import FormInput from './FormInput';
 import TitleAndArrowBack from './TitleAndArrowBack';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import verifyemailanimation from '../../assets/emailverifyanimation.json'
+import BigTitle from './BigTitle';
 const screen = Dimensions.get('window');
 
 const validationSchema = Yup.object().shape({
@@ -32,12 +33,18 @@ const EmailVerifyComp: React.FC<EmailVerifyCompProps> = ({isLoadingForm, handleF
         autoPlay
         loop={true}
         />)
-
+        const verifyemailanimationObject = (<LottieView
+            style={{width: 200, height: 200 , zIndex: 10, alignSelf: 'center', marginTop: '15%'}}
+            speed={1} 
+            source={verifyemailanimation}
+            autoPlay
+            loop={false}
+            />)
 
   return (
-    <View style={{backgroundColor: background, height: screen.height, flex: 1}}>
-    <TitleAndArrowBack text='Forgot Password' onPress={() => {navigation.goBack()}}/>
-    <BigTitle title='Lets verify your email !'/>
+    <View style={{backgroundColor: background, marginBottom: '5%'}}>
+    <BigTitle title='Email Verification'/>
+    {verifyemailanimationObject}
 
       {isLoadingForm ? (
           activitiIndicatorObject

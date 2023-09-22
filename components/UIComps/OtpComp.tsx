@@ -2,7 +2,6 @@
 import React, {useContext} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, Dimensions} from 'react-native';
 import {OtpCompProps} from '../../interfaces/interfaces'
-import BigTitle from './BigTitle';
 import { ThemeContext } from '../../context/ThemeContext';
 import OTPInputView from '@twotalltotems/react-native-otp-input';
 import { useNavigation } from '@react-navigation/native';
@@ -11,6 +10,7 @@ import TitleAndArrowBack from './TitleAndArrowBack';
 import LottieView from 'lottie-react-native';
 import otpanimation from '../../assets/otpanimation.json'
 import activityIndicator from '../../assets/activitiindicator.json'
+import BigTitle from './BigTitle';
 
 const screen = Dimensions.get('window');
 const OtpComp: React.FC<OtpCompProps> = ({verifyOtpCode, isOneMinuteBind, emailSended, resendEmail, formatTime, remainingTime, isLoadingResendEmail}) => {
@@ -34,20 +34,18 @@ const OtpComp: React.FC<OtpCompProps> = ({verifyOtpCode, isOneMinuteBind, emailS
           loop={true}
           />)
   return (
-<View style={[styles.otpCon]}>
-<TitleAndArrowBack text='Forgot Password' onPress={() => {navigation.goBack()}}/>
-
-                        <BigTitle key={2} title='Verify your OTP'/>
-                        <View style={{alignSelf: 'center'}}>
+<View style={[styles.otpCon, {marginBottom: '5%', height: screen.height * 0.6}]}>
+  <BigTitle title='Verify Your OTP'/>
+                        <View style={{alignSelf: 'center', position: 'relative'}}>
                             {otpanimationObject}
-                            <View style={styles.otp}>
+                            <View style={[styles.otp]}>
                             <OTPInputView
                                  pinCount={4}
                                  autoFocusOnLoad={false} // Make sure this is set to true
                                  codeInputFieldStyle={styles.underlineStyleBase}
                                  onCodeFilled={(code: string) => verifyOtpCode({ otpCode: code })}
                                  />
-                                <View style={{position: 'absolute', top: screen.height * 0.1 , alignSelf: 'center'}}>
+                                <View style={{alignSelf: 'center'}}>
                                     {!isOneMinuteBind && emailSended && (
                                         
                                           isLoadingResendEmail ?
@@ -83,7 +81,6 @@ const styles = StyleSheet.create({
     otp: {
       width: 250,
       alignSelf: 'center',
-      backgroundColor: 'lightGray',
       position: 'absolute',
       top: screen.height * 0.3
     },

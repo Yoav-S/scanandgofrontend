@@ -139,9 +139,12 @@ const verifyEmail = async (emailToSend: string): Promise<[boolean, string, Date?
   }
 };
 const resetPassword = async (password: string, userId: string): Promise<boolean> => {
+console.log(password, userId);
 
   try {
     const response = await api.put(`users/resetPassword`, { params: { newPassword: password, userId: userId } }); 
+    console.log(response.status);
+    
     if (response.status === 200) {
       if(currentUser){
         const newUser = await getUserById(currentUser._id, token);

@@ -1,5 +1,5 @@
 import react, {useState, useEffect, useContext} from 'react'
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native'
+import {View, Text, TouchableOpacity, StyleSheet, ScrollView, Dimensions} from 'react-native'
 import { ForgotPasswordProps, UserEmailVerificationDetails } from '../interfaces/interfaces'
 import BigTitle from '../components/UIComps/BigTitle'
 import FormInput from '../components/UIComps/FormInput'
@@ -21,6 +21,7 @@ import Toast from 'react-native-toast-message'
 import EmailVerifyComp from '../components/UIComps/EmailVerifyComp'
 import OtpComp from '../components/UIComps/OtpComp'
 import ResetPasswordComp from '../components/UIComps/ResetPasswordComp'
+import TitleAndArrowBack from '../components/UIComps/TitleAndArrowBack'
 
 
 
@@ -33,6 +34,7 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
   const [oneMinuteBindEndTime, setOneMinuteBindEndTime] = useState<number>(0);
   const [isLoadingForm, setisLoadingForm] = useState<boolean>(false);
   const [isLoadingResendEmail, setisLoadingResendEmail] = useState<boolean>(false);
+  const [isLoadingResetPassword, setisLoadingResetPassword] = useState<boolean>(false);
   const [emailValue, setEmailValue] = useState<string>('');
   const [Digits, setDigits] = useState<string>('');
   const [otpExpireInTime, setotpExpireInTime] = useState<Date>();
@@ -40,6 +42,7 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
   const [isOtpVerified, setisOtpVerified] = useState<boolean>(false);
   const {verifyEmail, showToast, resetPassword} = useDataContext();
   const [remainingTime, setRemainingTime] = useState<number>(60); // Initialize with 60 seconds
+  const screen = Dimensions.get('window');
 
     useEffect(() => {
         if (isOneMinuteBind) {
@@ -60,10 +63,13 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
         }
     }, [isOneMinuteBind, oneMinuteBindEndTime]);
   
+    
 
     const resendEmail = async () => {
       setisLoadingResendEmail(true);
       try{
+        console.log(emailValue);
+        
         const [isEmailSended, digits, expireIn] = await verifyEmail(emailValue);
         const [messageToast, statusToast, headerToast] = isEmailSended ? 
         ['Please check your email', 'success', 'Email Successfully Resent'] : 
@@ -104,7 +110,9 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
 
     const handleChangePassword = async (value: {password : string}) => {
      try{
+      setisLoadingResetPassword(true);
       const isPasswordChanged = await resetPassword(value.password, userId);
+      setisLoadingResetPassword(false);
       if(isPasswordChanged) {
         showToast('Password Succesfully saved', 'success', 'your about to move to login');
         setTimeout(() => {
@@ -155,8 +163,10 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: background }]}>  
-        {emailSended ? (isOtpVerified ? ( <ResetPasswordComp handleChangePassword={handleChangePassword}/>) : 
+    <View style={[styles.container, { backgroundColor: background}]}>  
+    <TitleAndArrowBack text='Forgot Password' onPress={() => {navigation.goBack()}}/>
+    <ScrollView>
+        {emailSended ? (isOtpVerified ? ( <ResetPasswordComp isloadingResetPassword={isLoadingResetPassword} handleChangePassword={handleChangePassword}/>) : 
         (            
           <OtpComp 
           emailSended={emailSended} 
@@ -168,6 +178,7 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
           isLoadingResendEmail={isLoadingResendEmail}
           />
         ) ) : ( <EmailVerifyComp handleFormSubmit={handleFormSubmit} isLoadingForm={isLoadingForm}/> )}
+        </ScrollView>
         <Toast/>
     </View>
 )
@@ -183,7 +194,6 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        
     }
 })
 export default ForgotPassword

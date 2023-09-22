@@ -370,6 +370,7 @@ export interface EmailVerifyCompProps{
   }
 export interface ResetPasswordCompProps{
     handleChangePassword: (value: {password: string}) => Promise<void>;
+    isloadingResetPassword: boolean;
 }
 export interface OtpCompProps{
 verifyOtpCode: (value: {otpCode: string}) => Promise<void>;
