@@ -36,7 +36,7 @@ const AddCreditCardScreen: React.FC = () => {
     const { theme, buttonTheme } = useContext(ThemeContext);
     const [focusOnCvv, setFocusOnCvv] = useState(false);
     const { primary, secondary, text, background } = theme.colors 
-    const {addCreditCardAttempt, showToast, setisMessageModalVisible} = useDataContext();
+    const {addCreditCardAttempt, showToast, setisMessageModalVisible, currentUser} = useDataContext();
     const [allCategoriesValues, setAllCategoriesValues] = useState<{ label: string; value: string }[]>([
         { label: 'discover', value: 'discover' },
         { label: 'mastercard', value: 'mastercard' },
@@ -46,14 +46,17 @@ const AddCreditCardScreen: React.FC = () => {
     const [currentCategoryValue, setCurrentCategoryValue] = useState<string>('');
     const [expirationDateInputPlaceholder, setExpirationDateInputPlaceholder] = useState<string>("Expiration Date");
 
-    const handleFormSubmit = async (values: {cardType: string, cardNumber: string, cardholderName: string, expirationDate: string, cvv: string, isDefault: boolean}) => {
+    const handleFormSubmit = async (values: {cardType: string, cardNumber: string, cardholderName: string, expirationDate: string, cvv: string}) => {
         setisMessageModalVisible(true);        
         const creditCardForm: creditCardFormType = values;
+        creditCardForm.isDefault = isDefault;
         const [isAdded, message] = await addCreditCardAttempt(creditCardForm);
-        console.log(isAdded, message);
         setisMessageModalVisible(false);
         if(isAdded){
             showToast('you can use it now', 'success', 'Credit card added successfully')
+            setTimeout(() => {
+              navigation.navigate('PaymentMethodsScreen')
+            }, 2000)
         }
         else{
             showToast(message || 'Something went wrong', 'error', 'Failed to add credit card');
@@ -79,10 +82,7 @@ const AddCreditCardScreen: React.FC = () => {
         keyboardDidHideListener.remove();
         keyboardDidShowListener.remove();
       };
-    }, []);
-
-
-
+    }, []);    
 
     return (
         <SafeAreaView style={[{backgroundColor: background},styles.container]}>
@@ -91,9 +91,10 @@ const AddCreditCardScreen: React.FC = () => {
         style={{ flex: 1 }}
       >
                 <TitleAndArrowBack text="Add new credit card" onPress={() => {navigation.goBack()}}/>
+                <ScrollView>
                     <View style={styles.formikCon}>
                     <Formik
-                        initialValues={{cardType: "", cardNumber: "", cardholderName: "", expirationDate: "", cvv: "", isDefault: false}}
+                        initialValues={{cardType: "", cardNumber: "", cardholderName: "", expirationDate: "", cvv: "", isDefault: isDefault}}
                         validationSchema={validationSchema}
                         onSubmit={handleFormSubmit}
                       >
@@ -111,8 +112,8 @@ const AddCreditCardScreen: React.FC = () => {
                         /></ScrollView>
                                                 <ScrollView style={[styles.cardContainer,]}>
 
-                        <FormInput startValue={values.cardNumber} errorMessage={errors.cardNumber} setInput={handleChange('cardNumber')} label="Card Number" numeric/>
-                        <FormInput startValue={values.cardholderName} errorMessage={errors.cardholderName} setInput={handleChange('cardholderName')} label="Card Holder Name"/>
+                        <FormInput onPress={() => {handleChange('cartNumber')('')}} value={values.cardNumber} startValue={values.cardNumber} errorMessage={errors.cardNumber} setInput={handleChange('cardNumber')} label="Card Number" numeric/>
+                        <FormInput onPress={() => {handleChange('cardholderName')('')}} value={values.cardholderName} startValue={values.cardholderName} errorMessage={errors.cardholderName} setInput={handleChange('cardholderName')} label="Card Holder Name"/>
                         <View style={styles.expireincvvCon}>
                           <View>
                             <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '50%'}}>
@@ -169,7 +170,7 @@ const AddCreditCardScreen: React.FC = () => {
 
                <View style={{width: '45%'}}>
 
-                        <FormInput startValue={values.cvv} errorMessage={errors.cvv} setInput={handleChange('cvv')} label="CVV" numeric/>
+                        <FormInput onPress={() => {handleChange('cvv')('')}} value={values.cvv} startValue={values.cvv} errorMessage={errors.cvv} setInput={handleChange('cvv')} label="CVV" numeric/>
                       
                         </View>
                         </View>
@@ -212,8 +213,9 @@ const AddCreditCardScreen: React.FC = () => {
                         containerStyle={{borderWidth: 0,backgroundColor: background}}
                         onPress={() => {
                         setisDefault(!isDefault)
-                        handleChange('isDefault')
-                        }}/>        
+                      }
+                      }
+                        />        
                         <View style={{marginTop: '10%'}}>
                             <StyledButton onPress={handleSubmit} text='Save' bigbutton disabled={!isValid || !dirty}/>
                             </View>
@@ -222,6 +224,7 @@ const AddCreditCardScreen: React.FC = () => {
                         )}
                       </Formik>
                     </View>
+                    </ScrollView>
                     {!isKeyboardVisible && <BottomNavbar />}
 </KeyboardAvoidingView>
 <Toast/>

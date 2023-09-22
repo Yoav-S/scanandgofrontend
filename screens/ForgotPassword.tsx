@@ -28,7 +28,7 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
   const navigation = useNavigation<StackNavigationProp<any, 'ForgotPassword'>>();
   const { theme } = useContext(ThemeContext);
   const { primary, secondary, text, background } = theme.colors     
-  const [emailSended, setEmailSended] = useState<boolean>(true);
+  const [emailSended, setEmailSended] = useState<boolean>(false);
   const [isOneMinuteBind, setisOneMinuteBind] = useState<boolean>(false);
   const [oneMinuteBindEndTime, setOneMinuteBindEndTime] = useState<number>(0);
   const [isLoadingForm, setisLoadingForm] = useState<boolean>(false);
@@ -67,7 +67,7 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
         const [isEmailSended, digits, expireIn] = await verifyEmail(emailValue);
         const [messageToast, statusToast, headerToast] = isEmailSended ? 
         ['Please check your email', 'success', 'Email Successfully Resent'] : 
-        ['Email Resend Failed', 'error', 'Please try again'];
+        ['Resend Email Failed', 'error', 'Please try again'];
         setisLoadingResendEmail(false);
         if (isEmailSended) {
           setEmailSended(true);
@@ -83,6 +83,7 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
   
           console.log(`resend Email successfully! Digits: ${digits}, ExpireIn: ${expireIn}`);
         } else {
+          showToast(messageToast, statusToast, headerToast)
           console.log('resend Email sending failed.');
           // Handle the failure case here
         }
@@ -164,6 +165,7 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
           resendEmail={resendEmail}
           formatTime={formatTime}
           remainingTime={remainingTime}
+          isLoadingResendEmail={isLoadingResendEmail}
           />
         ) ) : ( <EmailVerifyComp handleFormSubmit={handleFormSubmit} isLoadingForm={isLoadingForm}/> )}
         <Toast/>

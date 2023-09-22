@@ -228,7 +228,7 @@ const ScanModel: React.FC<Props> = () => {
     />
 
     <View>
-      <Text>{title}</Text>
+      <Text style={{alignSelf: 'center'}}>{title}</Text>
     </View>
   </ModalContent>
   );

@@ -259,7 +259,7 @@ expirationDate: string;
 cardholderName: string;
 cvv: string;
 cardType: string;
-isDefault: boolean; 
+isDefault?: boolean; 
 }
 export interface creditCardType{
     _id: string;
@@ -378,6 +378,7 @@ emailSended: boolean;
 resendEmail: () => void;
 formatTime: (time: number) => string;
 remainingTime: number;
+isLoadingResendEmail: boolean;
 }
 export interface Registergion_Form_Props{
 fullName: string;

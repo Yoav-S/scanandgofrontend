@@ -5,7 +5,7 @@ import LottieView from "lottie-react-native";
 import logoutLottieAnimation from '../../assets/mousepointer.json';
 
 const { width, height } = Dimensions.get('window');
-const image = require('../../images/scanmodalimage.jpg');
+const image = require('../../images/holdyourphoneimage.jpg');
 
 const ScannerOpenerSubComp: React.FC = () => {
   const { theme } = useContext(ThemeContext);

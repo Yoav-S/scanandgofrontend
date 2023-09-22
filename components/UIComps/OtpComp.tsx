@@ -10,9 +10,10 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import TitleAndArrowBack from './TitleAndArrowBack';
 import LottieView from 'lottie-react-native';
 import otpanimation from '../../assets/otpanimation.json'
+import activityIndicator from '../../assets/activitiindicator.json'
 
 const screen = Dimensions.get('window');
-const OtpComp: React.FC<OtpCompProps> = ({verifyOtpCode, isOneMinuteBind, emailSended, resendEmail, formatTime, remainingTime}) => {
+const OtpComp: React.FC<OtpCompProps> = ({verifyOtpCode, isOneMinuteBind, emailSended, resendEmail, formatTime, remainingTime, isLoadingResendEmail}) => {
     const navigation = useNavigation<StackNavigationProp<any, 'ForgotPassword'>>();
 
     const { theme } = useContext(ThemeContext);
@@ -25,6 +26,13 @@ const OtpComp: React.FC<OtpCompProps> = ({verifyOtpCode, isOneMinuteBind, emailS
         autoPlay
         loop={true}
         />)
+        const activityIndicatorObject = (<LottieView
+          style={{width: 30, height: 30 , zIndex: 10}}
+          speed={1} 
+          source={activityIndicator}
+          autoPlay
+          loop={true}
+          />)
   return (
 <View style={[styles.otpCon]}>
 <TitleAndArrowBack text='Forgot Password' onPress={() => {navigation.goBack()}}/>
@@ -39,11 +47,15 @@ const OtpComp: React.FC<OtpCompProps> = ({verifyOtpCode, isOneMinuteBind, emailS
                                  codeInputFieldStyle={styles.underlineStyleBase}
                                  onCodeFilled={(code: string) => verifyOtpCode({ otpCode: code })}
                                  />
-                                <View>
+                                <View style={{position: 'absolute', top: screen.height * 0.1 , alignSelf: 'center'}}>
                                     {!isOneMinuteBind && emailSended && (
+                                        
+                                          isLoadingResendEmail ?
+                                           (activityIndicatorObject) : 
+                                           (
                                         <TouchableOpacity onPress={resendEmail}>
                                             <Text style={{ color: text.primary }}>Didn’t receive an OTP? Resend OTP!</Text>
-                                        </TouchableOpacity>
+                                        </TouchableOpacity>)
                                     )}
                                     {isOneMinuteBind && (
                                         <Text style={{ color: text.primary }}>
