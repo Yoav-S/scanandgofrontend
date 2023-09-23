@@ -61,6 +61,8 @@ const Checkout: React.FC = () => {
         }
         setisLoading(true);
         const [isValid, couponObject] = await verifyCouponAttempt(currentCouponInputValue);
+        console.log(isValid, couponObject);
+        
         setisLoading(false);
         setisAttempted(true);
        if(isValid && couponObject){

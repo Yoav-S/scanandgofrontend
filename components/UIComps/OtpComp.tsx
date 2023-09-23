@@ -51,8 +51,10 @@ const OtpComp: React.FC<OtpCompProps> = ({verifyOtpCode, isOneMinuteBind, emailS
                                           isLoadingResendEmail ?
                                            (activityIndicatorObject) : 
                                            (
-                                        <TouchableOpacity onPress={resendEmail}>
-                                            <Text style={{ color: text.primary }}>Didn’t receive an OTP? Resend OTP!</Text>
+                                        <TouchableOpacity style={{flexDirection: 'row'}} onPress={resendEmail}>
+                                            <Text style={{ color: text.primary, marginRight: '3%' }}>Didn’t receive an OTP?</Text>
+                                            <Text style={{ color: text.primary, fontWeight: 'bold' }}>Resend OTP</Text>
+
                                         </TouchableOpacity>)
                                     )}
                                     {isOneMinuteBind && (

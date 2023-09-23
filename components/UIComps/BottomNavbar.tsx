@@ -74,7 +74,7 @@ setamountofitemsvariable(currentUser?.cart.length || 0)
       || route.name === "AddCreditCardScreen"
       ? 'lightblue' : 'white'} 
       onPress={navigateSettings}/>
-      <Icon name="person" type='ion-icons' size={30} color={route.name === "Stats" ? 'lightblue' : 'white'} onPress={navigateProfile}/>
+      <Icon name="bar-chart" type='ion-icons' size={30} color={route.name === "Stats" ? 'lightblue' : 'white'} onPress={navigateProfile}/>
     </SafeAreaView>
   );
 };

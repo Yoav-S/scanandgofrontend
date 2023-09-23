@@ -24,6 +24,7 @@ const FormInput: React.FC<FormInputType> = (props) => {
   const clearInput = () => {
     props.setInput(""); // Clear the input
   };
+  console.log(props.label);
   
   return (
     <View style={{marginTop: '1%', marginBottom: '2%'}}>
@@ -40,13 +41,13 @@ const FormInput: React.FC<FormInputType> = (props) => {
             width: props.label === "Exp Date" ||
              props.label === "CVV" ? 
                120 : props.label === 'Enter Coupon' ? 
-               150 : 300,
+               185 : 300,
           },
           
         ]
       }
       leftIcon={
-        (!props.errorMessage && props.startValue !== '')  ? 
+        (!props.errorMessage && props.startValue !== '' && props.label !== 'Enter Coupon')  ? 
         <Icon color={'green'} type={"ionicon"} name="checkmark-done-circle-outline" size={20}/> : <View style={{width: 20}}/>
       }
       rightIcon={
@@ -70,7 +71,7 @@ const FormInput: React.FC<FormInputType> = (props) => {
       maxLength={props.label === 'CVV' ? 3 : props.label === 'Card Number' ? 16 : 100}
     />
     {}
-    {props.startValue !== '' && 
+    {props.startValue !== '' && props.label !== 'Enter Coupon' &&
     (<View style={{padding: '1%', backgroundColor: background, borderRadius: 50, marginBottom: '8%'}}>      
           <Icon onPress={clearInput} name="cancel" iconStyle={{fontWeight: 'bold'}} color={text.primary} size={20}/>
     </View>)}

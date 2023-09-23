@@ -139,11 +139,9 @@ const verifyEmail = async (emailToSend: string): Promise<[boolean, string, Date?
   }
 };
 const resetPassword = async (password: string, userId: string): Promise<boolean> => {
-console.log(password, userId);
 
   try {
-    const response = await api.put(`users/resetPassword`, { params: { newPassword: password, userId: userId } }); 
-    console.log(response.status);
+    const response = await api.put(`users/resetPassword`, {  newPassword: password, userId: userId }); 
     
     if (response.status === 200) {
       if(currentUser){
@@ -416,6 +414,7 @@ const addCreditCardAttempt = async (values: creditCardFormType): Promise<[boolea
 }
 
 const PaymentAttempt = async (transactionObject: TransactionFormType): Promise<boolean> => {
+    console.log(transactionObject);
     
     try{
       const response: AxiosResponse = await api.post('transactions/createTransaction', transactionObject, {headers: {Authorization: 'Bearer ' + token}});
@@ -448,20 +447,12 @@ const PaymentAttempt = async (transactionObject: TransactionFormType): Promise<b
 
   const getItemAttempt = async (itemId: string):Promise <any> => {
     try{
-      const requestBody = {
-        query: {
-          _id: itemId,
-        },
-        projection: {},
-      };
-      const response = await axios.post(
-        'https://scan-and-go.onrender.com/items/getOne',
-        requestBody,
-      );
+      const response: AxiosResponse = await api.get('items/getById', {params: {"id": itemId}, headers:{Authorization: "Bearer " + token}})
       if (response.status == 200 || response.status == 201) {
         return response;
     }
-  } catch (err) {
+  } catch (err: any) {
+    console.log(err.message);
     
   }
   } 
@@ -474,14 +465,13 @@ const PaymentAttempt = async (transactionObject: TransactionFormType): Promise<b
     });
   }
 
-  const verifyCouponAttempt = async (coupon: string): Promise<[boolean, CouponType | null]> => {
+  const verifyCouponAttempt = async (coupon: string): Promise<[boolean, CouponType | null]> => {    
     const requestBody = {
       query: {
         code: coupon,
         isActive: true
       },
       projection: {
-        discountPercentage:1
       },
     };
     try{
@@ -489,6 +479,8 @@ const PaymentAttempt = async (transactionObject: TransactionFormType): Promise<b
       {
         headers:{Authorization: "Bearer " + token}
       });
+      console.log(response.data);
+      
         const couponObject: CouponType = response.data;
         return [true,couponObject];     
     } catch (error: any) {
@@ -500,7 +492,7 @@ const PaymentAttempt = async (transactionObject: TransactionFormType): Promise<b
           console.log('error 404 if: ',error.response.data.message);
           return [false, null];
         } else {
-          console.log('error 404 else: ',error.response.message);
+          console.log(`error ${error.response.status}: `,error.response.data.message);
           return [false, null];
         }
       } else{
@@ -561,7 +553,7 @@ try {
         },
         currentPage: pageNumber
     }
-    const response = await axios.post('https://scan-and-go.onrender.com/transactions/getManyPagination', reqBody);
+    const response = await api.post('transactions/getManyPagination', reqBody, { headers:{Authorization: "Bearer " + token}});
     return response.data;
 } catch (error: any){
   if (error.response) {
@@ -583,7 +575,7 @@ try{
   const queryParams = {
     id: userId,
   };
-  const response = await axios.get('https://scan-and-go.onrender.com/transactions/allStats', { params: queryParams });
+  const response = await api.get('transactions/allStats', { params: queryParams , headers:{Authorization: "Bearer " + token}});
   if(response.status === 200){
     return response.data;
   }

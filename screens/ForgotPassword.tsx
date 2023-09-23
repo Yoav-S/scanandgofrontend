@@ -63,7 +63,14 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
         }
     }, [isOneMinuteBind, oneMinuteBindEndTime]);
   
-    
+    useEffect(() => {
+      if(emailSended){
+        const currentTime = Date.now();
+        const expirationTime = currentTime + 60000; // Adding 1 minute in milliseconds
+        setOneMinuteBindEndTime(expirationTime); // Store the expiration time
+        setisOneMinuteBind(true);
+      }
+    },[emailSended])
 
     const resendEmail = async () => {
       setisLoadingResendEmail(true);

@@ -21,7 +21,7 @@ interface Props {
 }
 const ScanModel: React.FC<Props> = () => {
   const {isVisibleStatus, setisVisibleStatus, AddItemToCartAttempt, showToast} = useDataContext();
-  const [tagId, setTagId] = useState<string>('');
+  const [tagId, setTagId] = useState('');
   const [item, setItem] = useState<Itemprop | null>(null);
   const [animation, setAnimation] = useState(scanAnimation)
   const [isItemInCart, setIsItemInCart] = useState(false);
@@ -47,7 +47,7 @@ const ScanModel: React.FC<Props> = () => {
       
       source={successCartIndicator}
       autoPlay
-      loop={false}
+      loop={true}
       />)
       const failureCartIndicatorObj = (<LottieView
         style={{width: 50, height: 50,position: 'absolute', right: -15, bottom: -25}}
@@ -104,7 +104,7 @@ const ScanModel: React.FC<Props> = () => {
         const itemId = payloadString.substring(3);
         const response = await getItemAttempt(itemId);
         if (response.status == 200 || response.status == 201) {
-          const itemData:Itemprop = response.data[0];
+          const itemData:Itemprop = response.data;
           setTitle(`${itemData.name} ${itemData.price}`);
           setItem(itemData);
         }
@@ -125,18 +125,12 @@ const ScanModel: React.FC<Props> = () => {
     }
   };
   const handleAddToCart = async () => {
-    if(currentUser){
+    if(currentUser && tagId){
     for(let i = 0; i < currentUser?.cart?.length; i ++){
-      if(currentUser.cart[i].itemId === item?._id){
+      if(currentUser.cart[i].nfcTagCode === tagId){
         setResultMessage('Item Already in your cart !');
         setisShowingMessage(true);
         setPreviewErrorMessage(true);
-        setTimeout(() => {
-          
-          setResultMessage('');
-          setisShowingMessage(false);
-          setPreviewErrorMessage(false);
-        }, 4000)
         return;
       }
     }
@@ -159,19 +153,10 @@ const ScanModel: React.FC<Props> = () => {
     if(isItemAdded){
       setResultMessage('Item Added Successfully');
       setPreviewSuccessMessage(true);
-      setTimeout(() => {
-        setPreviewSuccessMessage(false);
-        setResultMessage('');
-        resetAbstractModel();
-      }, 3000)
     }
     else{
       setResultMessage('Item Failed to add');
       setPreviewErrorMessage(true);
-      setTimeout(() => {
-        setResultMessage('');
-        setPreviewErrorMessage(false);
-      }, 4000)
     }
    };
   const scanned = (

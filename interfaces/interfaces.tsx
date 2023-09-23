@@ -299,7 +299,7 @@ export interface FormInputType{
     isApplied?: boolean;
     isAttempted?: boolean;
     focus?: boolean;
-    onPress: () => void;  // Changed this line
+    onPress?: () => void;  // Changed this line
     value?: string;
     numeric?: boolean;
     onChangeText?: (value: string) => void;

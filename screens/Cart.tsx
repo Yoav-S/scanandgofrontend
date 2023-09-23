@@ -20,15 +20,15 @@ const Cart: React.FC = () => {
     const { theme } = useContext(ThemeContext);
     const { primary, secondary, text, background } = theme.colors 
     const navigation = useNavigation<StackNavigationProp<any>>();
-    const [totalamountvariable, settotalamountvariable] = useState<number>(0);
+    const [totalamountvariable, settotalamountvariable] = useState(0);
     const [isLoading, setisLoading] = useState<boolean>(false);
     const [isCartEmpty, setisCartEmpty] = useState<boolean>(!currentUser || currentUser.cart.length === 0);
-    const [currentUserItemsCart, setCurrentUserItemsCart] = useState<IteminCartType[] | undefined>(currentUser?.cart);
+    const [currentUserItemsCart, setCurrentUserItemsCart] = useState<IteminCartType[]>(currentUser?.cart || []);
     
     const handleDeleteItem = async (userId : string, nfcTagCode : string) => {
         const newcurrentUserItemsCart: (IteminCartType[] | undefined) = currentUserItemsCart?.filter((item: IteminCartType) => item.nfcTagCode !== nfcTagCode);
         setCurrentUserItemsCart(newcurrentUserItemsCart);
-        calculatePrice();
+        calculatePrice(newcurrentUserItemsCart);
         if(currentUserItemsCart)
         {
         setamountofitemsvariable(currentUserItemsCart.length)
@@ -48,9 +48,9 @@ const Cart: React.FC = () => {
         }
     }
     
-    const calculatePrice = () => {
+    const calculatePrice = (currentUserItemsCart: IteminCartType[]) => {
         let price: number = 0;
-        currentUser?.cart.forEach((item) => {
+        currentUserItemsCart && currentUserItemsCart.forEach((item) => {
           price += item.price;
         });
         settotalamountvariable(price);
@@ -58,11 +58,13 @@ const Cart: React.FC = () => {
       
       useEffect(() => {
         setisCartEmpty(!currentUser || currentUser.cart.length === 0);
-        setCurrentUserItemsCart(currentUser?.cart);
-        calculatePrice();
+        setCurrentUserItemsCart(currentUser?.cart || []);
+        calculatePrice(currentUserItemsCart);
         setamountofitemsvariable(currentUser?.cart.length || 0)
       }, [currentUser]);
-   
+      useEffect(() => {
+        calculatePrice(currentUserItemsCart);
+      }, [ currentUserItemsCart]);
     return (
         <View style={[styles.container, {backgroundColor: background}]}>
             <View style={styles.titleandIcon}>
@@ -104,13 +106,13 @@ const Cart: React.FC = () => {
                             <Text style={{color: text.primary}}>Total</Text>
                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
                             <Text style={{color: text.primary, fontWeight: 'bold'}}>  
-                            {currentUser?.cart.reduce((total, item) => total + item.price, 0)}</Text>
+                            {totalamountvariable}</Text>
                             <Image source={require('../images/shekel.png')} style={[styles.imageShekel]}/>
                             </View>
 
 
                         </View>
-                        <StyledButton disabled={isLoading} bigbutton text='Checkout' onPress={() => {navigation.navigate('CheckoutScreen', {totalAmount: totalamountvariable})}}/>
+                        <StyledButton bigbutton text='Checkout' onPress={() => {navigation.navigate('CheckoutScreen', {totalAmount: totalamountvariable})}}/>
                     </View>
                 </View>) 
             }
