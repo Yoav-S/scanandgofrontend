@@ -8,19 +8,22 @@ import { ThemeContext } from "../context/ThemeContext";
 import ImageCarousel from "../components/UIComps/ImageCarousel";
 import Toast from "react-native-toast-message";
 import NoTransactionComp from "../components/UIComps/NoTransactionComp";
+import { Container } from 'native-base';
+import { Button, Text as Title } from 'native-base';
 const HomeScreen: React.FC<HomeScreenType> = (props) => {
     const { theme } = useContext(ThemeContext);
     const { primary, secondary, text, background } = theme.colors     
 
     const { currentUser, showToast } = useDataContext();
-    const recentItemArray: recentItemType[] = [];
-    const recentTransactionArray: recentTransaction[] = [];
+    const recentItemArray: recentItemType[] = currentUser?.recentItems || [];
+    const recentTransactionArray: recentTransaction[] = currentUser?.recentTransactions || [];
     const handleshowToast = () => {
         showToast('please try again later', 'error', 'Cannot find transaction details')
     }
     
     return (
         <SafeAreaView style={[styles.container,{ backgroundColor: background}]}>
+            <Title fontFamily={"montserrat"} margin={'5%'} fontSize="2xl" color={text.primary}>Recent Items</Title>
             {
                 (recentItemArray.length === 0 && recentTransactionArray.length === 0) ? 
                 (
@@ -28,10 +31,8 @@ const HomeScreen: React.FC<HomeScreenType> = (props) => {
                 )
                  :
                 (<View>
-                        <Text style={{color: text.primary, fontSize: 22, textAlign: 'center',
-                    marginTop: '10%', fontWeight: '600' }}>Recent Items</Text>
                         <ImageCarousel data={recentItemArray} />
-                        <Text style={{color: text.primary, fontSize: 22, textAlign: 'center', fontWeight: '600', marginTop: '3%'}}>Recent Transactions</Text>
+                        <Title fontFamily={"montserrat"} margin={'5%'} fontSize="2xl" color={text.primary}>Recent Transactions</Title>
                         <View style={styles.scrollViewCon}>
 
                         <ScrollView style={styles.scrollView}>

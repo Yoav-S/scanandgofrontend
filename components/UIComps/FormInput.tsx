@@ -1,12 +1,20 @@
 import React, {useContext, useEffect, useState} from "react";
-import { StyleSheet, View , Text} from "react-native";
+import { StyleSheet, View , Text,Dimensions} from "react-native";
 import { FormInputType } from "../../interfaces/interfaces";
 import { ThemeContext } from "../../context/ThemeContext";
 import { ErrorMessage } from "formik";
 import { Icon } from 'react-native-elements';
 import { BorderlessButton } from "react-native-gesture-handler";
 import { Input } from '@rneui/themed';
+import {Input as NativeBaseInput} from 'native-base';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { useNavigation, useRoute, RouteProp  } from "@react-navigation/native";
+const { width, height } = Dimensions.get('window');
+
 const FormInput: React.FC<FormInputType> = (props) => {
+  const route = useRoute();
+  console.log(route.name);
+  
   const { theme } = useContext(ThemeContext);
   const { text, background } = theme.colors   
   const [isSecureText, setisSecureText] = useState<boolean>(false);
@@ -27,35 +35,30 @@ const FormInput: React.FC<FormInputType> = (props) => {
   console.log(props.label);
   
   return (
-    <View style={{marginTop: '1%', marginBottom: '2%'}}>
+    <View style={{marginTop: '1%', marginBottom: '8%'}}>
       <View style={{flexDirection: 'row', alignItems: 'center'}}>
-    <Input 
+    <NativeBaseInput 
+      variant={route.name === 'Login' || route.name === 'Signup' ? 'rounded' : 'Outline'}
       value={props.startValue}
       autoFocus={props.focus}
-      inputStyle={{color: text.primary}}
+      borderWidth={1}
+      style={[{
+      marginBottom:props.label === 'CVV' ? '1%' : '4%',
+      color: text.primary,             
+      width: props.label === "CVV" ? 
+      120 : props.label === 'Enter Coupon' ? 
+      185 : 300,}, styles.textInput]}
       keyboardType={props.numeric ? 'number-pad' : 'default'}
-      containerStyle={
-        [
-          styles.textInput, 
-          {
-            width: props.label === "Exp Date" ||
-             props.label === "CVV" ? 
-               120 : props.label === 'Enter Coupon' ? 
-               185 : 300,
-          },
-          
-        ]
-      }
-      leftIcon={
+      leftElement={
         (!props.errorMessage && props.startValue !== '' && props.label !== 'Enter Coupon')  ? 
-        <Icon color={'green'} type={"ionicon"} name="checkmark-done-circle-outline" size={20}/> : <View style={{width: 20}}/>
+        <Icon style={{marginLeft: '2%'}} color={'green'} type={"ionicon"} name="checkmark-done-circle-outline" size={20}/> : props.label === 'Enter Coupon' ? <View style={{width: 0}}/> :<View style={{width: 20, marginLeft: '2%'}}/>
       }
-      rightIcon={
-        (props.label === "Password" || props.label === "Confirm Password") 
-        ? <Icon onPress={() => {setisSecureText(!isSecureText)}} type="ionicon" name={isSecureText ? "lock-closed-outline" : "eye-outline"} color={text.primary}/> 
-        : undefined
-      }     
-      underlineColorAndroid={"transparent"}
+      rightElement={
+        <View style={{flexDirection: 'row', alignItems: 'center', width: props.label !== 'CVV' ? width * 0.15 : 0, justifyContent: 'space-between', margin: '1%'}}>
+          {(props.startValue && props.label !== 'CVV') && <Icon onPress={clearInput} name="cancel" iconStyle={{fontWeight: 'bold'}} color={text.primary} size={20}/>} 
+          {(props.label === "Password" || props.label === "Confirm Password") && <Icon onPress={() => {setisSecureText(!isSecureText)}} type="ionicon" name={isSecureText ? "lock-closed-outline" : "eye-outline"} color={text.primary}/>}
+
+        </View>}     
       onChangeText={onChangeTextHandler}
       autoCapitalize="none"
       autoCorrect={false}
@@ -70,13 +73,8 @@ const FormInput: React.FC<FormInputType> = (props) => {
       placeholderTextColor={text.primary}
       maxLength={props.label === 'CVV' ? 3 : props.label === 'Card Number' ? 16 : 100}
     />
-    {}
-    {props.startValue !== '' && props.label !== 'Enter Coupon' &&
-    (<View style={{padding: '1%', backgroundColor: background, borderRadius: 50, marginBottom: '8%'}}>      
-          <Icon onPress={clearInput} name="cancel" iconStyle={{fontWeight: 'bold'}} color={text.primary} size={20}/>
-    </View>)}
     </View>
-    {(props.errorMessage && props.startValue !== '') && <Text style={{color: 'red',position: 'absolute',bottom: 0, fontWeight: 'bold' , width: props.label === "Exp Date" || props.label === "Cvv" || props.label === 'Enter Coupon' ? 135 : '85%', alignSelf:'center'}}>{props.errorMessage}</Text>}
+    {(props.errorMessage && props.startValue !== '' && props.label !== 'CVV') && <Text style={{left: width * 0.1,fontSize: 12,color: 'red',position: 'absolute',bottom: height * 0.005, fontWeight: 'bold' , width: props.label === "Exp Date" || props.label === "Cvv" || props.label === 'Enter Coupon' ? 135 : '85%', alignSelf:'center'}}>{props.errorMessage}</Text>}
     </View>
   );
 };
@@ -85,7 +83,7 @@ const styles = StyleSheet.create({
   textInput: {
     borderRadius: 50,
     paddingHorizontal: 16,
-    fontSize: 16,
+    fontSize: 14,
     width: '90%',
     alignSelf: 'center',
   },

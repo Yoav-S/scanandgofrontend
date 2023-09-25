@@ -67,7 +67,7 @@ const LoginScreen: React.FC = () => {
   return (
     <View style={[styles.container, { backgroundColor: background }]}>
             <BigTitle title="Login" />
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.imageCon}>
         {loginAnimationObject}
        </View>

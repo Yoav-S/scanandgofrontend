@@ -465,7 +465,7 @@ const PaymentAttempt = async (transactionObject: TransactionFormType): Promise<b
     });
   }
 
-  const verifyCouponAttempt = async (coupon: string): Promise<[boolean, CouponType | null]> => {    
+  const verifyCouponAttempt = async (coupon: string): Promise<[boolean, CouponType | null, string?]> => {    
     const requestBody = {
       query: {
         code: coupon,
@@ -487,17 +487,17 @@ const PaymentAttempt = async (transactionObject: TransactionFormType): Promise<b
       if (error.response) {
         if (error.response.status === 500) {
           console.log('error 500: ',error.response.message);
-          return [false, null];
+          return [false, null, 'Server error'];
         } else if (error.response.status === 404) {
           console.log('error 404 if: ',error.response.data.message);
-          return [false, null];
+          return [false, null, 'Coupon not found'];
         } else {
           console.log(`error ${error.response.status}: `,error.response.data.message);
-          return [false, null];
+          return [false, null, 'Coupon not valid'];
         }
       } else{
         console.log('no response error', error.message);
-        return [false, null];
+        return [false, null, 'App Error, try again later'];
       }
   }
 }

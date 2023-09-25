@@ -7,9 +7,12 @@ import { TokenProvider } from './context/TokenContext';
 import { DataProvider } from './context/DataContext';
 import { ModalPortal } from 'react-native-modals';
 import { NavigationContainer } from '@react-navigation/native';
+import { NativeBaseProvider } from 'native-base';
 NfcManager.start();
 const App: React.FC = () => {
   return (
+    <NativeBaseProvider>
+
     <NavigationContainer>
     <DataProvider>
       <TokenProvider>
@@ -20,6 +23,8 @@ const App: React.FC = () => {
     </TokenProvider>
     </DataProvider>
     </NavigationContainer>
+    </NativeBaseProvider>
+
 
   );
 };

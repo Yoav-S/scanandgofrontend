@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Text, View, SafeAreaView, StyleSheet, TextInput , KeyboardAvoidingView, Keyboard, Platform} from 'react-native'
+import { Text, View, SafeAreaView, StyleSheet, TextInput , KeyboardAvoidingView, Keyboard, Platform, Dimensions} from 'react-native'
 import { Icon } from 'react-native-elements';
 import DeviceInfo from 'react-native-device-info';
 import packageJson from '../package.json'; // Relative path to your package.json
@@ -31,6 +31,8 @@ const validationSchema = Yup.object().shape({
     category: categorySchema,
     description: descriptionSchema
   });
+  const { width, height } = Dimensions.get('window');
+
 const ProblemReport: React.FC<ProblemReportType> = () => {
     const navigation = useNavigation<StackNavigationProp<any, 'ProblemReport'>>();
     const route = useRoute<any>(); // Using any type for route parameter
@@ -220,9 +222,12 @@ const ProblemReport: React.FC<ProblemReportType> = () => {
                             onChangeText={handleChange('description')}
                             value={values.description}
                           />
-                          {(values.description.length < 20 && values.description.length > 0) && <Text style={{color: 'red', fontWeight: 'bold'}}>{errors.description}</Text>}
+                          {(values.description.length < 20 && values.description.length > 0) && <Text style={{color: 'red', fontWeight: 'bold', position: 'absolute', bottom: -25}}>{errors.description}</Text>}
                         </View>
+                        <View style={{marginTop: height * 0.05}}>
                         <StyledButton text="Save Report" onPress={handleSubmit} bigbutton disabled={values.description.length < 19 || !isValid}/>
+
+                        </View>
                     </>
         )}
       </Formik>)
@@ -246,7 +251,7 @@ const createStyles = (primary: string, secondary: string, text: IText, backgroun
   StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: background
+      backgroundColor: background,
   },
   titleandarrowcon: {
       flexDirection: 'row',

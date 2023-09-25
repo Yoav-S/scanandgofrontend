@@ -60,7 +60,7 @@ const Checkout: React.FC = () => {
             return;
         }
         setisLoading(true);
-        const [isValid, couponObject] = await verifyCouponAttempt(currentCouponInputValue);
+        const [isValid, couponObject, message] = await verifyCouponAttempt(currentCouponInputValue);
         console.log(isValid, couponObject);
         
         setisLoading(false);
@@ -76,7 +76,7 @@ const Checkout: React.FC = () => {
         setTotalAmountToPay(totalAmount - calculatedDiscountPrice);
        }else{
         setBtnLabelText('Invalid')
-        showToast('Invalid Coupon', 'error', 'Coupon not Verified');
+        showToast(message || 'Invalid Coupon', 'error', 'Coupon not Verified');
        }
 
 

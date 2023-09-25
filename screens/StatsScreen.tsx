@@ -1,5 +1,5 @@
 import React,  { useEffect, useState , useContext}  from "react";
-import { TextInput, StyleSheet, SafeAreaView , Text, Dimensions} from "react-native";
+import { TextInput, StyleSheet, SafeAreaView , Text, Dimensions, View} from "react-native";
 import { CurrentUserType, IStats, Role } from "../interfaces/interfaces";
 import BottomNavbar from "../components/UIComps/BottomNavbar";
 import TransactionsList from "../components/UIComps/TransactionList";
@@ -9,6 +9,7 @@ import { ThemeContext } from "../context/ThemeContext";
 import TitleAndArrowBack from "../components/UIComps/TitleAndArrowBack";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { StackNavigationProp } from '@react-navigation/stack';
+import NoTransactionStats from "../components/UIComps/NoTransactionStats";
 const StatsScreen: React.FC = () => {
     const { theme } = useContext(ThemeContext);
     const { primary, secondary, text, background } = theme.colors 
@@ -228,8 +229,16 @@ const handleShowToast = () => {
   return (
     <SafeAreaView style={[styles.container, {backgroundColor: background}]}>
         <TitleAndArrowBack text="User Statistics" onPress={() => {navigation.navigate('Home')}}/>
-        <StatsChart handleShowToast={handleShowToast} userId={userId}/>
-        <TransactionsList/>
+
+        {
+            !currentUser?.recentTransactions ? (
+            <View><StatsChart handleShowToast={handleShowToast} userId={userId}/>
+            <TransactionsList/>
+                </View>) : (<NoTransactionStats/>)
+        }        
+
+
+
         <BottomNavbar/>
       </SafeAreaView>
   );

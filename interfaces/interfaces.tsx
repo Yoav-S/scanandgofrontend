@@ -148,7 +148,7 @@ export interface DataContextType {
     authenticated: boolean;
     addCreditCardAttempt: (values: creditCardFormType) => Promise<[boolean, string | null]>
     PaymentAttempt: (transactionObject: TransactionFormType) => Promise<boolean>;
-    verifyCouponAttempt: (coupon: string) => Promise<[boolean, CouponType | null]>;
+    verifyCouponAttempt: (coupon: string) => Promise<[boolean, CouponType | null, string?]>;
     setamountofitemsvariable: (amount: number) => void;
     amountofitemsvariable: number;
     AddItemToCartAttempt: (userId: string, itemInCart: {itemId: string, nfcTagCode: string}) => Promise<[boolean, IteminCartType | null]>;
