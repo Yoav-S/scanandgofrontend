@@ -5,7 +5,7 @@ import { Modal, ModalContent, ModalFooter, ModalButton } from 'react-native-moda
 import LottieView from "lottie-react-native";
 import logoutLottieAnimation from '../../assets/logoutlottie.json'
 import { ThemeContext } from "../../context/ThemeContext";
-
+import {Text as NativeText} from "native-base"
 const LogoutModal: React.FC = () => {
   const { theme } = useContext(ThemeContext);
   const { primary, secondary, text, background } = theme.colors     
@@ -19,20 +19,19 @@ const LogoutModal: React.FC = () => {
         loop={true}
         />)
     return (
-        <View>
+        <View style={{}}>
             <Modal
             visible={isLogoutModal}
             swipeDirection={["down", "up", "right", "left"]}
             swipeThreshold={200} // default 100
-            modalStyle={styles.modalStyle}
+            modalStyle={[styles.modalStyle,{backgroundColor: background}]}
             onSwipeOut={() => {setisLogoutModal(false);}}
             footer={
-                <ModalFooter style={[{backgroundColor: 'white'},styles.ModalFooter]}>
+                <ModalFooter style={[{backgroundColor: background},styles.ModalFooter]}>
                   <ModalButton
-                    style={{height: 70, backgroundColor: background, margin: '10%', borderRadius: 8}}
-                    textStyle={[{color: text.primary, fontSize: 14, flexWrap: 'wrap'},styles.ModalButtonText]}
-                    text="Are you sure ? 
-                    swipe to cancel"
+                    style={{height: 50, backgroundColor: 'red', margin: '10%', borderRadius: 2}}
+                    textStyle={[{color: text.primary, fontSize: 12, flexWrap: 'wrap'},styles.ModalButtonText]}
+                    text="Logout"
                     onPress={() => 
                         {
                             setisLogoutModal(false);
@@ -41,6 +40,7 @@ const LogoutModal: React.FC = () => {
                   />
                 </ModalFooter>
               }>
+                <NativeText color={text.primary} fontFamily={"montserrat"} margin={"2%"} fontWeight={"bold"}>swipe to cancel logout</NativeText>
                 {lottieViewYoav}
             </Modal>
         </View>
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
         width: 250
       },
       ModalFooter: {
-        height: 150
+        height: 75
       },
 })
 export default LogoutModal;

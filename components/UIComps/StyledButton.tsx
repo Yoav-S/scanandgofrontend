@@ -44,7 +44,7 @@ const StyledButton: React.FC<StyledButtonType> = (props) =>{
             || props.text === 'Verified' ? 'white' 
             : props.text === 'Image Added' ? buttonMain.text 
             : buttonAlt.text},
-        {fontWeight: props.text === 'Delete anyway' || props.text === 'Scan Again' ? '600' : '300'}]}>{props.text}</Text>)
+        {fontWeight: props.text === 'Delete anyway' || props.text === 'Scan Again' ? '600' : '500'}]}>{props.text}</Text>)
             :(activitiIndicatorAnimation)}
         </TouchableOpacity>
     )

@@ -36,18 +36,19 @@ const FormInput: React.FC<FormInputType> = (props) => {
   
   return (
     <View style={{marginTop: '1%', marginBottom: '8%'}}>
-      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+      <View style={{flexDirection: 'row', alignSelf: 'center'}}>
     <NativeBaseInput 
-      variant={route.name === 'Login' || route.name === 'Signup' ? 'rounded' : 'Outline'}
+      variant={route.name === 'Login' || route.name === 'Signup' ? 'Outline' : 'Outline'}
       value={props.startValue}
       autoFocus={props.focus}
+      width={props.label === "CVV" ? 
+      120 : props.label === 'Enter Coupon' ? 
+      185 : 320}
       borderWidth={1}
       style={[{
       marginBottom:props.label === 'CVV' ? '1%' : '4%',
       color: text.primary,             
-      width: props.label === "CVV" ? 
-      120 : props.label === 'Enter Coupon' ? 
-      185 : 300,}, styles.textInput]}
+      }, styles.textInput]}
       keyboardType={props.numeric ? 'number-pad' : 'default'}
       leftElement={
         (!props.errorMessage && props.startValue !== '' && props.label !== 'Enter Coupon')  ? 
@@ -74,7 +75,7 @@ const FormInput: React.FC<FormInputType> = (props) => {
       maxLength={props.label === 'CVV' ? 3 : props.label === 'Card Number' ? 16 : 100}
     />
     </View>
-    {(props.errorMessage && props.startValue !== '' && props.label !== 'CVV') && <Text style={{left: width * 0.1,fontSize: 12,color: 'red',position: 'absolute',bottom: height * 0.005, fontWeight: 'bold' , width: props.label === "Exp Date" || props.label === "Cvv" || props.label === 'Enter Coupon' ? 135 : '85%', alignSelf:'center'}}>{props.errorMessage}</Text>}
+    {(props.errorMessage && props.startValue !== '' && props.label !== 'CVV') && <Text style={{left: route.name === 'ForgotPassword' ? width * 0.185 : width * 0.14,fontSize: 12,color: 'red',position: 'absolute',bottom: height * 0.005, fontWeight: 'bold' , width: props.label === "Exp Date" || props.label === "Cvv" || props.label === 'Enter Coupon' ? 135 : '85%', alignSelf:'center'}}>{props.errorMessage}</Text>}
     </View>
   );
 };
@@ -84,7 +85,6 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     paddingHorizontal: 16,
     fontSize: 14,
-    width: '90%',
     alignSelf: 'center',
   },
 });

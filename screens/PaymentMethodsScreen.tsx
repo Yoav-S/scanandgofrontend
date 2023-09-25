@@ -51,10 +51,11 @@ const PaymentMethodsScreen: React.FC<PaymentMethodsScreenProps> = ({ navigation 
 
     return (
         <SafeAreaView style={[styles.container, {backgroundColor: background}]}>
-            <View style={styles.titleCon}>
                 <TitleAndArrowBack text='Payment Methods' onPress={() => navigation.goBack()} />
+                <View style={{alignSelf: 'flex-end', padding: '3%'}}>
                 <StyledButton smallbutton text='Add New' onPress={() => navigation.navigate('AddCreditCardScreen')} />
-            </View>
+
+                </View>
             <ScrollView style={styles.scrollView}>
                 {currentUser?.creditCards.map((card : creditCardType, index) => (
                     
@@ -108,7 +109,6 @@ export default PaymentMethodsScreen;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'center'
     },
     trashicon: {
         width: 30,
