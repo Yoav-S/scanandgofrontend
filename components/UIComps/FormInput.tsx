@@ -13,7 +13,6 @@ const { width, height } = Dimensions.get('window');
 
 const FormInput: React.FC<FormInputType> = (props) => {
   const route = useRoute();
-  console.log(route.name);
   
   const { theme } = useContext(ThemeContext);
   const { text, background } = theme.colors   
@@ -36,15 +35,15 @@ const FormInput: React.FC<FormInputType> = (props) => {
   
   return (
     <View style={{marginTop: '1%', marginBottom: '8%'}}>
-      <View style={{flexDirection: 'row', alignSelf: 'center'}}>
+      <View style={{flexDirection: 'row', alignSelf: 'center',}}>
     <NativeBaseInput 
-      variant={route.name === 'Login' || route.name === 'Signup' ? 'Outline' : 'Outline'}
+      variant={route.name === 'Login' || route.name === 'Signup' ? 'filled' : 'Outline'}
       value={props.startValue}
-      autoFocus={props.focus}
       width={props.label === "CVV" ? 
       120 : props.label === 'Enter Coupon' ? 
       185 : 320}
-      borderWidth={1}
+      backgroundColor={'gray.600'}
+      borderWidth={0}
       style={[{
       marginBottom:props.label === 'CVV' ? '1%' : '4%',
       color: text.primary,             

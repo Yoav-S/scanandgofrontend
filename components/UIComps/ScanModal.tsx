@@ -17,9 +17,12 @@ import {IteminCartType, Itemprop} from '../../interfaces/interfaces'
 import { Text } from '@rneui/base';
 import { useDataContext } from '../../context/DataContext';
 import StyledButton from './StyledButton';
+import { ThemeContext } from '../../context/ThemeContext';
 interface Props {
 }
 const ScanModel: React.FC<Props> = () => {
+  const { theme } = useContext(ThemeContext);
+  const { text, background } = theme.colors   
   const {isVisibleStatus, setisVisibleStatus, AddItemToCartAttempt, showToast} = useDataContext();
   const [tagId, setTagId] = useState('');
   const [item, setItem] = useState<Itemprop | null>(null);
@@ -213,7 +216,7 @@ const ScanModel: React.FC<Props> = () => {
     />
 
     <View>
-      <Text style={{alignSelf: 'center'}}>{title}</Text>
+      <Text style={{alignSelf: 'center', color: text.primary}}>{title}</Text>
     </View>
   </ModalContent>
   );
@@ -232,11 +235,12 @@ const ScanModel: React.FC<Props> = () => {
         visible={isVisibleStatus}
         swipeDirection={['up', 'down', 'left', 'right']} // can be string or an array
         swipeThreshold={200} // default 100
-        modalStyle={styles.modalStyle}
+        modalStyle={[styles.modalStyle,{backgroundColor: background}]}
         footer={
-          <ModalFooter style={styles.ModalFooter}>
+          <ModalFooter style={[styles.ModalFooter]}>
             <ModalButton
-              textStyle={styles.ModalButtonText}
+            
+              textStyle={[styles.ModalButtonText, {color: text.secondary}]}
               text="swipe to close"
               onPress={() => {console.log('pressed')}}
             />
