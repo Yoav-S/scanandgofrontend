@@ -8,7 +8,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useDataContext } from "../context/DataContext";
 import DropDownPicker from 'react-native-dropdown-picker';
-import TitleAndArrowBack from "../components/UIComps/TitleAndArrowBack";
+import TitleAndArrowBack from "../components/UIElements/TitleAndArrowBack";
 import Toast from "react-native-toast-message";
 import { ThemeContext } from "../context/ThemeContext";
 import {
@@ -21,8 +21,8 @@ import {
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { categorySchema, descriptionSchema, imageSchema } from "../messages/Statements";
-import StyledButton from "../components/UIComps/StyledButton";
-import BottomNavbar from "../components/UIComps/BottomNavbar";
+import StyledButton from "../components/UIElements/StyledButton";
+import BottomNavbar from "../components/UIElements/BottomNavbar";
 import { ScrollView } from "react-native-gesture-handler";
 import LottieView from "lottie-react-native";
 import activityIndicator from '../assets/activitiindicator.json'

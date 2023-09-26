@@ -9,9 +9,9 @@ import { IteminCartType } from '../interfaces/interfaces';
 import { useNavigation } from "@react-navigation/native";
 import Toast from 'react-native-toast-message';
 import { StackNavigationProp } from '@react-navigation/stack';
-import Item from '../components/UIComps/Item';
-import StyledButton from '../components/UIComps/StyledButton';
-import BottomNavbar from '../components/UIComps/BottomNavbar';
+import Item from '../components/UIComps/ReusedComps/Item';
+import StyledButton from '../components/UIElements/StyledButton';
+import BottomNavbar from '../components/UIElements/BottomNavbar';
 import { ThemeContext } from "../context/ThemeContext";
 
 import { CurrentUserType } from '../interfaces/interfaces';

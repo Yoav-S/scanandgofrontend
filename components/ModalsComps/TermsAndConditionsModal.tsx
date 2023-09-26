@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, ScrollView, Dimensions } from 'react-native'
 import { useDataContext } from "../../context/DataContext";
 import { Modal, ModalFooter } from 'react-native-modals'
 import { ThemeContext } from "../../context/ThemeContext";
-import StyledButton from "./StyledButton";
+import StyledButton from "../UIElements/StyledButton";
 import { Icon } from 'react-native-elements';
 
 const screen = Dimensions.get('window');

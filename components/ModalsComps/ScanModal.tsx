@@ -16,7 +16,7 @@ import LottieView from 'lottie-react-native';
 import {IteminCartType, Itemprop} from '../../interfaces/interfaces'
 import { Text } from '@rneui/base';
 import { useDataContext } from '../../context/DataContext';
-import StyledButton from './StyledButton';
+import StyledButton from '../UIElements/StyledButton';
 import { ThemeContext } from '../../context/ThemeContext';
 interface Props {
 }

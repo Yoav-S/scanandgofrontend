@@ -1,10 +1,10 @@
 import React, {useContext} from "react";
 import {View, Text, StyleSheet, SafeAreaView} from 'react-native';
 import { ScrollView } from "react-native-gesture-handler";
-import { ThemeContext } from "../../context/ThemeContext";
-import { useDataContext } from "../../context/DataContext";
-import { IteminCartType } from "../../interfaces/interfaces";
-import CarusellItem from "./CarusellItem";
+import { ThemeContext } from "../../../context/ThemeContext";
+import { useDataContext } from "../../../context/DataContext";
+import { IteminCartType } from "../../../interfaces/interfaces";
+import CarusellItem from "../ReusedComps/CarusellItem";
 const CartCarusell: React.FC = () => {
     const { currentUser } = useDataContext();
     const { theme } = useContext(ThemeContext);

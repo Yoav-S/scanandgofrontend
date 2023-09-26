@@ -1,7 +1,7 @@
 import react, {useState, useContext, useEffect} from 'react';
 import {Text, View, StyleSheet, SafeAreaView, KeyboardAvoidingView, Keyboard, Platform } from 'react-native'
-import BottomNavbar from '../components/UIComps/BottomNavbar';
-import TitleAndArrowBack from '../components/UIComps/TitleAndArrowBack';
+import BottomNavbar from '../components/UIElements/BottomNavbar';
+import TitleAndArrowBack from '../components/UIElements/TitleAndArrowBack';
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Formik } from 'formik';
@@ -9,11 +9,11 @@ import * as Yup from 'yup';
 import { Icon } from 'react-native-elements';
 
 import DatePicker from 'react-native-date-picker';
-import TitleAndBtnCon from '../components/UIComps/TitleAndBtnCon';
-import AllCheckBoxCategories from '../components/UIComps/AllCheckboxCategories';
-import FormInput from '../components/UIComps/FormInput';
+import TitleAndBtnCon from '../components/UIElements/TitleAndBtnCon';
+import AllCheckBoxCategories from '../components/UIElements/AllCheckboxCategories';
+import FormInput from '../components/UIElements/FormInput';
 import { emailSchema, fullnameSchema, genderSchema, birthDateSchema } from '../messages/Statements';
-import StyledButton from '../components/UIComps/StyledButton';
+import StyledButton from '../components/UIElements/StyledButton';
 import { ThemeContext } from '../context/ThemeContext';
 import Toast from "react-native-toast-message";
 import { useDataContext } from '../context/DataContext';

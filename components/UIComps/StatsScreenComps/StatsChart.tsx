@@ -2,14 +2,14 @@
 import React, { useEffect, useState , useContext} from 'react';
 import { Dimensions, View, StyleSheet } from 'react-native';
 import { ButtonGroup } from '@rneui/themed';
-import { ThemeContext } from '../../context/ThemeContext';
-import { IStats} from '../../interfaces/interfaces';
+import { ThemeContext } from '../../../context/ThemeContext';
+import { IStats} from '../../../interfaces/interfaces';
 import Toast from 'react-native-toast-message';
 import {
   LineChart,
 } from 'react-native-chart-kit';
 import axios from 'axios';
-import { useDataContext } from '../../context/DataContext';
+import { useDataContext } from '../../../context/DataContext';
 interface Props {
     userId: string,
     handleShowToast: () => void;

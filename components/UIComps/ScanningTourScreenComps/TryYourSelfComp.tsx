@@ -3,12 +3,12 @@ import React, {useContext} from 'react';
 import {View, Text, StyleSheet, Dimensions} from 'react-native';
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { StackNavigationProp } from '@react-navigation/stack';
-import { ThemeContext } from '../../context/ThemeContext';
-import arrowPointer from '../../assets/arrowPointer.json';
+import { ThemeContext } from '../../../context/ThemeContext';
+import arrowPointer from '../../../assets/arrowPointer.json';
 
 import LottieView from 'lottie-react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import StyledButton from './StyledButton';
+import StyledButton from '../../UIElements/StyledButton';
 const { width, height } = Dimensions.get('window');
 
 const TryYourSelfComp: React.FC = () => {

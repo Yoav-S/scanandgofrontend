@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import React, {useContext} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import { ThemeContext } from '../../context/ThemeContext';
+import { ThemeContext } from '../../../../context/ThemeContext';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation, useRoute, RouteProp  } from "@react-navigation/native";

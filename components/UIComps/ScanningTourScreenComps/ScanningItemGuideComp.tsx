@@ -1,9 +1,9 @@
 /* eslint-disable prettier/prettier */
 import React, {useContext} from 'react';
 import {View, Text, StyleSheet, Image} from 'react-native';
-import { ThemeContext } from '../../context/ThemeContext';
+import { ThemeContext } from '../../../context/ThemeContext';
 import LottieView from "lottie-react-native";
-import scanproductanimation from '../../assets/scanproductanimation.json';
+import scanproductanimation from '../../../assets/scanproductanimation.json';
 
 const ScanningItemGuideComp: React.FC = () => {
     const { theme } = useContext(ThemeContext);
@@ -39,7 +39,7 @@ const ScanningItemGuideComp: React.FC = () => {
         </View>
         <View style={styles.holdyourPhoneCon}>
             <View style={styles.amimationCon}>
-                <Image style={styles.image} source={require('../../images/itemfoundimage.jpg')}/>
+                <Image style={styles.image} source={require('../../../images/itemfoundimage.jpg')}/>
             </View>
             <View style={styles.animationContentCon}>
                     <Text style={[styles.contentText, {color: text.primary}]}>When the item previewed at the modal, you can select if to add it to your cart, or to cancel by swipe the modal</Text>
@@ -47,7 +47,7 @@ const ScanningItemGuideComp: React.FC = () => {
         </View>
         <View style={[styles.holdyourPhoneCon, {marginTop: '15%'}]}>
             <View style={styles.amimationCon}>
-            <Image style={styles.image} source={require('../../images/itemnotfoundimage.jpg')}/>
+            <Image style={styles.image} source={require('../../../images/itemnotfoundimage.jpg')}/>
             </View>
             <View style={styles.animationContentCon}>
                     <Text style={[styles.contentText, {color: text.primary}]}>In case that item not found, please speak to store manager / Checkout Seller.</Text>

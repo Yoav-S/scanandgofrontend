@@ -1,10 +1,10 @@
 import React, {useState, useContext} from "react";
 import {Text, View, StyleSheet, SafeAreaView} from 'react-native'
-import { CouponCompProps} from '../../interfaces/interfaces'
-import { ThemeContext } from "../../context/ThemeContext";
+import { CouponCompProps} from '../../../interfaces/interfaces'
+import { ThemeContext } from "../../../context/ThemeContext";
 import { Icon } from 'react-native-elements';
-import FormInput from "./FormInput";
-import StyledButton from "./StyledButton";
+import FormInput from "../../UIElements/FormInput";
+import StyledButton from "../../UIElements/StyledButton";
 
 const CouponComp: React.FC<CouponCompProps> = ({isCouponValid,startValue, isAttempted, handleCouponCheck, isLoading, changeInputHandler, btnLabelText}) => {
     const { theme } = useContext(ThemeContext);

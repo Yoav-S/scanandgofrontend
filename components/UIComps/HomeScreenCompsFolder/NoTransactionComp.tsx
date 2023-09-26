@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { View, Text, StyleSheet, Animated, Dimensions , ScrollView} from 'react-native';
-import { ThemeContext } from '../../context/ThemeContext';
-import { useDataContext } from '../../context/DataContext';
+import { ThemeContext } from '../../../context/ThemeContext';
+import { useDataContext } from '../../../context/DataContext';
 import LottieView from "lottie-react-native";
-import welcomeGirlAnimation from '../../assets/welcomegirlanimation.json';
+import welcomeGirlAnimation from '../../../assets/welcomegirlanimation.json';
 import Svg, { Circle } from 'react-native-svg'; // Import SVG components
-import LetsStartScanComp from './LetsStartScanComp';
-import HelpAndSupportComp from './HelpAndSupportComp';
+import LetsStartScanComp from './NoTransactionCompsFolder/LetsStartScanComp';
+import HelpAndSupportComp from './NoTransactionCompsFolder/HelpAndSupportComp';
 
 const { width, height } = Dimensions.get('window');
 

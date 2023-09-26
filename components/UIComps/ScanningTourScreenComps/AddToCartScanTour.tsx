@@ -1,9 +1,9 @@
 /* eslint-disable prettier/prettier */
 import React, {useContext} from 'react';
 import {View, Text, StyleSheet, Image, Dimensions} from 'react-native';
-import { ThemeContext } from '../../context/ThemeContext';
+import { ThemeContext } from '../../../context/ThemeContext';
 import LottieView from 'lottie-react-native';
-import logoutLottieAnimation from '../../assets/addtocartanimationscantour.json';
+import logoutLottieAnimation from '../../../assets/addtocartanimationscantour.json';
 const { width, height } = Dimensions.get('window');
 
 const AddToCartScanTour: React.FC = () => {
@@ -29,7 +29,7 @@ const AddToCartScanTour: React.FC = () => {
       <View style={styles.imagesCon}>
         <View style={[styles.imageTextCon, styles.topCon, {marginTop: '5%'}]}>
           <View style={styles.imageCon}>
-          <Image style={styles.image} source={require('../../images/itemaddedtocart.jpg')}/>
+          <Image style={styles.image} source={require('../../../images/itemaddedtocart.jpg')}/>
 
           </View>
           <Text style={{color: text.primary, width: width * 0.5, lineHeight: 20}}>
@@ -39,7 +39,7 @@ const AddToCartScanTour: React.FC = () => {
         </View>
         <View style={[styles.imageTextCon, styles.topCon, {marginTop: '5%'}]}>
           <View style={styles.imageCon}>
-          <Image style={styles.image} source={require('../../images/itemnotadded.jpg')}/>
+          <Image style={styles.image} source={require('../../../images/itemnotadded.jpg')}/>
 
           </View>
           <Text style={{color: text.primary, width: width * 0.5, lineHeight: 20}}>

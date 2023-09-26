@@ -1,17 +1,17 @@
 import React, { useContext, useState } from 'react';
 import { View, Text, StyleSheet, Dimensions, ScrollView } from 'react-native';
-import { ThemeContext } from '../../context/ThemeContext';
+import { ThemeContext } from '../context/ThemeContext';
 import Swiper from 'react-native-swiper';
 import LottieView from "lottie-react-native";
-import welcomeGirlAnimation from '../../assets/scansnimation.json';
-import TitleAndArrowBack from './TitleAndArrowBack';
+import welcomeGirlAnimation from '../assets/scansnimation.json';
+import TitleAndArrowBack from '../components/UIElements/TitleAndArrowBack';
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { StackNavigationProp } from '@react-navigation/stack';
-import BottomNavbar from './BottomNavbar';
-import ScannerOpenerSubComp from './ScannerOpenerSubComp';
-import ScanningItemGuideComp from './ScanningItemGuideComp';
-import AddToCart from './AddToCartScanTour';
-import TryYourSelfComp from './TryYourSelfComp'
+import BottomNavbar from '../components/UIElements/BottomNavbar';
+import ScannerOpenerSubComp from '../components/UIComps/ScanningTourScreenComps/ScannerOpenerSubComp';
+import ScanningItemGuideComp from '../components/UIComps/ScanningTourScreenComps/ScanningItemGuideComp';
+import AddToCartScanTour from '../components/UIComps/ScanningTourScreenComps/AddToCartScanTour';
+import TryYourSelfComp from '../components/UIComps/ScanningTourScreenComps/TryYourSelfComp'
 const { width, height } = Dimensions.get('window');
 
 const ScanningTourComp: React.FC = () => {
@@ -50,7 +50,7 @@ const ScanningTourComp: React.FC = () => {
                 </View>
                 <View style={[styles.slide, { backgroundColor: background }]}>
                     <ScrollView style={{ flex: 1, width: '90%' }}>
-                        <AddToCart/>
+                        <AddToCartScanTour/>
                     </ScrollView>
                 </View>
                 <View style={[styles.tryyourselfslide ,{ backgroundColor: background }]}>

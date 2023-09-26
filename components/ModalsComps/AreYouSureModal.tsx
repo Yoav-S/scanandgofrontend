@@ -8,7 +8,7 @@ import activityIndicatorAnimation from '../../assets/activitiindicator.json'
 import cancelDeleteAnimation from '../../assets/cancelDeleteAnimation.json'
 import deleteSuccessAnimation from '../../assets/deletesuccessanimation.json'
 import deleteFailureAnimation from '../../assets/deletefailureanimation.json'
-import StyledButton from "./StyledButton";
+import StyledButton from "../UIElements/StyledButton";
 const AreYouSureModal: React.FC = () => {
   const { theme, buttonTheme } = useContext(ThemeContext);
   const { primary, secondary, text, background } = theme.colors 

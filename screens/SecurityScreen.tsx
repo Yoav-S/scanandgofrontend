@@ -1,14 +1,14 @@
 import react, {useState, useContext, useEffect} from 'react';
 import {Text, View, StyleSheet, SafeAreaView, KeyboardAvoidingView, Keyboard,Platform } from 'react-native'
-import BottomNavbar from '../components/UIComps/BottomNavbar';
-import TitleAndArrowBack from '../components/UIComps/TitleAndArrowBack';
+import BottomNavbar from '../components/UIElements/BottomNavbar';
+import TitleAndArrowBack from '../components/UIElements/TitleAndArrowBack';
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { passwordSchema } from '../messages/Statements';
-import StyledButton from '../components/UIComps/StyledButton';
-import FormInput from '../components/UIComps/FormInput';
+import StyledButton from '../components/UIElements/StyledButton';
+import FormInput from '../components/UIElements/FormInput';
 import Toast from "react-native-toast-message";
 import { ThemeContext } from '../context/ThemeContext';
 import { useDataContext } from '../context/DataContext';

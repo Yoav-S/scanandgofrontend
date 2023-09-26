@@ -1,13 +1,13 @@
 /* eslint-disable prettier/prettier */
 import React,{ useContext} from 'react';
 import { View, StyleSheet, ScrollView, Image } from 'react-native';
-import { ITransaction, IteminCartType } from '../../interfaces/interfaces';
+import { ITransaction, IteminCartType } from '../../../interfaces/interfaces';
 import { Icon, Text, ListItem } from '@rneui/themed';
 import { Avatar } from '@rneui/base';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation, useRoute, RouteProp  } from "@react-navigation/native";
-import { ThemeContext } from '../../context/ThemeContext';
-import TitleAndArrowBack from './TitleAndArrowBack';
+import { ThemeContext } from '../../../context/ThemeContext';
+import TitleAndArrowBack from '../../UIElements/TitleAndArrowBack';
 
 type NavigatorParamList = {
   TransactionScreen: { transaction: ITransaction }; // Define the parameter type here

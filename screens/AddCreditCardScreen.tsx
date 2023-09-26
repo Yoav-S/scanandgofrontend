@@ -1,17 +1,17 @@
 import React, {useState , useContext, useEffect, useRef } from "react";
 import {View, Text, StyleSheet, SafeAreaView, KeyboardAvoidingView, TextInput, Platform, Keyboard} from 'react-native'
-import TitleAndArrowBack from "../components/UIComps/TitleAndArrowBack";
-import BottomNavbar from "../components/UIComps/BottomNavbar";
+import TitleAndArrowBack from "../components/UIElements/TitleAndArrowBack";
+import BottomNavbar from "../components/UIElements/BottomNavbar";
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import CreditCard from 'react-native-credit-card';
-import StyledButton from "../components/UIComps/StyledButton";
+import StyledButton from "../components/UIElements/StyledButton";
 import { cardNumberSchema, cardholderSchema, cvvSchema, expirationDateSchema, isDefaultSchema, cardTypeSchema,  } from "../messages/Statements";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { StackNavigationProp } from '@react-navigation/stack';
 import { CheckBox } from "react-native-elements";
 import DropDownPicker from 'react-native-dropdown-picker';
-import FormInput from "../components/UIComps/FormInput";
+import FormInput from "../components/UIElements/FormInput";
 import { useDataContext } from "../context/DataContext";
 import { creditCardFormType } from "../interfaces/interfaces";
 import { ScrollView } from "react-native-gesture-handler";

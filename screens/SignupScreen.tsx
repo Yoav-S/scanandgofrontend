@@ -7,12 +7,12 @@ import * as Yup from 'yup';
 import axios from 'axios';
 import { useToken } from '../context/TokenContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import BigTitle from '../components/UIComps/BigTitle';
-import FormInput from '../components/UIComps/FormInput';
-import AllCheckBoxCategories from '../components/UIComps/AllCheckboxCategories';
-import StyledButton from '../components/UIComps/StyledButton';
+import BigTitle from '../components/UIElements/BigTitle';
+import FormInput from '../components/UIElements/FormInput';
+import AllCheckBoxCategories from '../components/UIElements/AllCheckboxCategories';
+import StyledButton from '../components/UIElements/StyledButton';
 import DatePicker from 'react-native-date-picker';
-import TitleAndBtnCon from '../components/UIComps/TitleAndBtnCon';
+import TitleAndBtnCon from '../components/UIElements/TitleAndBtnCon';
 import messaging from '@react-native-firebase/messaging'; // Import Firebase messaging
 import { emailSchema, fullnameSchema, passwordSchema, genderSchema, birthDateSchema, termsSchema } from '../messages/Statements';
 import { Registergion_Form_Props } from '../interfaces/interfaces';

@@ -1,20 +1,20 @@
 /* eslint-disable prettier/prettier */
 import React, {useContext} from 'react';
 import {View, Text, Dimensions} from 'react-native';
-import activityIndicatorAnimation from '../../assets/activitiindicator.json'
+import activityIndicatorAnimation from '../../../assets/activitiindicator.json'
 import LottieView from 'lottie-react-native';
 import { Formik } from 'formik'
 import * as Yup from 'yup';
-import { emailSchema } from '../../messages/Statements';
-import { EmailVerifyCompProps } from '../../interfaces/interfaces';
-import StyledButton from './StyledButton';
-import { ThemeContext } from '../../context/ThemeContext';
-import FormInput from './FormInput';
-import TitleAndArrowBack from './TitleAndArrowBack';
+import { emailSchema } from '../../../messages/Statements';
+import { EmailVerifyCompProps } from '../../../interfaces/interfaces';
+import StyledButton from '../../UIElements/StyledButton';
+import { ThemeContext } from '../../../context/ThemeContext';
+import FormInput from '../../UIElements/FormInput';
+import TitleAndArrowBack from '../../UIElements/TitleAndArrowBack';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import verifyemailanimation from '../../assets/emailverifyanimation.json'
-import BigTitle from './BigTitle';
+import verifyemailanimation from '../../../assets/emailverifyanimation.json'
+import BigTitle from '../../UIElements/BigTitle';
 const screen = Dimensions.get('window');
 
 const validationSchema = Yup.object().shape({

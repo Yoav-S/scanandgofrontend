@@ -7,8 +7,8 @@ import {
     Text,
     View,
   } from 'react-native';
-import {ImageCarouselProps} from '../../interfaces/interfaces';
-import { ThemeContext } from '../../context/ThemeContext';
+import {ImageCarouselProps} from '../../../interfaces/interfaces';
+import { ThemeContext } from '../../../context/ThemeContext';
 const {width} = Dimensions.get('window');
   
   const SPACING = 5;

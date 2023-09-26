@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import { Text, View, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
 import { ThemeContext } from '../context/ThemeContext';
-import TitleAndArrowBack from '../components/UIComps/TitleAndArrowBack';
-import BottomNavbar from '../components/UIComps/BottomNavbar';
+import TitleAndArrowBack from '../components/UIElements/TitleAndArrowBack';
+import BottomNavbar from '../components/UIElements/BottomNavbar';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation, useRoute } from "@react-navigation/native";
 

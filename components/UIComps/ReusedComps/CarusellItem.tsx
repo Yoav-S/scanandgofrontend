@@ -1,7 +1,7 @@
 import React, {useContext} from "react";
 import {View, SafeAreaView, Text, StyleSheet, Image} from 'react-native'
-import {ItemCompInterface} from '../../interfaces/interfaces'
-import { ThemeContext } from "../../context/ThemeContext";
+import {ItemCompInterface} from '../../../interfaces/interfaces'
+import { ThemeContext } from "../../../context/ThemeContext";
 
 const CarusellItem: React.FC<ItemCompInterface> = (props) => {
     const { theme } = useContext(ThemeContext);

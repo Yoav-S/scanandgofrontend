@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from "react";
 import { View, Switch, StyleSheet } from "react-native";
 import { DayNightSwitcherProps } from "../../interfaces/interfaces";
 import { ThemeContext } from "../../context/ThemeContext";
-import { NightTheme } from "../../themes/themes"; // Make sure to provide the correct relative path
 
 const DayNightSwitcher: React.FC<DayNightSwitcherProps> = () => {
   const { theme } = useContext(ThemeContext);

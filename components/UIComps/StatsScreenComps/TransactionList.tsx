@@ -1,15 +1,15 @@
 /* eslint-disable prettier/prettier */
 import React, { useEffect, useState, useContext } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import { CurrentUserType, ITransaction, PaginationResponse, recentTransaction} from '../../interfaces/interfaces'
+import { CurrentUserType, ITransaction, PaginationResponse, recentTransaction} from '../../../interfaces/interfaces'
 import { Button, ListItem, Icon } from '@rneui/themed';
 import { ScrollView } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import axios from 'axios';
-import activitiIndicator from '../../assets/activitiindicator.json'
-import { useDataContext } from '../../context/DataContext';
+import activitiIndicator from '../../../assets/activitiindicator.json'
+import { useDataContext } from '../../../context/DataContext';
 import { useNavigation, useRoute, RouteProp  } from "@react-navigation/native";
-import { ThemeContext } from '../../context/ThemeContext';
+import { ThemeContext } from '../../../context/ThemeContext';
 import Toast from 'react-native-toast-message';
 import LottieView from 'lottie-react-native';
 type NavigatorParamList = {

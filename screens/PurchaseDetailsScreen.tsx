@@ -3,11 +3,11 @@ import {View, Text, StyleSheet, SafeAreaView, BackHandler} from 'react-native';
 import KorenAnimation from '../assets/koren.json'
 import YoavAnimation from '../assets/yoav.json'
 import LottieView from "lottie-react-native";
-import BottomNavbar from "../components/UIComps/BottomNavbar";
+import BottomNavbar from "../components/UIElements/BottomNavbar";
 import { IteminCartType } from "../interfaces/interfaces";
 import { ScrollView } from "react-native-gesture-handler";
-import ItemHorizontal from "../components/UIComps/ItemHorizontal";
-import StyledButton from "../components/UIComps/StyledButton";
+import ItemHorizontal from "../components/UIComps/PurchaseDetailsScreenComps/ItemHorizontal";
+import StyledButton from "../components/UIElements/StyledButton";
 import { ThemeContext } from "../context/ThemeContext";
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation, useRoute, RouteProp  } from "@react-navigation/native";

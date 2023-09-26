@@ -1,11 +1,11 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, Dimensions, Animated } from 'react-native';
-import { ThemeContext } from '../../context/ThemeContext';
+import { ThemeContext } from '../../../context/ThemeContext';
 import LottieView from "lottie-react-native";
-import logoutLottieAnimation from '../../assets/mousepointer.json';
+import logoutLottieAnimation from '../../../assets/mousepointer.json';
 
 const { width, height } = Dimensions.get('window');
-const image = require('../../images/holdyourphoneimage.jpg');
+const image = require('../../../images/holdyourphoneimage.jpg');
 
 const ScannerOpenerSubComp: React.FC = () => {
   const { theme } = useContext(ThemeContext);
@@ -48,7 +48,7 @@ const ScannerOpenerSubComp: React.FC = () => {
       </View>
       <View style={styles.contentCon}>
         <View style={styles.NavigatorImageCon}>
-          <Image source={require('../../images/navbardark.jpg')} style={styles.navigatorimage} />
+          <Image source={require('../../../images/navbardark.jpg')} style={styles.navigatorimage} />
         </View>
         <View style={{ position: 'absolute', bottom: height * 0.05, alignSelf: 'center' }}>
           {clickAnimation}

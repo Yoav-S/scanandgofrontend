@@ -1,12 +1,12 @@
 import react, {useState, useEffect, useContext} from 'react'
 import {View, Text, TouchableOpacity, StyleSheet, ScrollView, Dimensions} from 'react-native'
 import { ForgotPasswordProps, UserEmailVerificationDetails } from '../interfaces/interfaces'
-import BigTitle from '../components/UIComps/BigTitle'
-import FormInput from '../components/UIComps/FormInput'
+import BigTitle from '../components/UIElements/BigTitle'
+import FormInput from '../components/UIElements/FormInput'
 import { Formik } from 'formik'
 import * as Yup from 'yup';
 import { emailSchema, passwordSchema } from '../messages/Statements'
-import StyledButton from '../components/UIComps/StyledButton'
+import StyledButton from '../components/UIElements/StyledButton'
 import OtpInputs from 'react-native-otp-inputs'
 import { useDataContext } from '../context/DataContext'
 import { ActivityIndicator } from '@react-native-material/core'
@@ -16,12 +16,12 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { ThemeContext } from '../context/ThemeContext'
-import TitleAndBtnCon from '../components/UIComps/TitleAndBtnCon'
+import TitleAndBtnCon from '../components/UIElements/TitleAndBtnCon'
 import Toast from 'react-native-toast-message'
-import EmailVerifyComp from '../components/UIComps/EmailVerifyComp'
-import OtpComp from '../components/UIComps/OtpComp'
-import ResetPasswordComp from '../components/UIComps/ResetPasswordComp'
-import TitleAndArrowBack from '../components/UIComps/TitleAndArrowBack'
+import EmailVerifyComp from '../components/UIComps/ForgotPasswordComps/EmailVerifyComp'
+import OtpComp from '../components/UIComps/ForgotPasswordComps/OtpComp'
+import ResetPasswordComp from '../components/UIComps/ForgotPasswordComps/ResetPasswordComp'
+import TitleAndArrowBack from '../components/UIElements/TitleAndArrowBack'
 
 
 

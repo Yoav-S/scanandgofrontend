@@ -4,15 +4,15 @@ import { useDataContext } from '../../context/DataContext';
 import { AuthenticatedStackScreen } from '../../navigation/AuthenticatedStack';
 import { NotAuthenticatedStackScreen } from '../../navigation/NotAuthenticatedStack';
 import jwt_decode from 'jwt-decode';
-import ScanModal from '../UIComps/ScanModal';
-import MessageModal from '../UIComps/MessageModal';
+import ScanModal from '../ModalsComps/ScanModal';
+import MessageModal from '../ModalsComps/MessageModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Token } from '../../interfaces/interfaces';
-import LogoutModal from '../UIComps/LogoutModal';
-import AreYouSureModal from '../UIComps/AreYouSureModal';
+import LogoutModal from '../ModalsComps/LogoutModal';
+import AreYouSureModal from '../ModalsComps/AreYouSureModal';
 import SplashScreen from '../../screens/SplashScreen';
 import { ThemeContext } from '../../context/ThemeContext';
-import TermsAndConditionsModal from '../UIComps/TermsAndConditionsModal';
+import TermsAndConditionsModal from '../ModalsComps/TermsAndConditionsModal';
 const Main: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true); // Add isLoading state
   const {setTheme, lightTheme, darkTheme, buttonTheme} = useContext(ThemeContext);

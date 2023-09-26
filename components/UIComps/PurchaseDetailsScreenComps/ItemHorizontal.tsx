@@ -1,8 +1,8 @@
 import React, {useContext} from "react";
 import {View, Text, StyleSheet, SafeAreaView, Image} from 'react-native'
-import { ItemHorizontalType } from "../../interfaces/interfaces";
-import { ThemeContext } from "../../context/ThemeContext";
-import StyledButton from "./StyledButton";
+import { ItemHorizontalType } from "../../../interfaces/interfaces";
+import { ThemeContext } from "../../../context/ThemeContext";
+import StyledButton from "../../UIElements/StyledButton";
 const ItemHorizontal: React.FC<ItemHorizontalType> = ({cartItem, totalAmount}) => {
     const { theme } = useContext(ThemeContext);
     const { primary, secondary, text, background } = theme.colors     

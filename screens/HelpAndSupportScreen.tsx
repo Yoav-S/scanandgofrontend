@@ -1,11 +1,11 @@
 import React, { useState, useContext } from 'react';
 import { View, StyleSheet, ScrollView, LayoutAnimation  } from 'react-native'
 import { Icon, Text, ListItem } from '@rneui/themed';
-import TitleAndArrowBack from '../components/UIComps/TitleAndArrowBack';
+import TitleAndArrowBack from '../components/UIElements/TitleAndArrowBack';
 import { ThemeContext } from '../context/ThemeContext';
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from '@react-navigation/stack';
-import BottomNavbar from '../components/UIComps/BottomNavbar';
+import BottomNavbar from '../components/UIElements/BottomNavbar';
 const HelpAndSupportScreen: React.FC = () => {
   const { theme, buttonTheme } = useContext(ThemeContext);
   const { primary, secondary, text, background } = theme.colors 

@@ -3,18 +3,18 @@ import React, {useContext} from 'react';
 import {View, Text, Dimensions} from 'react-native';
 import { Formik } from 'formik'
 import * as Yup from 'yup';
-import {ResetPasswordCompProps} from '../../interfaces/interfaces'
-import { ThemeContext } from '../../context/ThemeContext';
-import FormInput from './FormInput';
-import StyledButton from './StyledButton';
-import { passwordSchema } from '../../messages/Statements';
+import {ResetPasswordCompProps} from '../../../interfaces/interfaces'
+import { ThemeContext } from '../../../context/ThemeContext';
+import FormInput from '../../UIElements/FormInput';
+import StyledButton from '../../UIElements/StyledButton';
+import { passwordSchema } from '../../../messages/Statements';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import TitleAndArrowBack from './TitleAndArrowBack';
+import TitleAndArrowBack from '../../UIElements/TitleAndArrowBack';
 import LottieView from 'lottie-react-native';
-import activityIndicator from '../../assets/activitiindicator.json'
-import resetpasswordanimation from '../../assets/resetpasswordanimation.json'
-import BigTitle from './BigTitle';
+import activityIndicator from '../../../assets/activitiindicator.json'
+import resetpasswordanimation from '../../../assets/resetpasswordanimation.json'
+import BigTitle from '../../UIElements/BigTitle';
 
 const screen = Dimensions.get('window');
 const passwordValidationSchema = Yup.object().shape({

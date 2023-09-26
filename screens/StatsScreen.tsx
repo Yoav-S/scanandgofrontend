@@ -1,20 +1,20 @@
 import React,  { useEffect, useState , useContext}  from "react";
 import { TextInput, StyleSheet, SafeAreaView , Text, Dimensions, View} from "react-native";
 import { CurrentUserType, IStats, Role } from "../interfaces/interfaces";
-import BottomNavbar from "../components/UIComps/BottomNavbar";
-import TransactionsList from "../components/UIComps/TransactionList";
-import StatsChart from "../components/UIComps/StatsChart";
+import BottomNavbar from "../components/UIElements/BottomNavbar";
+import TransactionsList from "../components/UIComps/StatsScreenComps/TransactionList";
+import StatsChart from "../components/UIComps/StatsScreenComps/StatsChart";
 import { useDataContext } from "../context/DataContext";
 import { ThemeContext } from "../context/ThemeContext";
-import TitleAndArrowBack from "../components/UIComps/TitleAndArrowBack";
+import TitleAndArrowBack from "../components/UIElements/TitleAndArrowBack";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { StackNavigationProp } from '@react-navigation/stack';
-import NoTransactionStats from "../components/UIComps/NoTransactionStats";
+import NoTransactionStats from "../components/UIComps/StatsScreenComps/NoTransactionStats";
 const StatsScreen: React.FC = () => {
     const { theme } = useContext(ThemeContext);
     const { primary, secondary, text, background } = theme.colors 
 const {currentUser, showToast} = useDataContext();
-const navigation = useNavigation<StackNavigationProp<any, 'EditProfile'>>();
+const navigation = useNavigation<StackNavigationProp<any, 'StatsScreen'>>();
 
 const user : CurrentUserType = {
     '_id': '64e4624cac9453ef60727a0c',

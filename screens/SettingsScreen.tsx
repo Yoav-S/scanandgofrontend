@@ -1,13 +1,13 @@
 import React, {useContext} from "react";
 import { TextInput, StyleSheet, SafeAreaView , Text, View} from "react-native";
 import { SettingsScreenType } from "../interfaces/interfaces";
-import BottomNavbar from "../components/UIComps/BottomNavbar";
+import BottomNavbar from "../components/UIElements/BottomNavbar";
 import { Button } from 'react-native-elements';
 import { Icon } from 'react-native-elements';
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from '@react-navigation/stack';
 import { ThemeContext } from "../context/ThemeContext";
-import BigTitle from "../components/UIComps/BigTitle";
+import BigTitle from "../components/UIElements/BigTitle";
 import { useDataContext } from "../context/DataContext";
 const SettingsScreen: React.FC<SettingsScreenType> = (props) => {
   const { theme, buttonTheme } = useContext(ThemeContext);

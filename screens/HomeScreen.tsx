@@ -1,13 +1,13 @@
 import React, {useContext} from "react";
 import { View, StyleSheet, Text, SafeAreaView, Image, Dimensions , ScrollView} from "react-native";
 import { HomeScreenType, recentItemType , recentTransaction} from "../interfaces/interfaces";
-import BottomNavbar from "../components/UIComps/BottomNavbar";
+import BottomNavbar from "../components/UIElements/BottomNavbar";
 import { useDataContext } from "../context/DataContext";
-import TransactionItem from "../components/UIComps/TransactionItem";
+import TransactionItem from "../components/UIComps/ReusedComps/TransactionItem";
 import { ThemeContext } from "../context/ThemeContext";
-import ImageCarousel from "../components/UIComps/ImageCarousel";
+import ImageCarousel from "../components/UIComps/HomeScreenCompsFolder/ImageCarousel";
 import Toast from "react-native-toast-message";
-import NoTransactionComp from "../components/UIComps/NoTransactionComp";
+import NoTransactionComp from "../components/UIComps/HomeScreenCompsFolder/NoTransactionComp";
 import { Container } from 'native-base';
 import { Button, Text as Title } from 'native-base';
 const HomeScreen: React.FC<HomeScreenType> = (props) => {

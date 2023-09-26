@@ -1,18 +1,18 @@
 import react, {useState, useEffect , useContext} from 'react';
 import {Text, View, StyleSheet, SafeAreaView, KeyboardAvoidingView, Keyboard, Platform} from 'react-native';
-import TitleAndArrowBack from '../components/UIComps/TitleAndArrowBack';
+import TitleAndArrowBack from '../components/UIElements/TitleAndArrowBack';
 import { useDataContext } from '../context/DataContext';
-import StyledButton from '../components/UIComps/StyledButton';
+import StyledButton from '../components/UIElements/StyledButton';
 import { ScrollView } from 'react-native-gesture-handler';
 import { creditCardType, IteminCartType, TransactionFormType, productInTransaction , IText} from '../interfaces/interfaces';
 import { useNavigation, useRoute, RouteProp  } from "@react-navigation/native";
 import Toast from 'react-native-toast-message';
 import { StackNavigationProp } from '@react-navigation/stack';
-import CreditCardAbstractComp from '../components/UIComps/CreditCardAbstractComp';
-import BottomNavbar from '../components/UIComps/BottomNavbar';
-import CartCarusell from '../components/UIComps/CartCaruselle';
+import CreditCardAbstractComp from '../components/UIComps/CheckoutScreenComps/CreditCardAbstractComp';
+import BottomNavbar from '../components/UIElements/BottomNavbar';
+import CartCarusell from '../components/UIComps/CheckoutScreenComps/CartCaruselle';
 import { ThemeContext } from "../context/ThemeContext";
-import CouponComp from '../components/UIComps/CouponComp';
+import CouponComp from '../components/UIComps/CheckoutScreenComps/CouponComp';
 import { ActivityIndicator } from '@react-native-material/core';
 type NavigatorParamList = {
     CheckoutScreen: { totalAmount: number, cart: IteminCartType[] }; // Define the parameter type here

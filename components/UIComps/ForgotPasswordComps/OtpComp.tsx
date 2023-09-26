@@ -1,16 +1,16 @@
 /* eslint-disable prettier/prettier */
 import React, {useContext} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, Dimensions} from 'react-native';
-import {OtpCompProps} from '../../interfaces/interfaces'
-import { ThemeContext } from '../../context/ThemeContext';
+import {OtpCompProps} from '../../../interfaces/interfaces'
+import { ThemeContext } from '../../../context/ThemeContext';
 import OTPInputView from '@twotalltotems/react-native-otp-input';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import TitleAndArrowBack from './TitleAndArrowBack';
+import TitleAndArrowBack from '../../UIElements/TitleAndArrowBack';
 import LottieView from 'lottie-react-native';
-import otpanimation from '../../assets/otpanimation.json'
-import activityIndicator from '../../assets/activitiindicator.json'
-import BigTitle from './BigTitle';
+import otpanimation from '../../../assets/otpanimation.json'
+import activityIndicator from '../../../assets/activitiindicator.json'
+import BigTitle from '../../UIElements/BigTitle';
 
 const screen = Dimensions.get('window');
 const OtpComp: React.FC<OtpCompProps> = ({verifyOtpCode, isOneMinuteBind, emailSended, resendEmail, formatTime, remainingTime, isLoadingResendEmail}) => {

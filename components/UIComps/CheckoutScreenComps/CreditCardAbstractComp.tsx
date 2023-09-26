@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, StyleSheet, ScrollView, SafeAreaView, Image } from 'react-native';
-import { CreditCardAbstractCompType } from '../../interfaces/interfaces';
-import { ThemeContext } from '../../context/ThemeContext';
+import { CreditCardAbstractCompType } from '../../../interfaces/interfaces';
+import { ThemeContext } from '../../../context/ThemeContext';
 import { CheckBox } from 'react-native-elements';
 import { Button, ListItem, Icon } from '@rneui/themed';
 

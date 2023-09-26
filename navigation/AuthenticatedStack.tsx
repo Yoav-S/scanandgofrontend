@@ -13,9 +13,9 @@ import AddCreditCardScreen from '../screens/AddCreditCardScreen';
 import Checkout from '../screens/Checkout';
 import TransactionScreen from '../screens/TransactionScreen';
 import PurchaseDetailsScreen from '../screens/PurchaseDetailsScreen';
-import TransactionView from '../components/UIComps/TransactionView';
-import TransactionsList from '../components/UIComps/TransactionList';
-import ScanningTourComp from '../components/UIComps/ScanningTourComp';
+import TransactionView from '../components/UIComps/StatsScreenComps/TransactionView';
+import TransactionsList from '../components/UIComps/StatsScreenComps/TransactionList';
+import ScanningTourComp from '../screens/ScanningTourScreen';
 import { AuthenticatedStackType } from '../interfaces/interfaces';
 const AuthenticatedStack = createStackNavigator();
 export const AuthenticatedStackScreen: React.FC<AuthenticatedStackType> = () => {
