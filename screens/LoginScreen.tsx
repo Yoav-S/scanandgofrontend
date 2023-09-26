@@ -1,5 +1,5 @@
 import React, {useState, useContext} from "react";
-import { View, StyleSheet, Text , ScrollView, Dimensions} from "react-native";
+import { View, StyleSheet, Text , ScrollView, Dimensions, TouchableOpacityBase} from "react-native";
 import { ThemeContext } from "../context/ThemeContext";
 import { CheckBox } from 'react-native-elements'
 import BigTitle from "../components/UIElements/BigTitle";
@@ -17,7 +17,7 @@ import { emailSchema, passwordSchema } from "../messages/Statements";
 import Toast from 'react-native-toast-message';
 import { useDataContext } from "../context/DataContext";
 import activityIndicator from '../assets/activitiindicator.json'
-
+import bugbuttonanimation from '../assets/bugpressanimation.json'
 import LottieView from "lottie-react-native";
 import loginAnimation from '../assets/loginscreenlottie.json'
 const validationSchema = Yup.object().shape({
@@ -41,6 +41,13 @@ const LoginScreen: React.FC = () => {
     autoPlay
     loop={true}
     />)
+    const bugbuttonanimationObject = (<LottieView
+      style={{width: 50, height: 50 , zIndex: 10, margin: '3%'}}
+      speed={1} 
+      source={bugbuttonanimation}
+      autoPlay
+      loop={true}
+      />)
   const loginAnimationObject = (<LottieView
     style={{width: 250, height: 250}}
     speed={1} 
@@ -68,7 +75,13 @@ const LoginScreen: React.FC = () => {
 
   return (
     <View style={[styles.container, { backgroundColor: background }]}>
-            <BigTitle title="Login" />
+      <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+      <BigTitle title="Login" />
+      <TouchableOpacity onPress={() => {navigation.navigate('ProblemReport', {cameFrom: 'Login'})}}>
+      {bugbuttonanimationObject}
+
+      </TouchableOpacity>
+      </View>
       <ScrollView style={{margin: '3%'}} showsVerticalScrollIndicator={false}>
       <View>
 
@@ -118,7 +131,7 @@ const LoginScreen: React.FC = () => {
     <Text style={[{color: text.primary},styles.forgotPasswordText]}>Forgot Password ?</Text>
   </TouchableOpacity>
   </View>
-  <StyledButton disabled={!isValid || dirty && (values.email === '' && values.password === '')} onPress={handleSubmit} text={"Login"} bigbutton/>
+  <StyledButton disabled={!isValid  || (values.email === '' && values.password === '')} onPress={handleSubmit} text={"Login"} bigbutton/>
 
       </>
     )}

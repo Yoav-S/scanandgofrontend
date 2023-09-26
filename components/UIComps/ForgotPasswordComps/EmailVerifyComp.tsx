@@ -44,7 +44,10 @@ const EmailVerifyComp: React.FC<EmailVerifyCompProps> = ({isLoadingForm, handleF
   return (
     <View style={{backgroundColor: background, marginBottom: '5%'}}>
     <BigTitle title='Email Verification'/>
+    <View style={{marginBottom: '5%'}}>
     {verifyemailanimationObject}
+
+    </View>
 
       {isLoadingForm ? (
           activitiIndicatorObject

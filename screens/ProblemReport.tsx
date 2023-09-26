@@ -26,6 +26,7 @@ import BottomNavbar from "../components/UIElements/BottomNavbar";
 import { ScrollView } from "react-native-gesture-handler";
 import LottieView from "lottie-react-native";
 import activityIndicator from '../assets/activitiindicator.json'
+import buganimation from '../assets/bugsearchanimation.json'
 const validationSchema = Yup.object().shape({
     image: imageSchema,
     category: categorySchema,
@@ -62,7 +63,14 @@ const ProblemReport: React.FC<ProblemReportType> = () => {
       autoPlay
       loop={true}
       />)
-
+      
+    const buganimationObject = (<LottieView
+      style={{width: 200, height: 200, alignSelf: 'center', zIndex: 20, position: 'relative'}}
+      speed={1} 
+      source={buganimation}
+      autoPlay
+      loop={true}
+      />)
     useEffect(() => {
         const bringAllDetails = async () => {
             const deviceId: string = DeviceInfo.getDeviceId();
@@ -157,14 +165,16 @@ const ProblemReport: React.FC<ProblemReportType> = () => {
       }
     return (
         <SafeAreaView style={styles.container}>
+                                  <TitleAndArrowBack text="Report A Problem" onPress={() => {navigation.goBack()}}/>
+
                           <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         style={{ flex: 1 }}
       >
-          <View  style={{flex: 1}}>
+          <View style={{height: height * 0.7}}>
           <ScrollView>
+          {buganimationObject}
 
-                        <TitleAndArrowBack text="Report A Problem" onPress={() => {navigation.goBack()}}/>
                         <View style={styles.allbutNavbarCon}>
 
             {
@@ -182,6 +192,8 @@ const ProblemReport: React.FC<ProblemReportType> = () => {
                     </View>
                     <DropDownPicker
                       listMode="SCROLLVIEW"
+                      placeholder="Select Problem Type"
+
                       open={open}
                       value={currentCategoryValue}
                       items={allCategoriesValues}
@@ -269,7 +281,7 @@ const createStyles = (primary: string, secondary: string, text: IText, backgroun
       justifyContent: 'space-between'
   },
   allbutNavbarCon: {
-    margin: '4%'
+    margin: '4%',
   },
   descriptionContainer: {
       marginTop: 20,
