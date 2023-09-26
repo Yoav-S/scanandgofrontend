@@ -306,7 +306,6 @@ export interface FormInputType{
     ref?: React.RefObject<TextInput>;
 }
 
-  
 export interface StatsScreenType{
 
 }

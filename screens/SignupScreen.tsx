@@ -84,10 +84,6 @@ const handleFormSubmit = async ({ confirmPassword, ...values } : Registergion_Fo
     setisTermsModal(true)
   }
 
-console.log('rendered');
-console.log(isTermsButtonPressed);
-
-    
   return (
     <View style={[styles.container, { backgroundColor: background }]}>
       <BigTitle title={'Create An Account'} />

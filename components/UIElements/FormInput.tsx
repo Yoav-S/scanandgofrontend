@@ -16,7 +16,7 @@ const FormInput: React.FC<FormInputType> = (props) => {
   
   const { theme } = useContext(ThemeContext);
   const { text, background } = theme.colors   
-  const [isSecureText, setisSecureText] = useState<boolean>(false);
+  const [isSecureText, setisSecureText] = useState<boolean>(true);
   const [greenUnderlineCondition, setgreenUnderlineCondition] = useState<boolean>(!props.errorMessage && props.startValue !== '');
   const onChangeTextHandler = (text: string) => {
     if(props.label === 'Card Holder Name'){    
@@ -31,10 +31,9 @@ const FormInput: React.FC<FormInputType> = (props) => {
   const clearInput = () => {
     props.setInput(""); // Clear the input
   };
-  console.log(props.label);
   
   return (
-    <View style={{marginTop: '1%', marginBottom: '8%'}}>
+    <View style={{marginTop: '1%', marginBottom: '10%'}}>
       <View style={{flexDirection: 'row', alignSelf: 'center',}}>
     <NativeBaseInput 
       variant={route.name === 'Login' || route.name === 'Signup' ? 'filled' : 'Outline'}
@@ -45,7 +44,7 @@ const FormInput: React.FC<FormInputType> = (props) => {
       backgroundColor={'gray.600'}
       borderWidth={0}
       style={[{
-      marginBottom:props.label === 'CVV' ? '1%' : '4%',
+      marginBottom:props.label === 'CVV' ? '1%' : '1%',
       color: text.primary,             
       }, styles.textInput]}
       keyboardType={props.numeric ? 'number-pad' : 'default'}
@@ -74,7 +73,18 @@ const FormInput: React.FC<FormInputType> = (props) => {
       maxLength={props.label === 'CVV' ? 3 : props.label === 'Card Number' ? 16 : 100}
     />
     </View>
-    {(props.errorMessage && props.startValue !== '' && props.label !== 'CVV') && <Text style={{left: route.name === 'ForgotPassword' ? width * 0.185 : width * 0.14,fontSize: 12,color: 'red',position: 'absolute',bottom: height * 0.005, fontWeight: 'bold' , width: props.label === "Exp Date" || props.label === "Cvv" || props.label === 'Enter Coupon' ? 135 : '85%', alignSelf:'center'}}>{props.errorMessage}</Text>}
+    {(props.errorMessage && props.startValue !== '' && props.label !== 'CVV') && 
+    <Text 
+    style={{
+    left: route.name === 'ForgotPassword' ? width * 0.185 : width * 0.053,
+    fontSize: 12,color: 'red',
+    position: 'absolute',
+    bottom: height * -0.03,
+    fontWeight: 'bold' ,
+    width: props.label === "Exp Date" || props.label === "Cvv" || props.label === 'Enter Coupon' ? 135 : '85%', 
+    alignSelf:'center'}}>
+    {props.errorMessage}
+    </Text>}
     </View>
   );
 };

@@ -28,7 +28,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ data }) => {
           data={data}
           renderItem={({ item, index }) => {
             return (
-              <View key={index} style={{ width: ITEM_LENGTH, alignItems: 'center', borderWidth: 1, padding: '3%', height: 250  }}>
+              <View key={index} style={{ width: ITEM_LENGTH, alignItems: 'center',padding: '3%', height: 250  }}>
                 <View >
                   <Image style={{width: 200, height: 200}} source={{ uri: item.imageSource }}  />
                   <View style={{position: 'absolute', zIndex: 10, backgroundColor: 'pink', padding: '3%', alignItems: 'center', justifyContent: 'center',borderBottomStartRadius: 18, borderTopEndRadius: 18, bottom: -5, left: -30}}>

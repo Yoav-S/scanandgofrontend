@@ -30,7 +30,10 @@ const TransactionItem: React.FC<TransactionCompType> = ({transaction, handleshow
         <View style={[styles.container, {backgroundColor: background}]}>
             <Icon name={`cc-${transaction.cardType}`} style={styles.cardType} size={30} color={text.primary} type='font-awesome' />
             <Text style={{color: text.primary}}>{transaction.formattedDate}</Text>
+            <View style={{flexDirection: 'row', alignItems: 'center', gap: 3}}>
             <Text style={{color: text.primary}}>{transaction.totalAmount}</Text>
+            <Image source={require('../../../images/shekel.png')} style={[styles.imageShekel]}/>
+            </View>
             <FontAwesomeIcon 
             name="arrow-right" 
             size={30} color={text.secondary}             
@@ -50,6 +53,10 @@ const styles = StyleSheet.create({
         padding: '3%',
         borderRadius: 8
     },
-    cardType: {}
+    cardType: {},
+    imageShekel: {
+        height: 12,
+        width: 12,
+    },
 })
 export default TransactionItem

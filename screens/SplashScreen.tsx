@@ -12,8 +12,8 @@ const SplashScreen: React.FC = () => {
 
     function step(timestamp: number) {
       if (!startTimestamp) startTimestamp = timestamp;
-      const progress = Math.min(1, (timestamp - startTimestamp) / 2000); // 2000 ms = 2 seconds
-      setImageCurrentWidth(progress * width * 0.8);
+      const progress = Math.min(1, (timestamp - startTimestamp) / 600); // 2000 ms = 2 seconds
+      setImageCurrentWidth(progress * width * 0.85);
 
       if (progress < 1) {
         requestAnimationFrame(step);

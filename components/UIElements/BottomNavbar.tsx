@@ -39,6 +39,9 @@ setamountofitemsvariable(currentUser?.cart.length || 0)
  
   return (
     <SafeAreaView style={styles.container}>
+      <View style={{flexDirection: 'row', justifyContent: 'space-around', width: 125}}>
+
+  
       <Icon name="home" size={30} color={
       route.name === "Home" || 
       route.name === "ScanningTour"
@@ -56,11 +59,12 @@ setamountofitemsvariable(currentUser?.cart.length || 0)
        'white' } 
        name="shopping-cart" size={30} onPress={navigateCart}/>
       </View>
-      <View style={[styles.plusIconContainer, {backgroundColor: background}]}>
+      </View>
       <View style={styles.plusIconSecondCon}>
         <Icon onPress={triggerScan} color="black" name="nfc" size={50} />
       </View>
-      </View>
+      <View style={{flexDirection: 'row' , justifyContent: 'space-around', width: 125}}>
+
       <Icon 
       name="settings" 
       size={30} 
@@ -75,6 +79,8 @@ setamountofitemsvariable(currentUser?.cart.length || 0)
       ? 'lightblue' : 'white'} 
       onPress={navigateSettings}/>
       <Icon name="bar-chart" type='ion-icons' size={30} color={route.name === "Stats" ? 'lightblue' : 'white'} onPress={navigateProfile}/>
+      </View>
+
     </SafeAreaView>
   );
 };
@@ -82,7 +88,7 @@ setamountofitemsvariable(currentUser?.cart.length || 0)
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     alignItems: 'center',
     alignSelf: 'center',
     backgroundColor: '#1D2B32',
@@ -93,15 +99,6 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     marginBottom: '1%',
     borderRadius: 14
-  },
-  plusIconContainer: {
-    width: 90,
-    height: 90,
-    borderRadius: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: '20%',
-    position: 'relative',
   },
   amountvariable: {
     position: 'absolute',
@@ -116,7 +113,17 @@ const styles = StyleSheet.create({
     backgroundColor: 'lightblue',
     borderRadius: 50,
     justifyContent: 'center',
+    position: 'absolute',
+    right: '40%',
+    bottom: '65%',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5, // This is for Android
   },
+  
+  
 });
 
 export default BottomNavbar

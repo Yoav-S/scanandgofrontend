@@ -1,5 +1,5 @@
 import React, {useState, useContext} from "react";
-import { View, StyleSheet, Text , ScrollView} from "react-native";
+import { View, StyleSheet, Text , ScrollView, Dimensions} from "react-native";
 import { ThemeContext } from "../context/ThemeContext";
 import { CheckBox } from 'react-native-elements'
 import BigTitle from "../components/UIElements/BigTitle";
@@ -24,6 +24,8 @@ const validationSchema = Yup.object().shape({
   email: emailSchema,
   password: passwordSchema,
 });
+const screen = Dimensions.get('window');
+
 const LoginScreen: React.FC = () => {
   const navigation = useNavigation<StackNavigationProp<any, 'Login'>>();
   const [checkBoxValue, setCheckBoxValue] = useState<boolean>(false);
@@ -67,12 +69,13 @@ const LoginScreen: React.FC = () => {
   return (
     <View style={[styles.container, { backgroundColor: background }]}>
             <BigTitle title="Login" />
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView style={{margin: '3%'}} showsVerticalScrollIndicator={false}>
+      <View>
+
       <View style={styles.imageCon}>
         {loginAnimationObject}
        </View>
 
-      <View>
 
 {
   isLoading ? (<View style={{padding: '15%', alignItems: 'center', marginBottom: '10%'}}>{activitiIndicatorObject}</View>) : (      
@@ -81,7 +84,7 @@ const LoginScreen: React.FC = () => {
     validationSchema={validationSchema}
     onSubmit={handleFormSubmit}
   >
-    {({ handleChange, handleSubmit, values, errors, isValid, dirty }) => (
+    {({ handleChange, handleSubmit, values, errors, isValid, dirty, touched }) => (
       <>
         <FormInput
           value={values.email}
@@ -103,19 +106,19 @@ const LoginScreen: React.FC = () => {
   <View style={styles.checkBoxBtnCon}>
   <View style={{flexDirection: 'row', alignItems: 'center'}}>
   <CheckBox
-     style={[styles.checkBoxStyles]}
      center
+     containerStyle={styles.checkBoxStyles}
      checkedColor='green'
      checked={checkBoxValue} // Set the checked prop
      onPress={() => setCheckBoxValue(!checkBoxValue)}
      />
-  <Text style={{color: text.primary}}>Keep me logged in ?</Text>
+  <Text style={[{color: text.primary}]}>Remember me ?</Text>
   </View>
   <TouchableOpacity onPress={() => {navigation.navigate('ForgotPassword')}}>
     <Text style={[{color: text.primary},styles.forgotPasswordText]}>Forgot Password ?</Text>
   </TouchableOpacity>
   </View>
-  <StyledButton disabled={!isValid && dirty} onPress={handleSubmit} text={"Login"} bigbutton/>
+  <StyledButton disabled={!isValid || dirty && (values.email === '' && values.password === '')} onPress={handleSubmit} text={"Login"} bigbutton/>
 
       </>
     )}
@@ -123,14 +126,11 @@ const LoginScreen: React.FC = () => {
  
 }
 </View>
-
-
-      {!isLoading && <TitleAndBtnCon text={"Dont have an account ?"} btnlabel={"Sign up"} btnbold  onPress={navigateToSignUp} />}
-      {!isLoading && <TitledBarrier text={"Or Sign in via"}/>}
-      {!isLoading && <Icon style={styles.icon} name="home" size={30} />}
-      {!isLoading && <TitleAndBtnCon text="Notice a bug in the app ?" btnlabel="Notice us" btnbold onPress={() => {navigation.navigate('ProblemReport', {cameFrom: 'LoginScreen'});}}/>}
-      <Toast/> 
+<View style={[styles.border, {backgroundColor: text.primary}]}/>
+<StyledButton disabled={isLoading} text="Register" bigbutton onPress={() => {navigation.navigate('Signup')}}/>
       </ScrollView>
+      <Toast/> 
+
     </View>
   );
 };
@@ -138,13 +138,12 @@ const LoginScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20
   },
   icon: {
     margin: '2%'
   },
   checkBoxStyles: {
-    width: '50%'
+    width: 30
   },
   imageCon: {
     alignSelf: 'center',
@@ -159,14 +158,22 @@ const styles = StyleSheet.create({
     height: 150,
   },
   checkBoxBtnCon: {
+    width: '90%',
+    alignSelf: 'center',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: '2%'
   },
   forgotPasswordText: {
     fontWeight: '500',
     fontSize: 12
+  },
+  border: {
+    width: screen.width * 0.9 ,
+    alignSelf: 'center',
+    borderWidth: 1,
+    marginTop: '4%',
+    marginBottom: '4%'
   },
   CheckBoxCon: {
 

@@ -38,10 +38,10 @@ const AddCreditCardScreen: React.FC = () => {
     const { primary, secondary, text, background } = theme.colors 
     const {addCreditCardAttempt, showToast, setisMessageModalVisible, currentUser} = useDataContext();
     const [allCategoriesValues, setAllCategoriesValues] = useState<{ label: string; value: string }[]>([
-        { label: 'discover', value: 'discover' },
-        { label: 'mastercard', value: 'mastercard' },
-        { label: 'visa', value: 'visa' },
-        { label: 'american express', value: 'amex' },
+        { label: 'Discover', value: 'discover' },
+        { label: 'Mastercard', value: 'mastercard' },
+        { label: 'Visa', value: 'visa' },
+        { label: 'American Express', value: 'amex' },
     ]);
     const [currentCategoryValue, setCurrentCategoryValue] = useState<string>('');
     const [expirationDateInputPlaceholder, setExpirationDateInputPlaceholder] = useState<string>("Expiration Date");
