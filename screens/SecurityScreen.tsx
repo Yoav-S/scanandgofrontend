@@ -1,5 +1,5 @@
 import react, {useState, useContext, useEffect} from 'react';
-import {Text, View, StyleSheet, SafeAreaView, KeyboardAvoidingView, Keyboard,Platform } from 'react-native'
+import {Text, View, StyleSheet, SafeAreaView, KeyboardAvoidingView, Keyboard,Platform, TouchableOpacity } from 'react-native'
 import BottomNavbar from '../components/UIElements/BottomNavbar';
 import TitleAndArrowBack from '../components/UIElements/TitleAndArrowBack';
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -122,6 +122,9 @@ const SecurityScreen: React.FC = () => {
                             setInput={handleChange('confirmPassword')}
                             label={'Repeat Password'}
                             />
+                              <TouchableOpacity onPress={() => {navigation.navigate('ForgotPassword', {cameFrom: 'Home'})}}>
+    <Text style={[{color: text.primary},styles.forgotPasswordText]}>Forgot Password ?</Text>
+  </TouchableOpacity>
                             <StyledButton onPress={handleSubmit} text='Save' bigbutton disabled={!isValid || !dirty}/>
                           </>
                         )}
@@ -150,5 +153,9 @@ const styles = StyleSheet.create({
     FormikCon: {
         width: "95%",
         alignSelf: 'center'
-    }
+    },
+    forgotPasswordText: {
+    fontWeight: '500',
+    fontSize: 12
+    },
 })

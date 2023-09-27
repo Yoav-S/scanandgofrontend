@@ -4,12 +4,13 @@ import {ItemCompInterface} from '../../../interfaces/interfaces'
 import { Icon } from 'react-native-elements';
 import { ThemeContext } from '../../../context/ThemeContext';
 import { useDataContext } from '../../../context/DataContext';
+import ShekelPrice from '../../UIElements/ShekelPrice';
+
 const Item: React.FC<ItemCompInterface> = (props) => {
     const { theme } = useContext(ThemeContext);
     const { text } = theme.colors     
     const {currentUser} = useDataContext();
     useEffect(() => {
-console.log('rendered');
 
       }, [currentUser]);
     return (
@@ -18,10 +19,8 @@ console.log('rendered');
             <View style={styles.contentCon}>
             <Text style={[{color: text.primary},styles.nametext]}>{props.itemObj.name}</Text>
             <Text style={[{color: text.primary},styles.wierlesstext]}>{props.itemObj.category}</Text>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text style={[{color: text.primary, marginRight: '3%'},styles.pricetext]}>{props.itemObj.price}</Text>
-            <Image source={require('../../../images/shekel.png')} style={[styles.imageShekel]}/>
-            </View>
+            <ShekelPrice num={props.itemObj.price}/>
+
             </View>
             <Icon 
             onPress={() => {props.handleDeleteItem && props.handleDeleteItem(currentUser ? currentUser?._id : '',props.itemObj.nfcTagCode)}} 

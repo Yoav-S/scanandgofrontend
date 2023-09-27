@@ -14,7 +14,7 @@ export const NotAuthenticatedStackScreen: React.FC = () => {
         name="Login" 
         component={LoginScreen} 
         />
-                <NotAuthenticatedStack.Screen         
+        <NotAuthenticatedStack.Screen         
         options={{
           headerShown: false 
         }} 

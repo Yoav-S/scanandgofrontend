@@ -5,7 +5,12 @@ import LottieView from 'lottie-react-native';
 import emptyBoxAnimation from '../../../assets/emptystatsanimation.json'
 import BigTitle from '../../UIElements/BigTitle';
 import { ThemeContext } from '../../../context/ThemeContext';
+import StyledButton from '../../UIElements/StyledButton';
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { StackNavigationProp } from '@react-navigation/stack';
 const NoTransactionStats: React.FC = () => {
+  const navigation = useNavigation<StackNavigationProp<any, 'StatsScreen'>>();
+
   const { theme } = useContext(ThemeContext);
   const { primary, secondary, text, background } = theme.colors 
   const emptyBoxAnimationObject = (<LottieView
@@ -22,6 +27,7 @@ const NoTransactionStats: React.FC = () => {
 
       <Text style={{color: text.primary, fontWeight: '600', textAlign: 'center', fontSize: 18}}>Your Shopping Statistics Are Empty</Text>
       <Text style={{color: text.secondary, textAlign: 'center'}}>Move to our scanning tour !</Text>
+      <StyledButton onPress={() => {navigation.navigate('ScanningTour')}} text='Scan tour'/>
       </View>
 
     </View>

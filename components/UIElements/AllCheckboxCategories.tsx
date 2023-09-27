@@ -36,7 +36,7 @@ const AllCheckBoxCategories: React.FC<AllCheckBoxCategoriesProps> = (props) => {
         {props.categories.map((category, index) => (
           <CheckBox
             key={index}
-            containerStyle={{backgroundColor: background, borderRadius: 24, borderColor: buttonTheme.buttonAlt.background}}
+            containerStyle={{backgroundColor: background, borderWidth: 0, alignItems: 'flex-start'}}
             textStyle={{color: text.primary}}
             checkedColor='green'
             title={category}
@@ -59,7 +59,6 @@ const styles = StyleSheet.create({
   },
   titleCon: {},
   categoriesMapView: {
-    flexDirection: 'row',
     marginTop: '3%'
   },
 });

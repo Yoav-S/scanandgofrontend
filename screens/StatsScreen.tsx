@@ -231,7 +231,7 @@ const handleShowToast = () => {
         <TitleAndArrowBack text="User Statistics" onPress={() => {navigation.navigate('Home')}}/>
 
         {
-            !currentUser?.recentTransactions ? (
+            currentUser && currentUser.transactionsAmount > 0 ? (
             <View><StatsChart handleShowToast={handleShowToast} userId={userId}/>
             <TransactionsList/>
                 </View>) : (<NoTransactionStats/>)

@@ -78,9 +78,10 @@ const SettingsScreen: React.FC<SettingsScreenType> = (props) => {
         />
         <Button
         icon={{
-          name: "question-mark",
+          name: "headset",
           size: 25,
           color: "black",
+          type: 'font-awesome-5'
         }}
         onPress={() => {navigation.navigate('TermsAndServicesScreen', {cameFrom: 'TermsAndServicesScreen'})}}
         title="Terms and Policies"
@@ -93,15 +94,11 @@ const SettingsScreen: React.FC<SettingsScreenType> = (props) => {
         <Text style={[styles.formTitle, {color: text.primary, fontWeight: '600'}]}>Actions</Text>
         <View style={[styles.formCon, styles.firstCon, {backgroundColor: buttonTheme.buttonMain.background}]}>
         <Button
-        icon={{
-          name: "report",
-          size: 25,
-          color: "black"
-        }}
+        icon={<Icon name={`bug`} style={{color: 'black'}} type='font-awesome' />}
         onPress={() => {navigation.navigate('ProblemReport', {cameFrom: 'Settings'});}}
         title="Report a problem"
         titleStyle={{color: 'black', fontSize: 14, marginLeft: '5%'}}
-        buttonStyle={styles.button}
+        buttonStyle={[styles.button, {marginLeft: '2%'}]}
         />
         <Button
         icon={{
@@ -125,6 +122,9 @@ const SettingsScreen: React.FC<SettingsScreenType> = (props) => {
 const styles = StyleSheet.create({
     colorBlack: {
         color: 'black'
+    },
+    icon: {
+
     },
     formCon: {
       marginTop: '3%',

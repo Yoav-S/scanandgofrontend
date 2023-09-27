@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import React, { useEffect, useState, useContext } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import { CurrentUserType, ITransaction, PaginationResponse, recentTransaction} from '../../../interfaces/interfaces'
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions} from 'react-native';
+import { CurrentUserType, ITransaction, PaginationResponse, recentTransaction, recentItemType} from '../../../interfaces/interfaces'
 import { Button, ListItem, Icon } from '@rneui/themed';
 import { ScrollView } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -12,10 +12,12 @@ import { useNavigation, useRoute, RouteProp  } from "@react-navigation/native";
 import { ThemeContext } from '../../../context/ThemeContext';
 import Toast from 'react-native-toast-message';
 import LottieView from 'lottie-react-native';
+import TransactionItem from '../ReusedComps/TransactionItem';
 type NavigatorParamList = {
     TransactionList: {transaction: ITransaction}
 };
 
+const screen = Dimensions.get('window');
 
 const TransactionsList: React.FC = () => {
     const { theme } = useContext(ThemeContext);
@@ -27,6 +29,8 @@ const TransactionsList: React.FC = () => {
     const [isMoreToFetch, setIsMoreToFetch] = useState(false);
     const route = useRoute<RouteProp<NavigatorParamList, 'TransactionList'>>();
     const navigation = useNavigation<StackNavigationProp<any>>();
+    const recentItemArray: recentItemType[] = currentUser?.recentItems || [];
+    const recentTransactionArray: recentTransaction[] = currentUser?.recentTransactions || [];
     const activitiIndicatorObject = (<LottieView
         style={{width: 50, height: 50 , zIndex: 10}}
         speed={1} 
@@ -110,15 +114,28 @@ const TransactionsList: React.FC = () => {
             </ListItem>
         </TouchableOpacity>)
     });
-
+    const handleshowToast = () => {
+        showToast('please try again later', 'error', 'Cannot find transaction details')
+    }
 
     return (
-        <View style={{ flex: 1 , borderRadius: 14}}>
-            <Text style={styles.listHeader} >All Transaction ({currentUser?.transactionsAmount})</Text>
-            <View style={{height: 280, width: '90%', alignSelf: 'center', backgroundColor: background, borderRadius: 14}}>
-            <ScrollView contentContainerStyle={[styles.ScrollView, {backgroundColor: background}]}>
-                { transactionsList.length > 0 ? list : <Text>No Recent Transaction</Text>}
-                {isMoreToFetch ? (
+        <View style={{borderRadius: 14}}>
+            <Text style={[styles.listHeader]} >All Transaction ({currentUser?.transactionsAmount})</Text>
+            <View style={{height: 250, width: '90%', alignSelf: 'center', backgroundColor: background, borderRadius: 14}}>
+                { transactionsList.length > 0 ?                         <View style={styles.scrollViewCon}>
+
+<ScrollView>
+    <View>
+
+    {
+        recentTransactionArray.map((transaction: recentTransaction, index) => {
+            return (
+                <TransactionItem handleshowToast={handleshowToast} key={index} transaction={transaction}/>
+            )
+        })
+    }
+        </View>
+        {isMoreToFetch ? (
                     isLoading ? (
                     <View style={{alignSelf: 'center', marginTop: '1%', borderRadius: 50}}>
                     {activitiIndicatorObject}
@@ -126,10 +143,11 @@ const TransactionsList: React.FC = () => {
                 ) : (
                 <Button buttonStyle={styles.button} onPress={handleGetMore} type={'outline'} title={'Get more'} />
                 ) ) : <></>}
-            </ScrollView>
+</ScrollView>
+</View> : <Text>No Recent Transaction</Text>}
+
             </View>
 
-            <Toast/>
         </View>
     );  
 }
@@ -141,8 +159,11 @@ const styles = StyleSheet.create({
         height: 50,
         justifyContent: 'center',
     },
+    scrollViewCon: {
+        marginTop:'5%',
+    },
     ScrollView: {
-flexGrow: 1
+flexGrow: 1,
     },
     button: {
         width: 100,

@@ -65,8 +65,9 @@ const LoginScreen: React.FC = () => {
     }
     setTimeout(() => {
       showToast('We will now move to Home page', 'success', 'Login Success')
+      setAuthenticated(true);
+      navigation.navigate('Home');
     }, 3000)
-    setAuthenticated(true);
   };
 
   const navigateToSignUp = () => {
@@ -127,7 +128,7 @@ const LoginScreen: React.FC = () => {
      />
   <Text style={[{color: text.primary}]}>Remember me ?</Text>
   </View>
-  <TouchableOpacity onPress={() => {navigation.navigate('ForgotPassword')}}>
+  <TouchableOpacity onPress={() => {navigation.navigate('ForgotPassword', {cameFrom: 'Login'})}}>
     <Text style={[{color: text.primary},styles.forgotPasswordText]}>Forgot Password ?</Text>
   </TouchableOpacity>
   </View>

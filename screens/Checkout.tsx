@@ -1,5 +1,5 @@
 import react, {useState, useEffect , useContext} from 'react';
-import {Text, View, StyleSheet, SafeAreaView, KeyboardAvoidingView, Keyboard, Platform} from 'react-native';
+import {Text, View, StyleSheet, SafeAreaView, KeyboardAvoidingView, Keyboard, Platform, Image} from 'react-native';
 import TitleAndArrowBack from '../components/UIElements/TitleAndArrowBack';
 import { useDataContext } from '../context/DataContext';
 import StyledButton from '../components/UIElements/StyledButton';
@@ -14,6 +14,7 @@ import CartCarusell from '../components/UIComps/CheckoutScreenComps/CartCarusell
 import { ThemeContext } from "../context/ThemeContext";
 import CouponComp from '../components/UIComps/CheckoutScreenComps/CouponComp';
 import { ActivityIndicator } from '@react-native-material/core';
+import ShekelPrice from '../components/UIElements/ShekelPrice';
 type NavigatorParamList = {
     CheckoutScreen: { totalAmount: number, cart: IteminCartType[] }; // Define the parameter type here
 };
@@ -69,9 +70,9 @@ const Checkout: React.FC = () => {
         setBtnLabelText('Verified')
         setCurrentCoupon(couponObject._id);
         setisCouponValid(true);
-        showToast(`Coupon discount ${couponObject?.discountPercentage}`, 'success', 'Coupon Verified !');
+        showToast(`Coupon discount ${couponObject?.discountPercentage}%`, 'success', 'Coupon Verified !');
         const newPercentFormat = couponObject.discountPercentage * (1/100);
-        const calculatedDiscountPrice = totalAmount * newPercentFormat;
+        const calculatedDiscountPrice = Math.floor(totalAmount * newPercentFormat);
         setcouponDiscountAmount(calculatedDiscountPrice);
         setTotalAmountToPay(totalAmount - calculatedDiscountPrice);
        }else{
@@ -189,16 +190,18 @@ const Checkout: React.FC = () => {
                 <View style={styles.totalAmountCon}>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '95%'}}>
                         <Text style={{color: text.primary, fontWeight: '300'}}>Items</Text>
-                        <Text style={{color: text.primary, fontWeight: '600'}}>{totalAmount}</Text>  
+                        <ShekelPrice num={totalAmount}/>
                     </View>
                     { isCouponValid && <View style={styles.coupondiscountcon}>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '95%', marginTop: '2%'}}>
                     <Text style={{color: text.primary, fontWeight: '300'}}>Coupon</Text>
-                    <Text style={{color: text.primary, fontWeight: '600'}}>{couponDiscountAmount}</Text>  
+                    <ShekelPrice num={couponDiscountAmount}/>
+
+
                     </View>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '95%', marginTop: '2%'}}>
                     <Text style={{color: text.primary, fontWeight: '300'}}>Total</Text>
-                      <Text style={{color: text.primary, fontWeight: '600'}}>{totalAmountToPay}</Text>  
+                    <ShekelPrice num={totalAmountToPay}/>
                     </View>
                     </View>
                     }
@@ -242,6 +245,15 @@ const styles = StyleSheet.create({
     },  
     couponCompCon: {
 
+    },
+    imageShekel: {
+        height: 12,
+        width: 12,
+    },
+    shekelContainerStyle: {
+        flexDirection: 'row',
+         alignItems: 'center',
+          gap: 5
     }
 });
 export default Checkout;

@@ -48,7 +48,7 @@ const NoTransactionComp: React.FC<Props> = () => {
         <Text style={[{ color: text.primary, fontWeight: '600', fontSize: 30 }]}>
           Welcome
         </Text>
-        <View style={{ justifyContent: 'flex-end',  marginLeft: '5%' }}>
+        <View style={{ justifyContent: 'flex-end',  marginLeft: '5%', marginBottom: '2%' }}>
           <Animated.Text
             style={[
               { color: text.secondary, fontWeight: '300', fontSize: 14 },

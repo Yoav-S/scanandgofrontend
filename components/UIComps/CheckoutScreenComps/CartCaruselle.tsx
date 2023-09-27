@@ -36,7 +36,8 @@ const styles = StyleSheet.create({
         marginTop: '3%'
     },
     caruselle: {
-        flexDirection: 'row'
+        flexDirection: 'row',
+        
     }
 });
 export default CartCarusell

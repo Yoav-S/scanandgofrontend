@@ -1,5 +1,5 @@
 import React, {useContext} from "react";
-import {View, Text, SafeAreaView, StyleSheet, Image} from 'react-native';
+import {View, Text, SafeAreaView, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import {TransactionCompType} from '../../../interfaces/interfaces'
 import { ThemeContext } from "../../../context/ThemeContext";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -7,6 +7,8 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { Button, ListItem, Icon } from '@rneui/themed';
 import { useDataContext } from "../../../context/DataContext";
+import {Icon as ReactElementsIcon} from 'react-native-elements'
+import ShekelPrice from "../../UIElements/ShekelPrice";
 import Toast from "react-native-toast-message";
 const TransactionItem: React.FC<TransactionCompType> = ({transaction, handleshowToast}) => {
     const navigation = useNavigation<StackNavigationProp<any, 'HomeScreen'>>();
@@ -27,19 +29,16 @@ const TransactionItem: React.FC<TransactionCompType> = ({transaction, handleshow
 
 
     return (
-        <View style={[styles.container, {backgroundColor: background}]}>
+        <TouchableOpacity onPress={() => {handlePressTransaction(transaction._id)}} style={[styles.container, {backgroundColor: background}]}>
             <Icon name={`cc-${transaction.cardType}`} style={styles.cardType} size={30} color={text.primary} type='font-awesome' />
             <Text style={{color: text.primary}}>{transaction.formattedDate}</Text>
-            <View style={{flexDirection: 'row', alignItems: 'center', gap: 3}}>
-            <Text style={{color: text.primary}}>{transaction.totalAmount}</Text>
-            <Image source={require('../../../images/shekel.png')} style={[styles.imageShekel]}/>
-            </View>
-            <FontAwesomeIcon 
+            <ShekelPrice num={transaction.totalAmount}/>
+            <ReactElementsIcon 
             name="arrow-right" 
-            size={30} color={text.secondary}             
-            onPress={() => {handlePressTransaction(transaction._id)}}
+            size={30} 
+            color={text.secondary}             
             />
-        </View>
+        </TouchableOpacity>
     )
 }
 const styles = StyleSheet.create({

@@ -14,6 +14,7 @@ import { Icon } from 'react-native-elements';
 import { ThemeContext } from '../context/ThemeContext';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import activityIndicatorAnimation from '../assets/activitiindicator.json'
+import emptyCreditCardAnimation from '../assets/creditCardAnimation.json'
 import LottieView from 'lottie-react-native';
 interface PaymentMethodsScreenProps {
     navigation: StackNavigationProp<any, 'PaymentMethodsScreen'>;
@@ -46,7 +47,13 @@ const PaymentMethodsScreen: React.FC<PaymentMethodsScreenProps> = ({ navigation 
         loop={true}
         />)
 
-
+        const emptyCreditCardAnimationObject = (<LottieView
+            style={{width: 250, height: 250, alignSelf: 'center', marginTop: '10%'}}
+            speed={1} 
+            source={emptyCreditCardAnimation}
+            autoPlay
+            loop={true}
+            />)
 
 
     return (
@@ -56,47 +63,53 @@ const PaymentMethodsScreen: React.FC<PaymentMethodsScreenProps> = ({ navigation 
                 <StyledButton smallbutton text='Add New' onPress={() => navigation.navigate('AddCreditCardScreen')} />
 
                 </View>
-            <ScrollView style={styles.scrollView}>
-                {currentUser?.creditCards.map((card : creditCardType, index) => (
-                    
-                    <View key={card._id}
-                    
-                    style={styles.cardContainer}>
-                        <CreditCard
-                            type={card.cardType}
-                            number={card.cardNumber}
-                            name={card.cardholderName}
-                            expiry={card.expirationDate}
-                            cvc={card.cvv}
-                        />
-                        <View style={styles.trashiconCon}>
-                        <FontAwesomeIcon 
-                        style={styles.trashicon}
-                        name="trash" 
-                        size={30} 
-                        color={text.primary}             
-                        onPress={() => {
-                            setcardId(card._id);
-                            setisAreYouSureModalOpen(true);
-                        }}
-                        />
-                        </View>
-                        <View style={{flexDirection: 'row', alignItems: 'center',}}>
-                            {
-                                isLoading ? (<View style={{padding: '5%'}}>{activitiIndicatorAnimation}</View>) : (<CheckBox
-                                    checked={card.isDefault}
-                                    onPress={() => {
-                                        if(card.isDefault){return;}
-                                        handleDefaultCardChange(card._id)}}
-                                />)
-                            }
+                {
+                    currentUser && currentUser.creditCards.length > 0 ? (            <ScrollView style={styles.scrollView}>
+                        {currentUser?.creditCards.map((card : creditCardType, index) => (
+                            
+                            <View key={card._id}
+                            
+                            style={styles.cardContainer}>
+                                <CreditCard
+                                    type={card.cardType}
+                                    number={card.cardNumber}
+                                    name={card.cardholderName}
+                                    expiry={card.expirationDate}
+                                    cvc={card.cvv}
+                                />
+                                <View style={styles.trashiconCon}>
+                                <FontAwesomeIcon 
+                                style={styles.trashicon}
+                                name="trash" 
+                                size={30} 
+                                color={text.primary}             
+                                onPress={() => {
+                                    setcardId(card._id);
+                                    setisAreYouSureModalOpen(true);
+                                }}
+                                />
+                                </View>
+                                <View style={{flexDirection: 'row', alignItems: 'center',}}>
+                                    {
+                                        isLoading ? (<View style={{padding: '5%'}}>{activitiIndicatorAnimation}</View>) : (<CheckBox
+                                            checked={card.isDefault}
+                                            onPress={() => {
+                                                if(card.isDefault){return;}
+                                                handleDefaultCardChange(card._id)}}
+                                        />)
+                                    }
+        
+                                <Text style={{color: text.primary, fontWeight: 'bold'}}>Use as default payment method</Text>
+                                </View>
+                                <View style={[styles.barrier, {borderColor: text.secondary, backgroundColor: text.secondary}]}/>
+                            </View>
+                        ))}
+                    </ScrollView>) : (<View>
+{emptyCreditCardAnimationObject}
+<Text style={{color: text.primary, textAlign: 'center', marginTop: '5%', fontSize: 18, fontWeight: '600'}}>No Credit Cards Yet</Text>
+                    </View>)
+                }
 
-                        <Text style={{color: text.primary, fontWeight: 'bold'}}>Use as default payment method</Text>
-                        </View>
-                        <View style={[styles.barrier, {borderColor: text.secondary, backgroundColor: text.secondary}]}/>
-                    </View>
-                ))}
-            </ScrollView>
 
             <BottomNavbar />
             <Toast/>

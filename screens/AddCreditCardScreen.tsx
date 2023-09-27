@@ -1,5 +1,5 @@
 import React, {useState , useContext, useEffect, useRef } from "react";
-import {View, Text, StyleSheet, SafeAreaView, KeyboardAvoidingView, TextInput, Platform, Keyboard} from 'react-native'
+import {View, Text, StyleSheet, SafeAreaView, KeyboardAvoidingView, TextInput, Platform, Keyboard, Dimensions} from 'react-native'
 import TitleAndArrowBack from "../components/UIElements/TitleAndArrowBack";
 import BottomNavbar from "../components/UIElements/BottomNavbar";
 import { Formik } from 'formik';
@@ -26,6 +26,7 @@ cardholderName: cardholderSchema,
 cardNumber: cardNumberSchema,
 cardType: cardTypeSchema,
 })
+const screen = Dimensions.get('window');
 
 const AddCreditCardScreen: React.FC = () => {
     const navigation = useNavigation<StackNavigationProp<any, 'AddCreditCardScreen'>>();
@@ -92,7 +93,7 @@ const AddCreditCardScreen: React.FC = () => {
       >
                 <TitleAndArrowBack text="Add new credit card" onPress={() => {navigation.goBack()}}/>
                 <ScrollView>
-                    <View style={styles.formikCon}>
+                    <View style={[styles.formikCon, {height: screen.height * 0.8}]}>
                     <Formik
                         initialValues={{cardType: "", cardNumber: "", cardholderName: "", expirationDate: "", cvv: "", isDefault: isDefault}}
                         validationSchema={validationSchema}
@@ -118,9 +119,11 @@ const AddCreditCardScreen: React.FC = () => {
                           <View>
                             <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '50%'}}>
                         <TextInput
-                          style={styles.dateInput}
+                          style={[styles.dateInput,{borderBottomColor: focusOnCvv ? 'green' : 'gray'}]}
                           onChangeText={(text) => {
+                            console.log(text.length);                            
                             if(text.length === 5) {setFocusOnCvv(true);}
+                            else{setFocusOnCvv(false);}
                             if (text.length === 2 && shouldAddSlash) {
                               text += '/';
                               setShouldAddSlash(false);
@@ -129,26 +132,17 @@ const AddCreditCardScreen: React.FC = () => {
                               setShouldAddSlash(false);
                             } else if (text.length === 2 && text.charAt(1) === '/') {
                               setShouldAddSlash(true);
-                            }
-                        
-                            // Split the text into mm and yy parts
-                            const [mm, yy] = text.split('/');
-                        
+                            }                      
+                            const [mm, yy] = text.split('/');                        
                             let updatedMM = mm;
                             let updatedYY = yy;
-                        
-                            // Check if mm is greater than 12 and limit it to 12
                             if (mm && parseInt(mm) > 12) {
                               updatedMM = '12';
-                            }
-                        
-                            // Check if yy is greater than 43 and limit it to 43
+                            }                        
                             if (yy && parseInt(yy) > new Date().getFullYear() + 20 - 2000) {
                               updatedYY = (new Date().getFullYear() + 20 - 2000).toString();
-                            }
-                        
-                            const formattedText = updatedMM + (updatedYY ? '/' + updatedYY : '');
-                        
+                            }                       
+                            const formattedText = updatedMM + (updatedYY ? '/' + updatedYY : '');                       
                             handleChange('expirationDate')(formattedText);
                           }}
                           onBlur={() => {
@@ -161,7 +155,6 @@ const AddCreditCardScreen: React.FC = () => {
                           maxLength={5}
                           onFocus={() => {setExpirationDateInputPlaceholder("MM/YY")}}
                         />
-                        {(!errors.expirationDate && values.expirationDate !== '') && <View style={{padding: '1%', backgroundColor: 'green', borderRadius: 50, marginLeft: '15%'}}><Icon name="check" iconStyle={{fontWeight: 'bold'}} color={text.primary} size={20}/></View>}
                                                 </View>
 
                         {(errors.expirationDate && values.expirationDate !== '') && <Text style={{color: 'red', fontWeight: 'bold', width: 130}}>{errors.expirationDate}</Text>}
@@ -243,7 +236,6 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         marginBottom: 10,
         borderBottomWidth: 1,
-        borderBottomColor: 'gray',
         width: 120,
       },
       

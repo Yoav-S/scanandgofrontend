@@ -23,7 +23,6 @@ const HomeScreen: React.FC<HomeScreenType> = (props) => {
     
     return (
         <SafeAreaView style={[styles.container,{ backgroundColor: background}]}>
-            <Title fontFamily={"montserrat"} margin={'5%'} fontSize="2xl" color={text.primary}>Recent Items</Title>
             {
                 (recentItemArray.length === 0 && recentTransactionArray.length === 0) ? 
                 (
@@ -31,6 +30,7 @@ const HomeScreen: React.FC<HomeScreenType> = (props) => {
                 )
                  :
                 (<View>
+                        <Title fontFamily={"montserrat"} margin={'5%'} fontSize="2xl" color={text.primary}>Recent Items</Title>
                         <ImageCarousel data={recentItemArray} />
                         <Title fontFamily={"montserrat"} margin={'5%'} fontSize="2xl" color={text.primary}>Recent Transactions</Title>
                         <View style={styles.scrollViewCon}>

@@ -13,7 +13,6 @@ import { ActivityIndicator } from '@react-native-material/core'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import OTPInputView from '@twotalltotems/react-native-otp-input'
 import Clipboard from '@react-native-clipboard/clipboard';
-import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { ThemeContext } from '../context/ThemeContext'
 import TitleAndBtnCon from '../components/UIElements/TitleAndBtnCon'
@@ -22,12 +21,17 @@ import EmailVerifyComp from '../components/UIComps/ForgotPasswordComps/EmailVeri
 import OtpComp from '../components/UIComps/ForgotPasswordComps/OtpComp'
 import ResetPasswordComp from '../components/UIComps/ForgotPasswordComps/ResetPasswordComp'
 import TitleAndArrowBack from '../components/UIElements/TitleAndArrowBack'
+import { useNavigation, useRoute, RouteProp  } from "@react-navigation/native";
 
-
+type NavigatorParamList = {
+  ForgotPassword: { cameFrom: string}; // Define the parameter type here
+};
 
 const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
   const navigation = useNavigation<StackNavigationProp<any, 'ForgotPassword'>>();
   const { theme } = useContext(ThemeContext);
+  const route = useRoute<RouteProp<NavigatorParamList, 'ForgotPassword'>>();
+  
   const { primary, secondary, text, background } = theme.colors     
   const [emailSended, setEmailSended] = useState<boolean>(false);
   const [isOneMinuteBind, setisOneMinuteBind] = useState<boolean>(false);
@@ -121,9 +125,11 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
       const isPasswordChanged = await resetPassword(value.password, userId);
       setisLoadingResetPassword(false);
       if(isPasswordChanged) {
-        showToast('Password Succesfully saved', 'success', 'your about to move to login');
+        showToast('Password Succesfully saved', 'success', `your about to move to ${route.params.cameFrom}`);
         setTimeout(() => {
-          navigation.navigate('Login')
+          const cameFromVal: string = route.params.cameFrom;      
+              
+          navigation.navigate(`${cameFromVal}`);
 
         }, 2000)
       }

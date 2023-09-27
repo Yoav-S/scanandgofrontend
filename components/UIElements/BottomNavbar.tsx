@@ -47,8 +47,8 @@ setamountofitemsvariable(currentUser?.cart.length || 0)
       route.name === "ScanningTour"
       ? 'lightblue' : 'white'} onPress={navigateHome}/>
       <View style={{flexDirection: 'row'}}>
-      {amountofitemsvariable > 0 && (
-        <Text style={[{ color: 'red' }, styles.amountvariable]}>
+      {amountofitemsvariable > 0 && ( 
+        <Text style={[{ color: 'white', backgroundColor: 'red', borderRadius: 50, width: 18, textAlign: 'center', fontSize: 12  }, styles.amountvariable]}>
           {currentUser?.cart.length}
         </Text>
       )}
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: -10,
     zIndex: 10,
-    left: -5,
+    left: 20,
     fontWeight: 'bold'
   },
   plusIconSecondCon: {

@@ -6,7 +6,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import { Icon } from 'react-native-elements';
+import { Button, Icon } from 'react-native-elements';
 
 import DatePicker from 'react-native-date-picker';
 import TitleAndBtnCon from '../components/UIElements/TitleAndBtnCon';
@@ -114,11 +114,10 @@ const EditProfile: React.FC = () => {
                   setInput={handleChange('email')}
                   label={'Email'}
                 />
-            <View style={{marginTop: '10%', width: '90%'}}>
-                <Text style={{color: text.primary, fontWeight: 'bold', fontSize: 17,marginLeft: '7%'}}>Date Of Birth</Text>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <StyledButton 
-                text='Select birth Date' 
+            <View style={{width: '90%'}}>
+                <View style={{flexDirection: 'row', alignItems: 'center', paddingLeft: '7%'}}>
+                <Button 
+                title='BIRTH DATE' 
                 onPress={() => {
                   setOpenModalHandler();
                   // Mark the birthDate field as touched to trigger validation

@@ -8,6 +8,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation, useRoute, RouteProp  } from "@react-navigation/native";
 import { ThemeContext } from '../../../context/ThemeContext';
 import TitleAndArrowBack from '../../UIElements/TitleAndArrowBack';
+import ShekelPrice from '../../UIElements/ShekelPrice';
 
 type NavigatorParamList = {
   TransactionScreen: { transaction: ITransaction }; // Define the parameter type here
@@ -28,32 +29,36 @@ const TransactionView: React.FC = () => {
 
   const discountedView = (
     <View style={{marginBottom: '5%'}}>
-      <Text style={{color: text.primary}}>Before Discount: {totalAmount + couponDiscountAmount!}$</Text>
-      <Text style={{color: text.primary}}>Discount: ${couponDiscountAmount}</Text>
-      <Text style={{color: text.primary}}>Final Price: ${totalAmount}</Text>
+<View style={styles.alignItems}>
+<Text style={[{color: text.primary}, styles.alignItems]}>Before Discount: </Text>
+<ShekelPrice num={totalAmount + couponDiscountAmount!}/>
+
+</View>
+<View style={styles.alignItems}>
+<Text style={[{color: text.primary}, styles.alignItems]}>Discount: </Text>
+<ShekelPrice num={couponDiscountAmount!}/>
+</View>
+<View style={styles.alignItems}>
+<Text style={[{color: text.primary}, styles.alignItems]}>Final Price: </Text>
+<ShekelPrice num={totalAmount}/>
+</View>
+
+<View style={{borderWidth: 0.3, width: '98%', alignSelf: 'center', marginTop: '2%', backgroundColor: text.primary}}/>
     </View>
   );
   const nonDiscountedView = (
     <View style={{marginBottom: '5%'}}>
-      <Text style={{color: text.primary, fontWeight: 'bold'}}>Price: ${totalAmount}</Text>
+<ShekelPrice num={totalAmount}/>
     </View>
   );
-  const productsView = products.map((product: any) => (
-    <ListItem style={{backgroundColor: background, borderRadius: 8}} bottomDivider key={product.nfcTagCode}>
-      <Avatar source={{ uri: product.imageSource }}  size={100} />
-      <ListItem.Content>
-        <ListItem.Title>{product.name}</ListItem.Title>
-        <ListItem.Subtitle>${product.price}</ListItem.Subtitle>
-      </ListItem.Content>
-    </ListItem>
-  ));
+
 
   const productsVieww = products.map((product: any) => (
     <View style={[{backgroundColor: background}, styles.productCon]} key={product.nfcTagCode}>
       <Image style={styles.image} source={{ uri: product.imageSource }} />
       <View>
         <Text style={{color: text.primary}}>{product.name}</Text>
-        <Text style={{color: text.primary}}>${product.price}</Text>
+        <ShekelPrice num={product.price}/>
       </View>
     </View>
   ));
@@ -106,6 +111,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  alignItems: {
+    alignItems: 'center',
+    flexDirection: 'row'
+  },
   cardTypeIcon: {
     width: 50,
     height: 50,
@@ -116,5 +125,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  imageShekel: {
+    height: 12,
+    width: 12,
+},
 });
 export default TransactionView;

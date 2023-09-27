@@ -3,14 +3,16 @@ import {View, Text, StyleSheet, SafeAreaView, Image} from 'react-native'
 import { ItemHorizontalType } from "../../../interfaces/interfaces";
 import { ThemeContext } from "../../../context/ThemeContext";
 import StyledButton from "../../UIElements/StyledButton";
+import ShekelPrice from "../../UIElements/ShekelPrice";
 const ItemHorizontal: React.FC<ItemHorizontalType> = ({cartItem, totalAmount}) => {
     const { theme } = useContext(ThemeContext);
     const { primary, secondary, text, background } = theme.colors     
     return (
         <SafeAreaView style={[styles.container]}>
-            <Image style={styles.image} source={{uri:cartItem.imageSource}}/>
+            <Image style={[styles.image, { borderRadius: 50}]} source={{uri:cartItem.imageSource}}/>
             <Text style={[styles.nametext, {color: text.primary , fontWeight: '300'}]}>{cartItem.name}</Text>
-            <Text style={[styles.pricetext, {color: text.primary , fontWeight: '600'}]}>{cartItem.price}</Text>
+            <Text style={[styles.nametext, {color: text.primary , fontWeight: '300'}]}>{cartItem.category}</Text>
+            <ShekelPrice num={cartItem.price}/>
         </SafeAreaView>
     )
 }
@@ -26,6 +28,10 @@ container: {
 },
 btnCon: {
 
+},
+imageShekel: {
+    height: 12,
+    width: 12
 },
 image:{
     width: 50,

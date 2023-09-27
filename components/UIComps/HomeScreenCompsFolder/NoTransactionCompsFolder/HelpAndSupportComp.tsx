@@ -22,16 +22,17 @@ const HelpAndSupportComp: React.FC = () => {
             <TouchableOpacity onPress={() => {navigation.navigate('HelpAndSupportScreen')}}>
                 <Text style={{color: background, fontWeight: 'bold', fontSize: 16}}>help and support</Text>
             </TouchableOpacity>
-            <Text style={{color: background}}>Page</Text>
+            <Text style={{color: background}}>page,</Text>
         </View>
         <View style={{flexDirection: 'row', marginTop: '3%'}}>
-        <Text style={{color: background}}>Which its located at our</Text>
-        <TouchableOpacity onPress={() => {navigation.navigate('Settings')}}>
-            <Text style={{color: background, fontWeight: 'bold', fontSize: 16}}> Settings Screen</Text>
+        <Text style={{color: background}}>which is located at our</Text>
+        <TouchableOpacity style={{flexDirection: 'row'}} onPress={() => {navigation.navigate('Settings')}}>
+            <Text style={{color: background, fontWeight: 'bold', fontSize: 16}}> settings </Text>
+            <Text style={{color: background, fontSize: 14}}>screen.</Text>
         </TouchableOpacity>
         </View>
         <View style={{marginTop: '2%', width: '90%'}}>
-            <Text style={{color: background, lineHeight: 25}}>And suggests a complete instractions tour about Scan & Go application.</Text>
+            <Text style={{color: background, lineHeight: 25}}>And suggests a complete instractions tour about the Scan & Go application.</Text>
         </View>
     </View>
   );

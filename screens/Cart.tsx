@@ -15,6 +15,7 @@ import BottomNavbar from '../components/UIElements/BottomNavbar';
 import { ThemeContext } from "../context/ThemeContext";
 
 import { CurrentUserType } from '../interfaces/interfaces';
+import ShekelPrice from '../components/UIElements/ShekelPrice';
 const Cart: React.FC = () => {
     const {setCurrentUser,currentUser, deleteItemAttempt, showToast, amountofitemsvariable,setamountofitemsvariable} = useDataContext();
     const { theme } = useContext(ThemeContext);
@@ -71,7 +72,7 @@ const Cart: React.FC = () => {
             <Text/>
             <Text style={{color: text.primary, fontWeight: '600', fontSize: 18}}>Cart</Text>
             <Icon style={{marginRight: '3%'}} color={text.primary} name="shopping-cart" size={30}/>
-            { amountofitemsvariable > 0 ? (<Text style={[{ color: 'red' , position: 'absolute'}, styles.amountvariable]}>
+            { amountofitemsvariable > 0 ? (<Text style={[{ color: 'white', backgroundColor: 'red', borderRadius: 50, width: 18, textAlign: 'center', fontSize: 12 }, styles.amountvariable]}>
           {currentUser?.cart.length}
         </Text>) : (<View style={{position: 'absolute'}}/>)}
             </View>
@@ -104,11 +105,7 @@ const Cart: React.FC = () => {
                     <View style={styles.totalandcheckoutcon}>
                         <View style={styles.totalandpricecon}>
                             <Text style={{color: text.primary}}>Total</Text>
-                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                            <Text style={{color: text.primary, fontWeight: 'bold'}}>  
-                            {totalamountvariable}</Text>
-                            <Image source={require('../images/shekel.png')} style={[styles.imageShekel]}/>
-                            </View>
+                            <ShekelPrice num={totalamountvariable}/>
 
 
                         </View>
@@ -161,6 +158,6 @@ const styles = StyleSheet.create({
         position: 'absolute',
         zIndex: 15,
         fontWeight: 'bold',
-        right: '2%'
+        right: '1%'
       },
 });

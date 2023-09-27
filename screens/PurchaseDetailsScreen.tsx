@@ -61,7 +61,7 @@ const PurchaseDetailsScreen: React.FC = () => {
         {selectedLottieView}
         </View>
         <Text style={{color: text.primary, fontSize: 20, textAlign: 'center', marginTop: '5%', fontWeight: '500'}}>Purchase successfully completed</Text>
-        <View style={styles.barrier}/>
+        <View style={[styles.barrier, {backgroundColor: text.primary}]}/>
         <ScrollView style={styles.scrollViewCon}>
             {cart.map((cartItem: IteminCartType) => {
                 return(
@@ -74,7 +74,6 @@ const PurchaseDetailsScreen: React.FC = () => {
             })}
         </ScrollView>
         <View style={styles.btnCon}>
-            <StyledButton onPress={handleSharePurchaseDetails} text="Share"/>
             <StyledButton onPress={handleBackPress} text="Return Home"/>
         </View>
         <BottomNavbar/>
@@ -91,10 +90,12 @@ scrollViewCon: {
 },
 btnCon: {
     flex: 1,
-    position: 'absolute',
-    bottom: '30%',
-    left: '11%',
-    flexDirection: 'row'
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'center',
+    justifyContent: 'center',
+    marginBottom: '25%'
 },
 barrier: {
     borderWidth: 0.5,

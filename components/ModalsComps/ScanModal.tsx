@@ -18,17 +18,17 @@ import { Text } from '@rneui/base';
 import { useDataContext } from '../../context/DataContext';
 import StyledButton from '../UIElements/StyledButton';
 import { ThemeContext } from '../../context/ThemeContext';
+import ShekelPrice from '../UIElements/ShekelPrice';
 interface Props {
 }
 const ScanModel: React.FC<Props> = () => {
   const { theme } = useContext(ThemeContext);
   const { text, background } = theme.colors   
-  const {isVisibleStatus, setisVisibleStatus, AddItemToCartAttempt, showToast} = useDataContext();
+  const {isVisibleStatus, setisVisibleStatus, AddItemToCartAttempt} = useDataContext();
   const [tagId, setTagId] = useState('');
   const [item, setItem] = useState<Itemprop | null>(null);
   const [animation, setAnimation] = useState(scanAnimation)
   const [isItemInCart, setIsItemInCart] = useState(false);
-  const LottieRef = useRef(null); // <---------------- Create reference variable
   const [title, setTitle] = useState<string>( 'Hold Your Phone near the tag');
   const {currentUser, getItemAttempt} = useDataContext();
   const [previewSuccessMessage, setPreviewSuccessMessage] = useState<boolean>(true);
@@ -37,37 +37,53 @@ const ScanModel: React.FC<Props> = () => {
   const [isLoading, setisLoading] = useState<boolean>(false);
   const [isItemAddedCart, setisItemAddedCart] = useState<boolean>(false);
   const [isShowingMessage, setisShowingMessage] = useState<boolean>(false);
-  const activitiIndicatorAnimation = (<LottieView
-    style={{width: 120, height: 120, position: 'absolute', right: -50, bottom: -21}}
+  const [isPreviewLoadingAnimation, setisPreviewLoadingAnimation] = useState<boolean>(false);
+const themeColors = {
+  text: '#702963',
+  secondaryText: '#333333',
+  backgroundColor: 'white',
+
+}
+const activitiIndicatorAnimation = (<LottieView
+    style={{width: 120, height: 120, position: 'absolute', right: -50, bottom: -18}}
     speed={1} 
     source={activityIndicator}
     autoPlay
     loop={true}
-    />)
-    const successCartIndicatorObj = (<LottieView
-      style={{width: 50, height: 50, position: 'absolute', right: -15, bottom: -25}}
+/>)
+  const successCartIndicatorObj = (<LottieView
+      style={{width: 50, height: 50, position: 'absolute', right: -15, bottom: 2}}
       speed={1} 
       
       source={successCartIndicator}
       autoPlay
       loop={true}
-      />)
-      const failureCartIndicatorObj = (<LottieView
-        style={{width: 50, height: 50,position: 'absolute', right: -15, bottom: -25}}
+/>)
+const failureCartIndicatorObj = (<LottieView
+        style={{width: 50, height: 50,position: 'absolute', right: -15, bottom: 2}}
         speed={1} 
         
         source={failureCartIndicator}
         autoPlay
         loop={false}
-        />)
-    const cartbuttonanimation = (<LottieView
-      style={{width: 50, height: 50,position: 'absolute', right: -15, bottom: -25}}
+/>)
+const cartbuttonanimation = (<LottieView
+      style={{width: 50, height: 50,position: 'absolute', right: -15, bottom: 10}}
       speed={1} 
       source={cartbtnanimation}
       autoPlay
       loop={true}
-      />)
- const resetModel = () =>{
+/>)
+const searchingAnimationObject = (<LottieView
+  style={{width: 250, height: 250, borderRadius: 50, alignSelf: 'center'}}
+  speed={1} 
+  source={searchingAnimation}
+  autoPlay
+  loop={true}
+/>)
+
+
+const resetModel = () =>{
   setisVisibleStatus(!isVisibleStatus);
   setItem(null);
   setisShowingMessage(false);
@@ -75,9 +91,10 @@ const ScanModel: React.FC<Props> = () => {
   setTitle('Hold Your Phone near the tag');
   setAnimation(scanAnimation);
   setTagId('')
+  setResultMessage('')
   setIsItemInCart(false)
- }
- const resetAbstractModel = () =>{
+}
+const resetAbstractModel = () =>{
   setItem(null);
   setPreviewSuccessMessage(false);
   setisShowingMessage(false);
@@ -85,9 +102,10 @@ const ScanModel: React.FC<Props> = () => {
   setAnimation(scanAnimation);
   setTagId('')
   setisItemAddedCart(false);
+  setResultMessage('')
   setIsItemInCart(false)
- }
-  const handleReadFromNFC = async () => {
+}
+const handleReadFromNFC = async () => {
     
     try {
       // register for the NFC tag with NDEF in it
@@ -110,6 +128,10 @@ const ScanModel: React.FC<Props> = () => {
           const itemData:Itemprop = response.data;
           setTitle(`${itemData.name} ${itemData.price}`);
           setItem(itemData);
+          setisPreviewLoadingAnimation(true);
+          setTimeout(() => {
+            setisPreviewLoadingAnimation(false);
+          }, 2000)
         }
         else{
           setTitle(`Oops somthing went wrong try another tag`);
@@ -126,8 +148,8 @@ const ScanModel: React.FC<Props> = () => {
       // stop the nfc scanning
       NfcManager.cancelTechnologyRequest();
     }
-  };
-  const handleAddToCart = async () => {
+};
+const handleAddToCart = async () => {
     if(currentUser && tagId){
     for(let i = 0; i < currentUser?.cart?.length; i ++){
       if(currentUser.cart[i].nfcTagCode === tagId){
@@ -150,41 +172,61 @@ const ScanModel: React.FC<Props> = () => {
     }
     setisLoading(true);
     const [isItemAdded, newCart] : [boolean, IteminCartType | null] = await AddItemToCartAttempt(currentUser?._id || '', itemInCart );     
-    setisItemAddedCart(isItemAdded);
     setisLoading(false);
     setisShowingMessage(true);
     if(isItemAdded){
       setResultMessage('Item Added Successfully');
       setPreviewSuccessMessage(true);
+      setisItemAddedCart(true);
+
     }
     else{
       setResultMessage('Item Failed to add');
       setPreviewErrorMessage(true);
     }
-   };
-  const scanned = (
+};
+const scanned = (
     <ModalContent style={styles.modalContent}>
-    <Image source={{ uri: item?.imageSource }} style={styles.image} />
-    <View style={{flexDirection: 'row', justifyContent: 'center',margin: '3%'}}>
-    <View style={styles.priceAndCartView}>
-        <View style={styles.textContainer}>
-        <Text style={styles.textStyleName}>{item?.name} </Text>
-        <Text style={styles.textStylePrice}>${item?.price}</Text>
-        
-        </View>
+         
 
-        {
+        <View>
+{
+     isPreviewLoadingAnimation ? (
+      <View>
+             <LottieView
+      style={{
+        width: 200, // Set the width to make it larger
+        height: 200, // Set the height to make it larger
+        alignSelf: 'center', // Center horizontally
+        marginVertical: 20, // Add vertical margin for spacing
+      }}
+      speed={1}
+      source={animation}
+      autoPlay
+      loop={true}
+    />
+      <Text style={{alignSelf: 'center', color: themeColors.text, fontWeight: 'bold'}}>Item Found, Fetching Details</Text>
+    </View>
+     
+) : 
+     (<View>
+        <Image source={{ uri: item?.imageSource }} style={styles.image} />       
+        <View style={{flexDirection: 'row', justifyContent: 'center',margin: '3%'}}>
+     <View style={styles.priceAndCartView}>
+         <View style={styles.textContainer}>
+         <Text style={styles.textStyleName}>{item?.name} </Text>
+          <ShekelPrice num={item?.price || 0}/>
+            </View>
+
+      </View></View>
+              {
         isLoading ? (activitiIndicatorAnimation) : 
         (
         (!isLoading && !isShowingMessage) ? (<TouchableOpacity disabled={isItemInCart}  onPress={handleAddToCart}>
         {cartbuttonanimation}
         </TouchableOpacity>) : (
           <View>
-            {isItemAddedCart ? (<View>
-              {successCartIndicatorObj}
-            </View>) : (<View>
-              {failureCartIndicatorObj}
-            </View>)}
+{resultMessage === 'Item Already in your cart !' ? (failureCartIndicatorObj) : (successCartIndicatorObj)}
           </View>
         )
         )
@@ -192,15 +234,20 @@ const ScanModel: React.FC<Props> = () => {
 
         }
       </View>
+
+         ) 
+}
 </View>
+
+
 {
        (previewSuccessMessage || previewErrorMessage) &&  <View style={{bottom: 0,position: 'absolute', alignSelf: 'center'}}>
           <Text style={{color: resultMessage === 'Item Added Successfully' ? 'green' : 'red', fontWeight: 'bold'}}>{resultMessage}</Text>
         </View>
       }
   </ModalContent>
-  );
-  const notScanned = (
+);
+const notScanned = (
     <ModalContent style={styles.modalContent}>
     <LottieView
       style={{
@@ -216,15 +263,16 @@ const ScanModel: React.FC<Props> = () => {
     />
 
     <View>
-      <Text style={{alignSelf: 'center', color: text.primary}}>{title}</Text>
+      <Text style={{alignSelf: 'center', color: themeColors.text, fontWeight: 'bold'}}>{title}</Text>
     </View>
   </ModalContent>
-  );
-  useEffect(() => {
+);
+useEffect(() => {
     if (isVisibleStatus) {
       handleReadFromNFC();
     }
-  }, [isVisibleStatus]);
+}, [isVisibleStatus]);
+
 
   return (
     <View>
@@ -235,12 +283,12 @@ const ScanModel: React.FC<Props> = () => {
         visible={isVisibleStatus}
         swipeDirection={['up', 'down', 'left', 'right']} // can be string or an array
         swipeThreshold={200} // default 100
-        modalStyle={[styles.modalStyle,{backgroundColor: background}]}
+        modalStyle={[styles.modalStyle,{backgroundColor: 'beige'}]}
         footer={
           <ModalFooter style={[styles.ModalFooter]}>
             <ModalButton
             
-              textStyle={[styles.ModalButtonText, {color: text.secondary}]}
+              textStyle={[styles.ModalButtonText, {color: themeColors.secondaryText}]}
               text="swipe to close"
               onPress={() => {console.log('pressed')}}
             />
@@ -267,9 +315,10 @@ const styles = StyleSheet.create({
   textContainer:{
     flexDirection: 'row',
     flexWrap: 'wrap',
+    justifyContent: 'space-between',
     backgroundColor: 'rgba(128, 0, 128, 0.7)',
-    padding:10,
-    width: 200,
+    padding:8,
+    width: 220,
     borderTopEndRadius:20,
     borderBottomLeftRadius:20,
     textAlign:'center',
@@ -278,14 +327,18 @@ const styles = StyleSheet.create({
   textStyleName:{color:'white', fontSize:15},
   textStylePrice:{color:'white', fontSize:17},
   modalContent: {
-    margin: '2%',
     width: 300,
     justifyContent: 'center',
     alignSelf: 'center',
   },
   ModalButtonText: {},
-  modalStyle: {},
+  modalStyle: {
+  },
   ModalFooter: {},
+  imageShekel: {
+    height: 12,
+    width: 12,
+},
 });
 
 
