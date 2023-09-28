@@ -6,6 +6,8 @@ export interface Theme {
       primary: string;
       secondary:string;
       background: string;
+      itemBackground: string;
+      itemText: string;
       text:{
         primary: string;
         secondary: string;
@@ -18,6 +20,7 @@ export interface Theme {
     },
   
   }
+
 export interface PaginationResponse<T> {
     list: T[];
     pageNumber: number;

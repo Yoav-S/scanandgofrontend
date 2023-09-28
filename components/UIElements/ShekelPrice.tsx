@@ -8,6 +8,7 @@ interface Props {
 }
 
 const ShekelPrice: React.FC<Props> = ({num}) => {
+    
     const { theme, buttonTheme } = useContext(ThemeContext);
     const { primary, secondary, text, background } = theme.colors 
   return (

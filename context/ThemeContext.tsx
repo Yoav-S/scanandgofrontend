@@ -16,7 +16,8 @@ export const ThemeProvider: React.FC<Props> = ({ children }) => {
         secondary: '#333333',
       },
       background: '#FCF5E5',
-      // Add more colors as needed
+      itemBackground: '#343333',
+      itemText: '#222222'
     },
     fonts: {
       regular: 'Roboto-Regular',
@@ -24,6 +25,7 @@ export const ThemeProvider: React.FC<Props> = ({ children }) => {
       // Add more font styles as needed
     },
   };
+
   const buttonTheme:IButtonTheme = {
     buttonMain:{
       background: '#E6942B',
@@ -44,6 +46,8 @@ export const ThemeProvider: React.FC<Props> = ({ children }) => {
         secondary: '#cccccc',
       },
       background: '#343434',
+      itemBackground: '#111111',
+      itemText: '#222222'
       // Add more colors as needed
     },
     fonts: {

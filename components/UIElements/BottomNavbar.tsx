@@ -45,7 +45,7 @@ setamountofitemsvariable(currentUser?.cart.length || 0)
       <Icon name="home" size={30} color={
       route.name === "Home" || 
       route.name === "ScanningTour"
-      ? 'lightblue' : 'white'} onPress={navigateHome}/>
+      ? background : 'white'} onPress={navigateHome}/>
       <View style={{flexDirection: 'row'}}>
       {amountofitemsvariable > 0 && ( 
         <Text style={[{ color: 'white', backgroundColor: 'red', borderRadius: 50, width: 18, textAlign: 'center', fontSize: 12  }, styles.amountvariable]}>
@@ -55,7 +55,7 @@ setamountofitemsvariable(currentUser?.cart.length || 0)
       <Icon color={route.name === "CartScreen" || 
       route.name === 'CheckoutScreen' ||
       route.name === 'PurchaseScreen' ? 
-      'lightblue' :
+      background :
        'white' } 
        name="shopping-cart" size={30} onPress={navigateCart}/>
       </View>
@@ -76,9 +76,9 @@ setamountofitemsvariable(currentUser?.cart.length || 0)
       || route.name === "ProblemReport"
       || route.name === "HelpAndSupportScreen"
       || route.name === "AddCreditCardScreen"
-      ? 'lightblue' : 'white'} 
+      ? background : 'white'} 
       onPress={navigateSettings}/>
-      <Icon name="bar-chart" type='ion-icons' size={30} color={route.name === "Stats" ? 'lightblue' : 'white'} onPress={navigateProfile}/>
+      <Icon name="bar-chart" type='ion-icons' size={30} color={route.name === "Stats" ? background : 'white'} onPress={navigateProfile}/>
       </View>
 
     </SafeAreaView>
@@ -91,12 +91,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     alignSelf: 'center',
-    backgroundColor: '#1D2B32',
+    backgroundColor: '#E6942B',
     position: 'absolute',
+    padding: '4%',
     bottom: 0,
-    width: '98%',
-    height: 70 ,
-    paddingBottom: 10,
+    width: '100%',
     marginBottom: '1%',
     borderRadius: 14
   },
@@ -115,7 +114,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     position: 'absolute',
     right: '40%',
-    bottom: '65%',
+    bottom: '90%',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,

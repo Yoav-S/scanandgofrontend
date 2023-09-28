@@ -15,7 +15,7 @@ const TransactionItem: React.FC<TransactionCompType> = ({transaction, handleshow
     const {currentUser, getFullTransaction, showToast} = useDataContext();
     const { cardType } = transaction;
     const { theme } = useContext(ThemeContext);
-    const { primary, secondary, text, background } = theme.colors     
+    const { primary, secondary, text, background, itemBackground, itemText } = theme.colors     
 
     const handlePressTransaction = async (id: string) => {
       const [isExists, transaction] = await getFullTransaction(id);
@@ -29,7 +29,7 @@ const TransactionItem: React.FC<TransactionCompType> = ({transaction, handleshow
 
 
     return (
-        <TouchableOpacity onPress={() => {handlePressTransaction(transaction._id)}} style={[styles.container, {backgroundColor: background}]}>
+        <TouchableOpacity onPress={() => {handlePressTransaction(transaction._id)}} style={[styles.container, {backgroundColor: itemBackground}]}>
             <Icon name={`cc-${transaction.cardType}`} style={styles.cardType} size={30} color={text.primary} type='font-awesome' />
             <Text style={{color: text.primary}}>{transaction.formattedDate}</Text>
             <ShekelPrice num={transaction.totalAmount}/>
@@ -50,7 +50,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         alignSelf: 'center',
         padding: '3%',
-        borderRadius: 8
+        borderRadius: 8,
+        
     },
     cardType: {},
     imageShekel: {

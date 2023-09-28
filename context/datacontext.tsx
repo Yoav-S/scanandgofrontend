@@ -387,8 +387,6 @@ const autoLoginNewUser = async (newToken: string) => {
   }
 
 const addCreditCardAttempt = async (values: creditCardFormType): Promise<[boolean, string | null]> => {
-console.log(values);
-
   try{
     const creditCardObject: creditCardRegisterionType = {
       userId: currentUser?._id || '',
@@ -408,7 +406,7 @@ console.log(values);
         return [false, response.data];
       }
   } catch (err : any) {
-    return [false, err.message]
+    return [false, 'failed to add credit card']
   }
 
 
