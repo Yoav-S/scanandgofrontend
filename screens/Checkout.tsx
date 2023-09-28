@@ -21,8 +21,8 @@ type NavigatorParamList = {
   
 const Checkout: React.FC = () => {
     const route = useRoute<RouteProp<NavigatorParamList, 'CheckoutScreen'>>();
-    const totalAmount = route.params.totalAmount;  
     const { theme } = useContext(ThemeContext);
+    const [totalAmountState, setTotalAmountState] = useState(route.params.totalAmount)
     const { primary, secondary, text, background } = theme.colors 
     const {currentUser, showToast, verifyCouponAttempt, PaymentAttempt} = useDataContext();
     const [isCouponValid, setisCouponValid] = useState<boolean>(false);
@@ -72,9 +72,9 @@ const Checkout: React.FC = () => {
         setisCouponValid(true);
         showToast(`Coupon discount ${couponObject?.discountPercentage}%`, 'success', 'Coupon Verified !');
         const newPercentFormat = couponObject.discountPercentage * (1/100);
-        const calculatedDiscountPrice = Math.floor(totalAmount * newPercentFormat);
+        const calculatedDiscountPrice = Math.floor(totalAmountState * newPercentFormat);
         setcouponDiscountAmount(calculatedDiscountPrice);
-        setTotalAmountToPay(totalAmount - calculatedDiscountPrice);
+        setTotalAmountToPay(totalAmountState - calculatedDiscountPrice);
        }else{
         setBtnLabelText('Invalid')
         showToast(message || 'Invalid Coupon', 'error', 'Coupon not Verified');
@@ -106,7 +106,7 @@ const Checkout: React.FC = () => {
     const transactionObject: TransactionFormType = {
        userId: currentUser?._id || '',
        cardId: chosenCreditCard[0]._id,
-       totalAmount: totalAmount,
+       totalAmount: totalAmountState,
        products: newCart,
        couponId: currentCoupon,
    }
@@ -118,7 +118,7 @@ const Checkout: React.FC = () => {
     setisCouponValid(false);
     setCouponInputValue('');
     showToast('You can watch purchase details', 'success', 'Purchase Completed');
-    navigation.navigate('PurchaseScreen', {totalAmount: totalAmount, cart: originalCart});
+    navigation.navigate('PurchaseScreen', {totalAmount: totalAmountState, cart: originalCart});
    }
    else{
     showToast('Please try again', 'error', 'Purchase Failed');
@@ -144,7 +144,14 @@ const Checkout: React.FC = () => {
           keyboardDidShowListener.remove();
         };
       }, []);
-
+    useEffect(() => {
+     let updatedTotalAmount = 0
+     currentUser?.cart.forEach((item)=>{
+        updatedTotalAmount += item.price
+     });
+     setTotalAmountState(updatedTotalAmount);
+    }, [currentUser?.cart])
+    
     return (
         <View style={[{backgroundColor: background}, styles.container]}>
                   <KeyboardAvoidingView
@@ -190,7 +197,7 @@ const Checkout: React.FC = () => {
                 <View style={styles.totalAmountCon}>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '95%'}}>
                         <Text style={{color: text.primary, fontWeight: '300'}}>Items</Text>
-                        <ShekelPrice num={totalAmount}/>
+                        <ShekelPrice num={totalAmountState}/>
                     </View>
                     { isCouponValid && <View style={styles.coupondiscountcon}>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '95%', marginTop: '2%'}}>

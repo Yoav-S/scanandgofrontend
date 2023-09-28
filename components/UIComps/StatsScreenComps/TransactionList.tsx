@@ -92,28 +92,12 @@ const TransactionsList: React.FC = () => {
         const updatedPage = pageNumber + 1;
         setPageNumber(updatedPage);
         const updatedList = [...transactionsList, ...list]; // Use the spread operator here
+        console.log(updatedList);
         setTransactionsList(updatedList);
         setIsMoreToFetch(isMore);
     };
     
-    const list = transactionsList.map((transaction : recentTransaction, index) => {
-        
-        return(<TouchableOpacity style={{backgroundColor: background}} key={transaction._id} onPress={() => handlePressTransaction(transaction._id)}>
-            <ListItem style={{backgroundColor: background}} bottomDivider>
-                <ListItem.Content style={{ flexDirection: 'row',  alignItems: 'center' ,justifyContent:'space-between'}}>
-                    <View style={{flexDirection: 'row',  alignItems: 'center',justifyContent:'space-between',width:'30%'}}>
-                    <Text style={{ fontWeight: 'bold'}}>{index + 1}</Text>
-                    <Icon name={`cc-${transaction.cardType}`} style={styles.cardType} type='font-awesome' />
-                    </View>
-                    <View style={{flexDirection: 'row',  alignItems: 'center',justifyContent:'space-around',width:'60%'}}>
-                    <ListItem.Title>${transaction.totalAmount}</ListItem.Title>
-                    <ListItem.Subtitle>{transaction.formattedDate}</ListItem.Subtitle>  
-                    </View>
-                </ListItem.Content>
-                <ListItem.Chevron size={30} color={'black'} />
-            </ListItem>
-        </TouchableOpacity>)
-    });
+   
     const handleshowToast = () => {
         showToast('please try again later', 'error', 'Cannot find transaction details')
     }
@@ -128,7 +112,7 @@ const TransactionsList: React.FC = () => {
     <View>
 
     {
-        recentTransactionArray.map((transaction: recentTransaction, index) => {
+        transactionsList.map((transaction: recentTransaction, index) => {
             return (
                 <TransactionItem handleshowToast={handleshowToast} key={index} transaction={transaction}/>
             )

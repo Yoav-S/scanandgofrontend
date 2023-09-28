@@ -415,15 +415,12 @@ console.log(values);
 }
 
 const PaymentAttempt = async (transactionObject: TransactionFormType): Promise<boolean> => {
-    console.log(transactionObject);
     
     try{
       const response: AxiosResponse = await api.post('transactions/createTransaction', transactionObject, {headers: {Authorization: 'Bearer ' + token}});
       console.log(response.data);
       if(currentUser){
-      const newUser = await getUserById(currentUser._id, token);
-      console.log('newuser',newUser);
-      
+      const newUser = await getUserById(currentUser._id, token);      
       if (newUser != null) {
         setCurrentUser(newUser);
         setAuthenticated(true);
@@ -479,9 +476,7 @@ const PaymentAttempt = async (transactionObject: TransactionFormType): Promise<b
       const response: AxiosResponse = await api.post('coupon/getOne', requestBody,
       {
         headers:{Authorization: "Bearer " + token}
-      });
-      console.log(response.data);
-      
+      });      
         const couponObject: CouponType = response.data;
         return [true,couponObject];     
     } catch (error: any) {
@@ -534,7 +529,6 @@ headers:{Authorization: "Bearer " + token}
 } );
 if(response.status !== 200) {return [false];}
 else{
-  console.log(response.data);
   return [true,response.data];
 }
 }

@@ -5,6 +5,7 @@ import { ButtonGroup } from '@rneui/themed';
 import { ThemeContext } from '../../../context/ThemeContext';
 import { IStats} from '../../../interfaces/interfaces';
 import Toast from 'react-native-toast-message';
+import { Icon } from 'react-native-elements';
 import {
   LineChart,
 } from 'react-native-chart-kit';
@@ -125,13 +126,12 @@ return (
         }}
         width={Dimensions.get('window').width} // from react-native
         height={220}
-        yAxisLabel="$"
         yAxisInterval={1} // optional, defaults to 1
         chartConfig={{
           backgroundColor: '#0D0000',
           backgroundGradientFrom: '#ffa726',
           backgroundGradientTo: '#E3823C',
-          decimalPlaces: 2, // optional, defaults to 2dp
+          decimalPlaces: 1, // optional, defaults to 2dp
           color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
           labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
           style: {
