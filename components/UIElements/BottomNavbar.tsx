@@ -1,5 +1,5 @@
 import React, {useState, useEffect,useContext} from 'react';
-import { SafeAreaView, View,Text ,StyleSheet } from 'react-native';
+import { SafeAreaView, View,Text ,StyleSheet, Dimensions } from 'react-native';
 import { BottomNavbarInterface } from '../../interfaces/interfaces';
 import { Icon } from 'react-native-elements';
 
@@ -8,6 +8,8 @@ import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useDataContext } from '../../context/DataContext';
 import { ThemeContext } from '../../context/ThemeContext';
+const screen = Dimensions.get('window');
+
 const BottomNavbar: React.FC<BottomNavbarInterface> = (props) => {
   const route = useRoute();
   const { theme } = useContext(ThemeContext);
@@ -113,7 +115,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     justifyContent: 'center',
     position: 'absolute',
-    right: '40%',
+    right: '44%',
     bottom: '90%',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },

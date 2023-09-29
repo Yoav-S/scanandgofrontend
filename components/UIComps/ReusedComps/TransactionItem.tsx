@@ -15,8 +15,9 @@ const TransactionItem: React.FC<TransactionCompType> = ({transaction, handleshow
     const {currentUser, getFullTransaction, showToast} = useDataContext();
     const { cardType } = transaction;
     const { theme } = useContext(ThemeContext);
-    const { primary, secondary, text, background, itemBackground, itemText } = theme.colors     
-
+    const { primary, secondary, text, background, itemBackground, itemText, itemBoxShadow, androidShadow } = theme.colors     
+    console.log(itemBackground);
+    
     const handlePressTransaction = async (id: string) => {
       const [isExists, transaction] = await getFullTransaction(id);
       if(isExists){
@@ -29,7 +30,26 @@ const TransactionItem: React.FC<TransactionCompType> = ({transaction, handleshow
 
 
     return (
-        <TouchableOpacity onPress={() => {handlePressTransaction(transaction._id)}} style={[styles.container, {backgroundColor: itemBackground}]}>
+        <TouchableOpacity 
+        onPress={() => {handlePressTransaction(transaction._id)}} 
+        style={
+            [
+                styles.container, 
+                    {
+                        backgroundColor: itemBackground,
+                        shadowColor: itemBoxShadow.shadowColor,
+                        shadowOffset: {
+                            width: itemBoxShadow.shadowOffset.width,
+                            height: itemBoxShadow.shadowOffset.height
+                        },
+                        shadowOpacity: itemBoxShadow.shadowOpacity,
+                        shadowRadius: itemBoxShadow.shadowRadius,
+                        elevation: androidShadow.elevation
+                    },
+            ]
+        }>
+
+
             <Icon name={`cc-${transaction.cardType}`} style={styles.cardType} size={30} color={text.primary} type='font-awesome' />
             <Text style={{color: text.primary}}>{transaction.formattedDate}</Text>
             <ShekelPrice num={transaction.totalAmount}/>
@@ -38,6 +58,8 @@ const TransactionItem: React.FC<TransactionCompType> = ({transaction, handleshow
             size={30} 
             color={text.secondary}             
             />
+
+
         </TouchableOpacity>
     )
 }
@@ -50,8 +72,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         alignSelf: 'center',
         padding: '3%',
-        borderRadius: 8,
-        
+        borderRadius: 8,   
     },
     cardType: {},
     imageShekel: {

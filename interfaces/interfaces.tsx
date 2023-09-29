@@ -1,25 +1,34 @@
 import { Asset } from "react-native-image-picker";
 import {TextInput} from 'react-native'
 export interface Theme {
-    colors:
-    {
+  colors: {
+    primary: string;
+    secondary: string;
+    text: {
       primary: string;
-      secondary:string;
-      background: string;
-      itemBackground: string;
-      itemText: string;
-      text:{
-        primary: string;
-        secondary: string;
-      }
+      secondary: string;
+    };
+    background: string;
+    itemBackground: string;
+    itemBoxShadow: {
+        shadowColor: string;
+        shadowOffset: {
+          width: number,
+          height: number;
+        },
+        shadowOpacity: number;
+        shadowRadius: number;
     },
-    fonts:
-    {
-      regular: string;
-      bold: string; 
-    },
-  
-  }
+    androidShadow: {
+        elevation: number;
+    }
+    itemText: string;
+  };
+  fonts: {
+    regular: string;
+    bold: string;
+  };
+}
 
 export interface PaginationResponse<T> {
     list: T[];

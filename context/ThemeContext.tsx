@@ -16,8 +16,20 @@ export const ThemeProvider: React.FC<Props> = ({ children }) => {
         secondary: '#333333',
       },
       background: '#FCF5E5',
-      itemBackground: '#343333',
-      itemText: '#222222'
+      itemBackground: '#D5D3D0',
+      itemText: '#222222',
+      itemBoxShadow: {
+        shadowColor: "#333333",
+        shadowOffset: {
+          width: 6,
+          height: 5
+        },
+        shadowOpacity: 0.6,
+        shadowRadius: 4,
+      },
+      androidShadow: {
+        elevation: 10
+      }
     },
     fonts: {
       regular: 'Roboto-Regular',
@@ -46,9 +58,20 @@ export const ThemeProvider: React.FC<Props> = ({ children }) => {
         secondary: '#cccccc',
       },
       background: '#343434',
-      itemBackground: '#111111',
-      itemText: '#222222'
-      // Add more colors as needed
+      itemBackground: '#575756',
+      itemText: '#222222',
+      itemBoxShadow: {
+        shadowColor: "#333333",
+        shadowOffset: {
+          width: 6,
+          height: 5
+        },
+        shadowOpacity: 0.6,
+        shadowRadius: 4,
+      },
+      androidShadow: {
+        elevation: 10
+      }
     },
     fonts: {
       regular: 'Roboto-Regular',

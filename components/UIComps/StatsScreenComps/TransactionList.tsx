@@ -104,8 +104,8 @@ const TransactionsList: React.FC = () => {
 
     return (
         <View style={{borderRadius: 14}}>
-            <Text style={[styles.listHeader]} >All Transaction ({currentUser?.transactionsAmount})</Text>
-            <View style={{height: 250, width: '90%', alignSelf: 'center', backgroundColor: background, borderRadius: 14}}>
+            <Text style={[styles.listHeader, {color: text.primary}]} >All Transaction ({currentUser?.transactionsAmount})</Text>
+            <View style={{height: screen.height * 0.39, alignSelf: 'center', backgroundColor: background, borderRadius: 14}}>
                 { transactionsList.length > 0 ?                         <View style={styles.scrollViewCon}>
 
 <ScrollView>
