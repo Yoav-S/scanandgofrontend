@@ -28,7 +28,7 @@ export const ThemeProvider: React.FC<Props> = ({ children }) => {
         shadowRadius: 4,
       },
       androidShadow: {
-        elevation: 10
+        elevation: 5
       }
     },
     fonts: {
@@ -61,16 +61,17 @@ export const ThemeProvider: React.FC<Props> = ({ children }) => {
       itemBackground: '#575756',
       itemText: '#222222',
       itemBoxShadow: {
-        shadowColor: "#333333",
+        shadowColor: "#D5D3D0",
         shadowOffset: {
           width: 6,
           height: 5
         },
         shadowOpacity: 0.6,
         shadowRadius: 4,
+
       },
       androidShadow: {
-        elevation: 10
+        elevation: 5
       }
     },
     fonts: {

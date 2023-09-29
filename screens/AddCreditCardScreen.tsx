@@ -18,6 +18,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import { ThemeContext } from "../context/ThemeContext";
 import { Icon } from 'react-native-elements';
 import Toast from "react-native-toast-message";
+import DatePicker from "react-native-date-picker";
 const validationSchema = Yup.object().shape({
 cvv: cvvSchema,
 isDefault: isDefaultSchema,
@@ -118,6 +119,13 @@ const AddCreditCardScreen: React.FC = () => {
                         <View style={styles.expireincvvCon}>
                           <View>
                             <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '50%'}}>
+                            <DatePicker
+                            style={styles.datemodal}
+                            modal
+                            date={new Date()}
+                            maximumDate={new Date()}
+                            mode="date"
+                            />
                         <TextInput
                           style={[styles.dateInput,{borderBottomColor: focusOnCvv ? 'green' : 'gray'}]}
                           onChangeText={(text) => {
@@ -231,6 +239,10 @@ const styles = StyleSheet.create({
     },
     mainCon: {
 
+    },
+    datemodal: {
+      width: screen.width * 0.4,
+      backgroundColor: 'red'
     },
     dateInput: {
         borderRadius: 5,

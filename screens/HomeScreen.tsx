@@ -30,9 +30,9 @@ const HomeScreen: React.FC<HomeScreenType> = (props) => {
                 )
                  :
                 (<View>
-                        <Title fontFamily={"montserrat"} margin={'5%'} fontSize="2xl" color={text.primary}>Recent Items</Title>
+                        <Title fontFamily={"montserrat"} margin={'5%'} fontSize="lg" fontWeight={"bold"} color={text.primary}>Recent Items</Title>
                         <ImageCarousel data={recentItemArray} />
-                        <Title fontFamily={"montserrat"} margin={'5%'} fontSize="2xl" color={text.primary}>Recent Transactions</Title>
+                        <Title fontFamily={"montserrat"} margin={'5%'} fontSize="lg" fontWeight={"bold"} color={text.primary}>Recent Transactions</Title>
                         <View style={styles.scrollViewCon}>
 
                         <ScrollView style={styles.scrollView}>
