@@ -1,5 +1,5 @@
 import React, {useState , useContext, useEffect, useRef } from "react";
-import {View, Text, StyleSheet, SafeAreaView, KeyboardAvoidingView, TextInput, Platform, Keyboard, Dimensions} from 'react-native'
+import {View, Text, StyleSheet, SafeAreaView, KeyboardAvoidingView, TextInput, Platform, Keyboard, Dimensions, TouchableOpacity} from 'react-native'
 import TitleAndArrowBack from "../components/UIElements/TitleAndArrowBack";
 import BottomNavbar from "../components/UIElements/BottomNavbar";
 import { Formik } from 'formik';
@@ -39,7 +39,8 @@ const AddCreditCardScreen: React.FC = () => {
     const [openDateModal, setopenDateModal] = useState<boolean>(false);
     const [date, setDate] = useState<Date>(new Date());
     const [previewedDate, setPreviewedDate] = useState<string>('');
-    const [focusOnCvv, setFocusOnCvv] = useState(false);
+    const [isDateModalOpen, setisDateModalOpen] = useState(false);
+    const [focusOnExp, setFocusOnExp] = useState(false);
     const { primary, secondary, text, background } = theme.colors 
     const {addCreditCardAttempt, showToast, setisMessageModalVisible, currentUser} = useDataContext();
     const [allCategoriesValues, setAllCategoriesValues] = useState<{ label: string; value: string }[]>([
@@ -88,7 +89,8 @@ const AddCreditCardScreen: React.FC = () => {
         keyboardDidShowListener.remove();
       };
     }, []);    
-
+    console.log(focusOnExp);
+    
     return (
         <SafeAreaView style={[{backgroundColor: background},styles.container]}>
       <KeyboardAvoidingView
@@ -119,78 +121,21 @@ const AddCreditCardScreen: React.FC = () => {
 
                         <FormInput onPress={() => {handleChange('cartNumber')('')}} value={values.cardNumber} startValue={values.cardNumber} errorMessage={errors.cardNumber} setInput={handleChange('cardNumber')} label="Card Number" numeric/>
                         <FormInput onPress={() => {handleChange('cardholderName')('')}} value={values.cardholderName} startValue={values.cardholderName} errorMessage={errors.cardholderName} setInput={handleChange('cardholderName')} label="Card Holder Name"/>
-                        <View style={styles.expireincvvCon}>
-                          <View style={{alignSelf: 'center'}}>
-                            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                            <DatePicker
-                            style={styles.datemodal}
-                            modal
-                            date={date}
-                            maximumDate={new Date()}
-                            mode="date"
-                            onConfirm={(newDate : Date) => {
-                              setopenDateModal(false);
-                              setDate(newDate);
-                              const isoDate = newDate.toISOString();             
-                              const formattedDate = newDate.toLocaleDateString('en-GB', {
-                                month: '2-digit',
-                                day: '2-digit',
-                              });                             
-                              setPreviewedDate(formattedDate);
-                              setFieldValue('expirationDate', isoDate);
-                            }}
-                            onCancel={() => {
-                              setopenDateModal(false);
-                            }}
-                            />
-                        <TextInput
-                          style={[styles.dateInput,{borderBottomColor: focusOnCvv ? 'green' : 'gray'}]}
-                          onChangeText={(text) => {
-                            console.log(text.length);                            
-                            if(text.length === 5) {setFocusOnCvv(true);}
-                            else{setFocusOnCvv(false);}
-                            if (text.length === 2 && shouldAddSlash) {
-                              text += '/';
-                              setShouldAddSlash(false);
-                            } else if (text.length === 3 && text.charAt(2) !== '/') {
-                              text = text.substring(0, 2) + '/' + text.charAt(2);
-                              setShouldAddSlash(false);
-                            } else if (text.length === 2 && text.charAt(1) === '/') {
-                              setShouldAddSlash(true);
-                            }                      
-                            const [mm, yy] = text.split('/');                        
-                            let updatedMM = mm;
-                            let updatedYY = yy;
-                            if (mm && parseInt(mm) > 12) {
-                              updatedMM = '12';
-                            }                        
-                            if (yy && parseInt(yy) > new Date().getFullYear() + 20 - 2000) {
-                              updatedYY = (new Date().getFullYear() + 20 - 2000).toString();
-                            }                       
-                            const formattedText = updatedMM + (updatedYY ? '/' + updatedYY : '');                       
-                            handleChange('expirationDate')(formattedText);
-                          }}
-                          onBlur={() => {
-                            setShouldAddSlash(true);
-                          }}
-                          autoFocus
-                          placeholder={expirationDateInputPlaceholder}
+                        <View style={styles.expireincvvCon}>                         
+                        <FormInput
+                          onPress={() => {setFocusOnExp(true);}}
                           value={values.expirationDate}
-                          keyboardType="numeric"
-                          maxLength={5}
-                          onFocus={() => {setExpirationDateInputPlaceholder("MM/YY")}}
+                          label="Expirein"                
+                          startValue={values.expirationDate}    
+                          setInput={handleChange('expirationDate')}     
                         />
-                                                </View>
-
-                        {(errors.expirationDate && values.expirationDate !== '') && <Text style={{color: 'red', fontWeight: 'bold', width: 130}}>{errors.expirationDate}</Text>}
-
-                        </View>
-
-               <View style={{width: '50%', alignItems: 'flex-end'}}>
-
-                        <FormInput onPress={() => {handleChange('cvv')('')}} value={values.cvv} startValue={values.cvv} errorMessage={errors.cvv} setInput={handleChange('cvv')} label="CVV" numeric/>
+                        <FormInput 
+                        value={values.cvv} startValue={values.cvv} 
+                        setInput={handleChange('cvv')} 
+                        label="CVV" 
+                        numeric
+                        />
                       
-                        </View>
                         </View>
 
                     <View style={[ { width: '90%', alignSelf: 'center', height: 90 }]}>

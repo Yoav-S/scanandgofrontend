@@ -29,7 +29,7 @@ export const ThemeProvider: React.FC<Props> = ({ children }) => {
         shadowRadius: 4,
       },
       androidShadow: {
-        elevation: 5
+        elevation: 3
       }
     },
     fonts: {
@@ -60,7 +60,7 @@ export const ThemeProvider: React.FC<Props> = ({ children }) => {
       },
       background: '#343434',
       itemBackground: '#575756',
-      inputBackground: '#111111',
+      inputBackground: '#525252',
       itemText: '#222222',
       itemBoxShadow: {
         shadowColor: "#D5D3D0",
@@ -73,7 +73,7 @@ export const ThemeProvider: React.FC<Props> = ({ children }) => {
 
       },
       androidShadow: {
-        elevation: 5
+        elevation: 3
       }
     },
     fonts: {

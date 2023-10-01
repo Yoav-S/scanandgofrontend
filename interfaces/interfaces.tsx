@@ -306,6 +306,7 @@ export interface DayNightSwitcherProps {
 export interface FormInputType{
     label: string;
     setInput: (value: string) => void;
+    handleInputFocus?: (value: boolean) => void;
     validator?: boolean;
     errorMessage?: string | undefined;
     startValue?: string;
