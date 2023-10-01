@@ -15,7 +15,7 @@ const FormInput: React.FC<FormInputType> = (props) => {
   const route = useRoute();
   
   const { theme } = useContext(ThemeContext);
-  const { text, background } = theme.colors   
+  const { text, background, inputBackground } = theme.colors   
   const [isSecureText, setisSecureText] = useState<boolean>(true);
   const [greenUnderlineCondition, setgreenUnderlineCondition] = useState<boolean>(!props.errorMessage && props.startValue !== '');
   const onChangeTextHandler = (text: string) => {
@@ -41,7 +41,7 @@ const FormInput: React.FC<FormInputType> = (props) => {
       width={props.label === "CVV" ? 
       120 : props.label === 'Enter Coupon' ? 
       185 : 320}
-      backgroundColor={'gray.600'}
+      backgroundColor={inputBackground}
       borderWidth={0}
       style={[{
       marginBottom:props.label === 'CVV' ? '1%' : '1%',

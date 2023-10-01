@@ -36,6 +36,9 @@ const AddCreditCardScreen: React.FC = () => {
     const [shouldAddSlash, setShouldAddSlash] = useState<boolean>(true);
     const [isKeyboardVisible, setKeyboardVisible] = useState(false);
     const { theme, buttonTheme } = useContext(ThemeContext);
+    const [openDateModal, setopenDateModal] = useState<boolean>(false);
+    const [date, setDate] = useState<Date>(new Date());
+    const [previewedDate, setPreviewedDate] = useState<string>('');
     const [focusOnCvv, setFocusOnCvv] = useState(false);
     const { primary, secondary, text, background } = theme.colors 
     const {addCreditCardAttempt, showToast, setisMessageModalVisible, currentUser} = useDataContext();
@@ -117,14 +120,28 @@ const AddCreditCardScreen: React.FC = () => {
                         <FormInput onPress={() => {handleChange('cartNumber')('')}} value={values.cardNumber} startValue={values.cardNumber} errorMessage={errors.cardNumber} setInput={handleChange('cardNumber')} label="Card Number" numeric/>
                         <FormInput onPress={() => {handleChange('cardholderName')('')}} value={values.cardholderName} startValue={values.cardholderName} errorMessage={errors.cardholderName} setInput={handleChange('cardholderName')} label="Card Holder Name"/>
                         <View style={styles.expireincvvCon}>
-                          <View>
-                            <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '50%'}}>
+                          <View style={{alignSelf: 'center'}}>
+                            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                             <DatePicker
                             style={styles.datemodal}
                             modal
-                            date={new Date()}
+                            date={date}
                             maximumDate={new Date()}
                             mode="date"
+                            onConfirm={(newDate : Date) => {
+                              setopenDateModal(false);
+                              setDate(newDate);
+                              const isoDate = newDate.toISOString();             
+                              const formattedDate = newDate.toLocaleDateString('en-GB', {
+                                month: '2-digit',
+                                day: '2-digit',
+                              });                             
+                              setPreviewedDate(formattedDate);
+                              setFieldValue('expirationDate', isoDate);
+                            }}
+                            onCancel={() => {
+                              setopenDateModal(false);
+                            }}
                             />
                         <TextInput
                           style={[styles.dateInput,{borderBottomColor: focusOnCvv ? 'green' : 'gray'}]}
@@ -169,7 +186,7 @@ const AddCreditCardScreen: React.FC = () => {
 
                         </View>
 
-               <View style={{width: '45%'}}>
+               <View style={{width: '50%', alignItems: 'flex-end'}}>
 
                         <FormInput onPress={() => {handleChange('cvv')('')}} value={values.cvv} startValue={values.cvv} errorMessage={errors.cvv} setInput={handleChange('cvv')} label="CVV" numeric/>
                       
@@ -254,9 +271,8 @@ const styles = StyleSheet.create({
     expireincvvCon: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        width: '90%',
-        alignSelf: 'center'
-
+        alignSelf: 'center',
+        width: '95%',
     },
     cardContainer: {
         marginBottom: "5%",

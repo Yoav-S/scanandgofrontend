@@ -17,6 +17,7 @@ export const ThemeProvider: React.FC<Props> = ({ children }) => {
       },
       background: '#FCF5E5',
       itemBackground: '#D5D3D0',
+      inputBackground: '#E3E2E0',
       itemText: '#222222',
       itemBoxShadow: {
         shadowColor: "#333333",
@@ -59,6 +60,7 @@ export const ThemeProvider: React.FC<Props> = ({ children }) => {
       },
       background: '#343434',
       itemBackground: '#575756',
+      inputBackground: '#111111',
       itemText: '#222222',
       itemBoxShadow: {
         shadowColor: "#D5D3D0",

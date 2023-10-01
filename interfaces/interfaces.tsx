@@ -10,6 +10,7 @@ export interface Theme {
     };
     background: string;
     itemBackground: string;
+    inputBackground: string,
     itemBoxShadow: {
         shadowColor: string;
         shadowOffset: {
