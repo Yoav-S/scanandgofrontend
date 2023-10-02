@@ -223,12 +223,12 @@ const ProblemReport: React.FC<ProblemReportType> = () => {
           navigation.goBack();
         }}
       />
-          <ScrollView>
 
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         style={{flex: 1}}>
-        <View style={{height: route.params.cameFrom === 'Settings' ? height * 0.8 : height * 0.9}}>
+                    <ScrollView style={{height: route.params.cameFrom === 'Settings' ? height * 0.7 : height * 0.9}}>
+
             {buganimationObject}
 
             <View style={styles.allbutNavbarCon}>
@@ -350,14 +350,13 @@ const ProblemReport: React.FC<ProblemReportType> = () => {
                 </Formik>
               )}
             </View>
-        </View>
 
-        {route.params.cameFrom === 'Settings'
+            </ScrollView>
+
+      </KeyboardAvoidingView>
+      {route.params.cameFrom === 'Settings'
           ? !isKeyboardVisible && <BottomNavbar />
           : null}
-      </KeyboardAvoidingView>
-      </ScrollView>
-
       <Toast />
     </SafeAreaView>
   );
@@ -390,7 +389,7 @@ const createStyles = (
       justifyContent: 'space-between',
     },
     allbutNavbarCon: {
-      margin: '4%',
+      margin: '4%'
     },
     descriptionContainer: {
       marginTop: 20,
