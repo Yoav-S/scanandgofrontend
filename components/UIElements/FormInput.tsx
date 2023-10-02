@@ -24,9 +24,6 @@ const FormInput: React.FC<FormInputType> = (props) => {
       const currentDate = new Date();
       const currentYear = currentDate.getFullYear();
       const currentMonth = currentDate.getMonth() + 1;
-
-      //add returns
-
       
       if(text.length === 5){
         let mm: string = text.substring(0,2);
@@ -37,6 +34,7 @@ const FormInput: React.FC<FormInputType> = (props) => {
           const newText: string = text.substring(0,3) + stringnewYY;
           setPreviusText(newText);
           props.setInput(newText);
+          return;
         }
         else if(Number(yy) < Number(currentYear.toString().substring(2,4))){
           if(Number(mm) >= Number(currentMonth)){
@@ -44,6 +42,8 @@ const FormInput: React.FC<FormInputType> = (props) => {
             const newText: string = text.substring(0,3) + newYY;
             setPreviusText(newText);
             props.setInput(newText);
+            return;
+
           }
           else{
             const newMM: string = currentMonth.toString();
@@ -51,6 +51,8 @@ const FormInput: React.FC<FormInputType> = (props) => {
             const newText: string = newMM + '/' + newYY;
             setPreviusText(newText);
             props.setInput(newText);
+            return;
+
           }
         }
         else if(Number(yy) === Number(currentYear.toString().substring(2,4)) && Number(mm) < Number(currentMonth)){
@@ -58,10 +60,14 @@ const FormInput: React.FC<FormInputType> = (props) => {
           const newText: string = mm + text.substring(2,5);
           setPreviusText(newText);
           props.setInput(newText);
+          return;
+
         }
         else{
           setPreviusText(text);
           props.setInput(text);
+          return;
+
         }
       }
       else if(text.length === 4){
@@ -72,25 +78,35 @@ const FormInput: React.FC<FormInputType> = (props) => {
           const newText = text.substring(0,3) + yearDecade;
           setPreviusText(newText);
           props.setInput(newText);
+          return;
+
         }
         else if(Number(text[3]) > Number(Number(yearDecade) + 2)){ 
           const newText = text.substring(0,3) + stringTwoYearsDecade
           setPreviusText(newText);
           props.setInput(newText);
+          return;
+
         }
         else{
           setPreviusText(text);
           props.setInput(text);
+          return;
+
         }
       }
       else if(text.length < previusText.length){        
         if(previusText.length === 3){
           setPreviusText(text[0]);
           props.setInput(text[0]);
+          return;
+
         }
         else{
           setPreviusText(text);
           props.setInput(text);
+          return;
+
         }
       }
       else if(text.length === 2 && (text.length > previusText.length)){
@@ -105,6 +121,7 @@ const FormInput: React.FC<FormInputType> = (props) => {
       else{
         setPreviusText(text);
         props.setInput(text);
+        return;
       }
     } 
 
@@ -135,9 +152,11 @@ const FormInput: React.FC<FormInputType> = (props) => {
       value={props.startValue}
       width={props.label === "CVV" || props.label === 'Expirein' ? 
       width * 0.35 : props.label === 'Enter Coupon' ? 
-      185 : width * 0.8}
+      185 : width * 0.85}
+      borderRadius={12}
       backgroundColor={inputBackground}
       borderWidth={0}
+      padding={'4%'}
       style={[{
       marginBottom:props.label === 'CVV' ? '1%' : '1%',
       color: text.primary,             
@@ -186,7 +205,6 @@ const FormInput: React.FC<FormInputType> = (props) => {
 
 const styles = StyleSheet.create({
   textInput: {
-    borderRadius: 50,
     fontSize: 14,
     alignSelf: 'center',
   },

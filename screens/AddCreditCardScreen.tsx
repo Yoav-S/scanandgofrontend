@@ -137,7 +137,7 @@ const AddCreditCardScreen: React.FC = () => {
                       
                         </View>
 
-                    <View style={[ { width: '90%', alignSelf: 'center', height: 90 }]}>
+                    <View style={[ { width: screen.width * 0.8, alignSelf: 'center', height: 90 }]}>
 
                                 <DropDownPicker
                                     listMode="SCROLLVIEW"
@@ -146,10 +146,7 @@ const AddCreditCardScreen: React.FC = () => {
                                     style={{
                                         
                                         backgroundColor: background,
-                                        borderWidth: 1,
-                                        paddingHorizontal: 12,
                                         borderRadius: 5,
-                                        marginTop: '6%',
                                         zIndex: 10,
                                         borderColor: currentCategoryValue !== '' ? 'green' : text.secondary
                                     }}
@@ -216,7 +213,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignSelf: 'center',
-        width: '95%',
+        width: '92%',
     },
     cardContainer: {
         marginBottom: "5%",

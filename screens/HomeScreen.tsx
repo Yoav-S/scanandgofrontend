@@ -10,6 +10,8 @@ import Toast from "react-native-toast-message";
 import NoTransactionComp from "../components/UIComps/HomeScreenCompsFolder/NoTransactionComp";
 import { Container } from 'native-base';
 import { Button, Text as Title } from 'native-base';
+const { width, height } = Dimensions.get('window');
+
 const HomeScreen: React.FC<HomeScreenType> = (props) => {
     const { theme } = useContext(ThemeContext);
     const { primary, secondary, text, background } = theme.colors     
@@ -30,7 +32,6 @@ const HomeScreen: React.FC<HomeScreenType> = (props) => {
                 )
                  :
                 (<View>
-                        <Title fontFamily={"montserrat"} margin={'5%'} fontSize="lg" fontWeight={"bold"} color={text.primary}>Recent Items</Title>
                         <ImageCarousel data={recentItemArray} />
                         <Title fontFamily={"montserrat"} margin={'5%'} fontSize="lg" fontWeight={"bold"} color={text.primary}>Recent Transactions</Title>
                         <View style={styles.scrollViewCon}>
@@ -67,7 +68,7 @@ const styles = StyleSheet.create({
 
     },
     scrollViewCon: {
-        height: 200,
+        height: height * 0.4,
         marginTop:'5%'
     },
     item: {
