@@ -36,11 +36,7 @@ const AddCreditCardScreen: React.FC = () => {
     const [shouldAddSlash, setShouldAddSlash] = useState<boolean>(true);
     const [isKeyboardVisible, setKeyboardVisible] = useState(false);
     const { theme, buttonTheme } = useContext(ThemeContext);
-    const [openDateModal, setopenDateModal] = useState<boolean>(false);
-    const [date, setDate] = useState<Date>(new Date());
-    const [previewedDate, setPreviewedDate] = useState<string>('');
-    const [isDateModalOpen, setisDateModalOpen] = useState(false);
-    const [focusOnExp, setFocusOnExp] = useState(false);
+    const [expireinDate, setExpireinDate] = useState('');
     const { primary, secondary, text, background } = theme.colors 
     const {addCreditCardAttempt, showToast, setisMessageModalVisible, currentUser} = useDataContext();
     const [allCategoriesValues, setAllCategoriesValues] = useState<{ label: string; value: string }[]>([
@@ -54,6 +50,7 @@ const AddCreditCardScreen: React.FC = () => {
 
     const handleFormSubmit = async (values: {cardType: string, cardNumber: string, cardholderName: string, expirationDate: string, cvv: string}) => {
         setisMessageModalVisible(true);        
+        console.log(values);
         const creditCardForm: creditCardFormType = values;
         creditCardForm.isDefault = isDefault;
         const [isAdded, message] = await addCreditCardAttempt(creditCardForm);
@@ -89,7 +86,6 @@ const AddCreditCardScreen: React.FC = () => {
         keyboardDidShowListener.remove();
       };
     }, []);    
-    console.log(focusOnExp);
     
     return (
         <SafeAreaView style={[{backgroundColor: background},styles.container]}>
@@ -119,15 +115,18 @@ const AddCreditCardScreen: React.FC = () => {
                         /></ScrollView>
                                                 <ScrollView style={[styles.cardContainer,]}>
 
-                        <FormInput onPress={() => {handleChange('cartNumber')('')}} value={values.cardNumber} startValue={values.cardNumber} errorMessage={errors.cardNumber} setInput={handleChange('cardNumber')} label="Card Number" numeric/>
+                        <FormInput onPress={() => {handleChange('cardNumber')('')}} value={values.cardNumber} startValue={values.cardNumber} errorMessage={errors.cardNumber} setInput={handleChange('cardNumber')} label="Card Number" numeric/>
                         <FormInput onPress={() => {handleChange('cardholderName')('')}} value={values.cardholderName} startValue={values.cardholderName} errorMessage={errors.cardholderName} setInput={handleChange('cardholderName')} label="Card Holder Name"/>
                         <View style={styles.expireincvvCon}>                         
                         <FormInput
-                          onPress={() => {setFocusOnExp(true);}}
                           value={values.expirationDate}
-                          label="Expirein"                
+                          label="Expirein"            
+                          numeric    
                           startValue={values.expirationDate}    
-                          setInput={handleChange('expirationDate')}     
+                          setInput={(text: string)=>{
+                            handleChange('expirationDate')(text);
+                            setExpireinDate(text);
+                          }}     
                         />
                         <FormInput 
                         value={values.cvv} startValue={values.cvv} 

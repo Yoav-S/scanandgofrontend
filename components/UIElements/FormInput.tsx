@@ -17,26 +17,107 @@ const FormInput: React.FC<FormInputType> = (props) => {
   const { theme } = useContext(ThemeContext);
   const { text, background, inputBackground } = theme.colors   
   const [isSecureText, setisSecureText] = useState<boolean>(true);
+
+
   const onChangeTextHandler = (text: string) => {
-    if (props.label === 'Expirein') {
+    if (props.label === 'Expirein') {    
       const currentDate = new Date();
       const currentYear = currentDate.getFullYear();
-      const currentMonth = currentDate.getMonth() + 1; // Month is zero-based, so add 1
-      const currentDay = currentDate.getDate();
-      if(text.length < previusText.length){
-        props.setInput(text);
+      const currentMonth = currentDate.getMonth() + 1;
+
+      //add returns
+
+      
+      if(text.length === 5){
+        let mm: string = text.substring(0,2);
+        let yy: string = text.substring(3,5);
+        if(Number(yy) > Number(currentYear.toString().substring(2,4)) + 20){
+          const newYY: number = Number(currentYear.toString().substring(2,4)) + 20;
+          const stringnewYY: string = newYY.toString();
+          const newText: string = text.substring(0,3) + stringnewYY;
+          setPreviusText(newText);
+          props.setInput(newText);
+        }
+        else if(Number(yy) < Number(currentYear.toString().substring(2,4))){
+          if(Number(mm) >= Number(currentMonth)){
+            const newYY: number = Number(currentYear.toString().substring(2,4));
+            const newText: string = text.substring(0,3) + newYY;
+            setPreviusText(newText);
+            props.setInput(newText);
+          }
+          else{
+            const newMM: string = currentMonth.toString();
+            const newYY: number = Number(currentYear.toString().substring(2,4));
+            const newText: string = newMM + '/' + newYY;
+            setPreviusText(newText);
+            props.setInput(newText);
+          }
+        }
+        else if(Number(yy) === Number(currentYear.toString().substring(2,4)) && Number(mm) < Number(currentMonth)){
+          mm = currentMonth.toString();
+          const newText: string = mm + text.substring(2,5);
+          setPreviusText(newText);
+          props.setInput(newText);
+        }
+        else{
+          setPreviusText(text);
+          props.setInput(text);
+        }
+      }
+      else if(text.length === 4){
+        let yearDecade: string = currentYear.toString()[0];
+        let twoyearsDecade: number = Number(yearDecade) + 2;
+        let stringTwoYearsDecade: string = twoyearsDecade.toString();
+        if(Number(text[3]) < Number(yearDecade)){          
+          const newText = text.substring(0,3) + yearDecade;
+          setPreviusText(newText);
+          props.setInput(newText);
+        }
+        else if(Number(text[3]) > Number(Number(yearDecade) + 2)){ 
+          const newText = text.substring(0,3) + stringTwoYearsDecade
+          setPreviusText(newText);
+          props.setInput(newText);
+        }
+        else{
+          setPreviusText(text);
+          props.setInput(text);
+        }
+      }
+      else if(text.length < previusText.length){        
+        if(previusText.length === 3){
+          setPreviusText(text[0]);
+          props.setInput(text[0]);
+        }
+        else{
+          setPreviusText(text);
+          props.setInput(text);
+        }
+      }
+      else if(text.length === 2 && (text.length > previusText.length)){
+        let localText: string = text;
+        if(Number(text) > 12){
+          localText = '12';
+        }
+        setPreviusText(localText + '/');
+        props.setInput(localText + '/');
         return;
       }
-      if(text.length === 2 && (text.length > previusText.length)){
-
-        props.setInput(text + '/');
+      else{
+        setPreviusText(text);
+        props.setInput(text);
       }
-      setPreviusText(text);
-    } else if (props.label === 'Card Holder Name') {
+    } 
+
+
+
+    else if (props.label === 'Card Holder Name') {
       props.setInput(text.toUpperCase());
-    } else {
+    } 
+
+    else {
       props.setInput(text);
     }
+
   };
   
 
