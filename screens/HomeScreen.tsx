@@ -36,7 +36,7 @@ const HomeScreen: React.FC<HomeScreenType> = (props) => {
                         <Title fontFamily={"montserrat"} margin={'5%'} fontSize="lg" fontWeight={"bold"} color={text.primary}>Recent Transactions</Title>
                         <View style={styles.scrollViewCon}>
 
-                        <ScrollView style={styles.scrollView}>
+                        <ScrollView showsVerticalScrollIndicator={false} style={styles.scrollView}>
                             {
                                 recentTransactionArray.map((transaction: recentTransaction, index) => {
                                     return (

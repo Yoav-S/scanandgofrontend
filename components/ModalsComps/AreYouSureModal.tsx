@@ -1,5 +1,5 @@
 import React, {useEffect, useContext, useState} from "react";
-import {View, Text, StyleSheet} from 'react-native'
+import {View, Text, StyleSheet, Dimensions} from 'react-native'
 import { useDataContext } from "../../context/DataContext";
 import { Modal, ModalContent, ModalFooter, ModalButton } from 'react-native-modals'
 import { ThemeContext } from "../../context/ThemeContext";
@@ -9,6 +9,8 @@ import cancelDeleteAnimation from '../../assets/cancelDeleteAnimation.json'
 import deleteSuccessAnimation from '../../assets/deletesuccessanimation.json'
 import deleteFailureAnimation from '../../assets/deletefailureanimation.json'
 import StyledButton from "../UIElements/StyledButton";
+const screen = Dimensions.get('window');
+
 const AreYouSureModal: React.FC = () => {
   const { theme, buttonTheme } = useContext(ThemeContext);
   const { primary, secondary, text, background } = theme.colors 
@@ -78,13 +80,9 @@ const AreYouSureModal: React.FC = () => {
             modalStyle={[styles.modalStyle, {backgroundColor: background}]}
             onSwipeOut={() => {setisAreYouSureModalOpen(false);}}
             footer={
-                <ModalFooter style={[styles.ModalFooter, {justifyContent: 'center', alignItems: 'center', flexDirection: 'row', height: 50}]}>
-                    <Text style={{color: text.primary, alignSelf:'center', marginTop: '5%', fontWeight: 'bold', fontSize: 18}}>Swipe to cancel </Text>
-                    <View style={{alignSelf: 'center', alignItems: 'center', marginTop: '5%'}}>{canceldeleteAnimationObject}</View>
-                </ModalFooter>
-                
-              }>
-                  {(!isLoading && !isPreviewSuccessAnimation && !isPreviewFailureAnimation) && <StyledButton onPress={handleDeleteCardProcess} text="Delete anyway" />}
+                <ModalFooter style={[styles.ModalFooter, {justifyContent: 'center', alignItems: 'center', flexDirection: 'row', height: screen.height * 0.25}]}>
+
+                    {(!isLoading && !isPreviewSuccessAnimation && !isPreviewFailureAnimation) && <StyledButton onPress={handleDeleteCardProcess} text="Delete anyway" />}
                   {isLoading && <View style={{alignSelf: 'center'}}>{activityIndicatorobject}</View>}
                   {isPreviewSuccessAnimation && 
                   <View style={{alignItems: 'center'}}>
@@ -97,6 +95,11 @@ const AreYouSureModal: React.FC = () => {
                     {failureAnimationObject}
                     <Text style={{color: 'crimson', fontWeight: 'bold', marginTop: '5%'}}>{resultMessage.length > 0 ? resultMessage : 'Failed To Delete Credit Card'}</Text>
                     </View>}
+                </ModalFooter>
+                
+              }> <View style={{alignSelf: 'center', alignItems: 'center', marginTop: '5%'}}>
+                    <Text style={{color: text.primary, alignSelf:'center', marginTop: '5%', fontWeight: 'bold', fontSize: 18}}>Swipe to cancel delete</Text>
+                   {canceldeleteAnimationObject}</View>
 
             </Modal>
         </View>

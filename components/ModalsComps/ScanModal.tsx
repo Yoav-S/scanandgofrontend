@@ -124,6 +124,8 @@ const handleReadFromNFC = async () => {
         // Prefix to remove
         const itemId = payloadString.substring(3);
         const response = await getItemAttempt(itemId);
+        console.log(response);
+                
         if (response.status == 200 || response.status == 201) {
           const itemData:Itemprop = response.data;
           setTitle(`${itemData.name} ${itemData.price}`);

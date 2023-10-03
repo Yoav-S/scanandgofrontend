@@ -13,6 +13,7 @@ import AreYouSureModal from '../ModalsComps/AreYouSureModal';
 import SplashScreen from '../../screens/SplashScreen';
 import { ThemeContext } from '../../context/ThemeContext';
 import TermsAndConditionsModal from '../ModalsComps/TermsAndConditionsModal';
+import BottomNavbar from '../UIElements/BottomNavbar';
 const Main: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true); // Add isLoading state
   const {setTheme, lightTheme, darkTheme, buttonTheme} = useContext(ThemeContext);
@@ -63,6 +64,7 @@ if(isLoading){
     <View style={styles.container}>
         {authenticated ? (
                     <View style={{flex: 1}}>
+                      
                     <AuthenticatedStackScreen />
                     <ScanModal/>
                     <MessageModal/>
@@ -75,7 +77,6 @@ if(isLoading){
                     <TermsAndConditionsModal/>
           </View>
         )}
-
     </View>
   );
 };

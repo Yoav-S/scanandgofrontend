@@ -3,6 +3,7 @@ import { View, StyleSheet, Text, Dimensions, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Formik } from 'formik';
+import Button from '@react-native-material/core';
 import * as Yup from 'yup';
 import axios from 'axios';
 import { useToken } from '../context/TokenContext';
@@ -31,6 +32,7 @@ import { Icon } from 'react-native-elements';
 import { Input } from '@rneui/themed';
 
 import { ThemeContext } from '../context/ThemeContext';
+import StyledWrapper from '../components/UIElements/StyledWrapper';
 const validationSchema = Yup.object().shape({
   email: emailSchema,
   password: passwordSchema,
@@ -85,7 +87,7 @@ const handleFormSubmit = async ({ confirmPassword, ...values } : Registergion_Fo
   }
 
   return (
-    <View style={[styles.container, { backgroundColor: background }]}>
+    <StyledWrapper route='Signup' style={[{ flex: 1 ,backgroundColor: background }]}>
       <BigTitle title={'Create An Account'} />
 { isLoading ? (<ActivityIndicator size={60}/>) : (<ScrollView style={{margin: '3%'}}>
   <View>
@@ -241,14 +243,11 @@ const handleFormSubmit = async ({ confirmPassword, ...values } : Registergion_Fo
      )}
   <Toast/>
 
-    </View>
+    </StyledWrapper>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   datemodal: {
   },
   modal: {

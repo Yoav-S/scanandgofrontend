@@ -124,7 +124,7 @@ return (
             },
           ],
         }}
-        width={Dimensions.get('window').width} // from react-native
+        width={Dimensions.get('window').width * 0.95} // from react-native
         height={220}
         yAxisInterval={1} // optional, defaults to 1
         chartConfig={{
@@ -147,6 +147,7 @@ return (
         style={{
           marginVertical: 8,
           borderRadius: 16,
+          alignSelf: 'center'
         }}
       />
             <Toast/>

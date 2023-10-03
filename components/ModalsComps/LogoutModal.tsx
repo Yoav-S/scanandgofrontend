@@ -29,7 +29,7 @@ const LogoutModal: React.FC = () => {
             footer={
                 <ModalFooter style={[{backgroundColor: background},styles.ModalFooter]}>
                   <ModalButton
-                    style={{height: 50, backgroundColor: 'red', margin: '10%', borderRadius: 2}}
+                    style={{height: 50, backgroundColor: 'red', margin: '10%', borderRadius: 8}}
                     textStyle={[{color: text.primary, fontSize: 12, flexWrap: 'wrap'},styles.ModalButtonText]}
                     text="Logout"
                     onPress={() => 

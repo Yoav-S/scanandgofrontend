@@ -128,7 +128,6 @@ const styles = StyleSheet.create({
     },
     formCon: {
       marginTop: '3%',
-      backgroundColor: 'lightgray',
     },
     marginTopCon: {
       marginTop: '10%',
@@ -138,6 +137,7 @@ const styles = StyleSheet.create({
       marginTop: '5%',
       alignSelf:'center',
       width: '80%',
+      elevation: 4
     },
     firstCon: {
       borderRadius: 8

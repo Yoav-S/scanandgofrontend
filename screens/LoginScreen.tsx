@@ -20,6 +20,7 @@ import activityIndicator from '../assets/activitiindicator.json'
 import bugbuttonanimation from '../assets/bugpressanimation.json'
 import LottieView from "lottie-react-native";
 import loginAnimation from '../assets/loginscreenlottie.json'
+import StyledWrapper from "../components/UIElements/StyledWrapper";
 const validationSchema = Yup.object().shape({
   email: emailSchema,
   password: passwordSchema,
@@ -63,11 +64,11 @@ const LoginScreen: React.FC = () => {
       showToast('Sorry... wrong email or password','error','Login Failed');
       return;
     }
+    showToast('We will now move to Home page', 'success', 'Login Success')
     setTimeout(() => {
-      showToast('We will now move to Home page', 'success', 'Login Success')
       setAuthenticated(true);
       navigation.navigate('Home');
-    }, 3000)
+    }, 2000)
   };
 
   const navigateToSignUp = () => {
@@ -75,7 +76,7 @@ const LoginScreen: React.FC = () => {
   }
 
   return (
-    <View style={[styles.container, { backgroundColor: background }]}>
+    <StyledWrapper style={{backgroundColor: background, flex: 1}} route={'login'}>
       <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
       <BigTitle title="Login" />
       <TouchableOpacity onPress={() => {navigation.navigate('ProblemReport', {cameFrom: 'Login'})}}>
@@ -145,7 +146,7 @@ const LoginScreen: React.FC = () => {
       </ScrollView>
       <Toast/> 
 
-    </View>
+    </StyledWrapper>
   );
 };
 

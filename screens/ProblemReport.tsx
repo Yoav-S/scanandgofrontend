@@ -216,7 +216,7 @@ const ProblemReport: React.FC<ProblemReportType> = () => {
     }
   };
   return (
-    <SafeAreaView style={styles.container}>
+    <ScrollView style={styles.container}>
       <TitleAndArrowBack
         text="Report A Problem"
         onPress={() => {
@@ -226,12 +226,13 @@ const ProblemReport: React.FC<ProblemReportType> = () => {
 
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        style={{flex: 1}}>
-                    <ScrollView style={{height: route.params.cameFrom === 'Settings' ? height * 0.7 : height * 0.9}}>
+        style={{flex: 1, height: height * 0.94}}>
 
-            {buganimationObject}
 
-            <View style={styles.allbutNavbarCon}>
+            <View  style={{height: route.params.cameFrom === 'Settings' ? height * 0.8 : height * 0.9, padding: '5%'}}>
+            <ScrollView showsVerticalScrollIndicator={false}>
+
+{buganimationObject}
               {isLoading ? (
                 <View style={{marginTop: '50%'}}>
                   {activitiIndicatorAnimation}
@@ -349,16 +350,18 @@ const ProblemReport: React.FC<ProblemReportType> = () => {
                   )}
                 </Formik>
               )}
+                          </ScrollView>
+
             </View>
 
-            </ScrollView>
 
-      </KeyboardAvoidingView>
       {route.params.cameFrom === 'Settings'
           ? !isKeyboardVisible && <BottomNavbar />
           : null}
+                </KeyboardAvoidingView>
+
       <Toast />
-    </SafeAreaView>
+    </ScrollView>
   );
 };
 
@@ -389,7 +392,7 @@ const createStyles = (
       justifyContent: 'space-between',
     },
     allbutNavbarCon: {
-      margin: '4%'
+      margin: '4%',
     },
     descriptionContainer: {
       marginTop: 20,

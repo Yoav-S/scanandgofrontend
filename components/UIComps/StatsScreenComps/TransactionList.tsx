@@ -108,8 +108,7 @@ const TransactionsList: React.FC = () => {
             <View style={{height: screen.height * 0.39, alignSelf: 'center', backgroundColor: background, borderRadius: 14}}>
                 { transactionsList.length > 0 ?                         <View style={styles.scrollViewCon}>
 
-<ScrollView>
-    <View>
+<ScrollView showsVerticalScrollIndicator={false}>
 
     {
         transactionsList.map((transaction: recentTransaction, index) => {
@@ -118,10 +117,9 @@ const TransactionsList: React.FC = () => {
             )
         })
     }
-        </View>
         {isMoreToFetch ? (
                     isLoading ? (
-                    <View style={{alignSelf: 'center', marginTop: '1%', borderRadius: 50}}>
+                    <View style={{alignSelf: 'center', marginTop: '1%', borderRadius: 50, backgroundColor: 'black'}}>
                     {activitiIndicatorObject}
                 </View> 
                 ) : (
@@ -157,7 +155,7 @@ flexGrow: 1,
         borderWidth: 1,
     },
     listHeader: {
-        margin: 5,
+        marginLeft: '4%',
         fontWeight: 'bold'
     },
 })
