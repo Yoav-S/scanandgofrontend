@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { View, StyleSheet, SafeAreaView, ScrollView , Text} from 'react-native';
+import { View, StyleSheet, SafeAreaView, ScrollView , Text, Dimensions} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { CheckBox } from 'react-native-elements';
@@ -19,6 +19,7 @@ import LottieView from 'lottie-react-native';
 interface PaymentMethodsScreenProps {
     navigation: StackNavigationProp<any, 'PaymentMethodsScreen'>;
 }
+const { width, height } = Dimensions.get('window');
 
 const PaymentMethodsScreen: React.FC<PaymentMethodsScreenProps> = ({ navigation }) => {
     const { currentUser } = useDataContext();
@@ -82,21 +83,27 @@ const PaymentMethodsScreen: React.FC<PaymentMethodsScreenProps> = ({ navigation 
                                 style={styles.trashicon}
                                 name="trash" 
                                 size={30} 
-                                color={text.primary}             
+                                color={'white'}             
                                 onPress={() => {
                                     setcardId(card._id);
                                     setisAreYouSureModalOpen(true);
                                 }}
                                 />
                                 </View>
-                                <View style={{flexDirection: 'row', alignItems: 'center',}}>
+                                <View style={{flexDirection: 'row', alignItems: 'center', padding: '5%', justifyContent: 'space-between', width: width * 0.75}}>
                                     {
-                                        isLoading ? (<View style={{padding: '5%'}}>{activitiIndicatorAnimation}</View>) : (<CheckBox
+                                        isLoading ? (<View style={{ backgroundColor: 'black', borderRadius: 50}}>{activitiIndicatorAnimation}</View>) : (
+                                            <View style={{position: 'relative'}}>
+
+                                        <CheckBox
+                                        containerStyle={styles.defaultCheckbox}
                                             checked={card.isDefault}
                                             onPress={() => {
                                                 if(card.isDefault){return;}
                                                 handleDefaultCardChange(card._id)}}
-                                        />)
+                                        />
+                                                                                    </View>
+)
                                     }
         
                                 <Text style={{color: text.primary, fontWeight: 'bold'}}>Use as default payment method</Text>
@@ -126,6 +133,11 @@ const styles = StyleSheet.create({
     trashicon: {
         width: 30,
         textAlign: 'center',
+    },
+    defaultCheckbox: {
+        position: 'absolute',
+        top: height * -0.035,
+        left: width * -0.05
     },
     titleCon: {
         flexDirection: 'row',

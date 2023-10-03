@@ -33,7 +33,6 @@ const BottomNavbar: React.FC<BottomNavbarInterface> = (props) => {
   setisVisibleStatus(!isVisibleStatus);
 }
 
-console.log(amountofitemsvariable);
 
 useEffect(() => {
 setamountofitemsvariable(currentUser?.cart.length || 0)
@@ -47,7 +46,7 @@ setamountofitemsvariable(currentUser?.cart.length || 0)
       <Icon name="home" size={30} color={
       route.name === "Home" || 
       route.name === "ScanningTour"
-      ? background : 'white'} onPress={navigateHome}/>
+      ? 'black' : 'white'} onPress={navigateHome}/>
       <View style={{flexDirection: 'row'}}>
       {amountofitemsvariable > 0 && ( 
         <Text style={[{ color: 'white', backgroundColor: 'red', borderRadius: 50, width: 18, textAlign: 'center', fontSize: 12  }, styles.amountvariable]}>
@@ -57,7 +56,7 @@ setamountofitemsvariable(currentUser?.cart.length || 0)
       <Icon color={route.name === "CartScreen" || 
       route.name === 'CheckoutScreen' ||
       route.name === 'PurchaseScreen' ? 
-      background :
+      'black' :
        'white' } 
        name="shopping-cart" size={30} onPress={navigateCart}/>
       </View>
@@ -78,9 +77,9 @@ setamountofitemsvariable(currentUser?.cart.length || 0)
       || route.name === "ProblemReport"
       || route.name === "HelpAndSupportScreen"
       || route.name === "AddCreditCardScreen"
-      ? background : 'white'} 
+      ? 'black' : 'white'} 
       onPress={navigateSettings}/>
-      <Icon name="bar-chart" type='ion-icons' size={30} color={route.name === "Stats" ? background : 'white'} onPress={navigateProfile}/>
+      <Icon name="bar-chart" type='ion-icons' size={30} color={route.name === "Stats" ? 'black' : 'white'} onPress={navigateProfile}/>
       </View>
 
     </SafeAreaView>

@@ -104,7 +104,7 @@ const AddCreditCardScreen: React.FC = () => {
                         
                         {({ handleChange, handleSubmit, values, errors, isValid, dirty, setFieldValue, touched }) => (
                           <>
-                          <ScrollView>
+                          <ScrollView showsVerticalScrollIndicator={false}>
                         <CreditCard
                         style={styles.card}
                         type={values.cardType}
@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignSelf: 'center',
-        width: '92%',
+        width: '98%',
     },
     cardContainer: {
         marginBottom: "5%",
