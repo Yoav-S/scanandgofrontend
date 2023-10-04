@@ -117,7 +117,9 @@ const EditProfile: React.FC = () => {
             <View style={{width: '90%'}}>
                 <View style={{flexDirection: 'row', alignItems: 'center', paddingLeft: '7%'}}>
                 <Button 
-                title='BIRTH DATE' 
+                titleStyle={{fontWeight: '100', color: text.primary}}
+                buttonStyle={[styles.selectbirthdateBtn,{borderColor: text.primary, borderWidth: 1, borderRadius: 8}]}
+                title='SELECT BIRTH DATE' 
                 onPress={() => {
                   setOpenModalHandler();
                   // Mark the birthDate field as touched to trigger validation
@@ -187,5 +189,8 @@ const styles = StyleSheet.create({
     FormikCon: {
         width: "95%",
         alignSelf: 'center'
+    },
+    selectbirthdateBtn:{
+      backgroundColor: 'transparent'
     }
 })

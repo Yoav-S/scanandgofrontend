@@ -54,10 +54,10 @@ const AllCheckBoxCategories: React.FC<AllCheckBoxCategoriesProps> = (props) => {
 const styles = StyleSheet.create({
   container: {
     marginTop: '5%',
-    width: '88%',
-    alignSelf: 'center'
   },
-  titleCon: {},
+  titleCon: {
+    marginLeft: '5%'
+  },
   categoriesMapView: {
     marginTop: '3%'
   },

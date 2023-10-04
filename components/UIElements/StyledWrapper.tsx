@@ -1,27 +1,36 @@
-import React, { useEffect } from 'react';
-import { View, StyleSheet, Animated ,Dimensions} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Animated, Dimensions } from 'react-native';
 
 interface StyledWrapperProps {
-  style?: object; // Allow additional styles
+  style: StyleObj; 
   children: React.ReactNode;
   route: string;
 }
-const { width, height } = Dimensions.get('window');
+
+interface StyleObj {
+  backgroundColor: string;
+  flex: number;
+}
 
 const StyledWrapper = ({ children, style, route }: StyledWrapperProps) => {
-  const position = new Animated.ValueXY({ x: -width, y: 0 }); // Start off-screen
-
+  const [backgroundOpacity] = useState(new Animated.Value(0));
 
   useEffect(() => {
-    Animated.timing(position, {
-      toValue: { x: 0, y: 0 }, // Slide in from the left
-      duration: 500,
-      useNativeDriver: true,
+    Animated.timing(backgroundOpacity, {
+      toValue: 1,
+      duration: 1000,
+      useNativeDriver: false,
     }).start();
   }, [route]);
 
+  const animatedStyle = {
+    ...style,
+    backgroundColor: style.backgroundColor || 'transparent',
+    opacity: backgroundOpacity,
+  };
+
   return (
-    <Animated.View style={[style, { transform: position.getTranslateTransform() }]}>
+    <Animated.View style={animatedStyle}>
       {children}
     </Animated.View>
   );

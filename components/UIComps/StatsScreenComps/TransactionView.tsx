@@ -50,12 +50,7 @@ const TransactionView: React.FC = () => {
   );
   const nonDiscountedView = (
     <View style={{marginBottom: '5%', width: '95%', alignSelf: 'center'}} >
-            <View style={{borderWidth: 0.3, width: '98%', alignSelf: 'center', marginBottom: '2%', backgroundColor: text.primary}}/>
-            <View style={styles.alignItems}>
-            <Text style={[{color: text.primary}, styles.alignItems]}>Discount: </Text>
-            <View style={[styles.redline,{borderColor: text.primary}]}/>
-
-            </View>
+            <View style={{borderWidth: 0.3, width: '100%', alignSelf: 'center', marginBottom: '2%', borderColor: text.primary}}/>
             <View style={styles.alignItems}>
             <Text style={[{color: text.primary}, styles.alignItems]}>Final Price: </Text>
             <ShekelPrice num={totalAmount}/>
@@ -95,7 +90,10 @@ const TransactionView: React.FC = () => {
       <Image style={styles.bottomimage} source={require('../../../images/purchasedetailsimage.png')}/>
 
       </View>
-      <Text style={{color: text.primary, fontWeight: 'bold', fontSize: 18, width: '95%', alignSelf: 'center', marginBottom: '3%'}}>All Items</Text>
+      <View style={{flexDirection: 'row', alignItems: 'center', marginLeft: '2%', marginBottom: '2%'}}>
+      <Text style={{color: text.primary, fontWeight: 'bold', fontSize: 18, alignSelf: 'center', marginRight: '2%'}}>All Items</Text>
+      <Text style={{color: text.primary, fontWeight: 'bold'}}>({products.length})</Text>
+      </View>
       <ScrollView showsVerticalScrollIndicator={false} style={[{backgroundColor: background}, styles.scrollViewCon]}>
         {productsVieww}
 
@@ -118,9 +116,10 @@ const styles = StyleSheet.create({
     padding: '5%'
   },
   scrollViewCon: {
-    maxHeight: height * 0.3,
+    flex: 1,
     width: '95%', 
-    alignSelf: 'center'
+    alignSelf: 'center',
+    marginBottom: '2%'
   },
   bottomimage: {
     height: height * 0.3,

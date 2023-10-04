@@ -85,6 +85,7 @@ const PaymentMethodsScreen: React.FC<PaymentMethodsScreenProps> = ({ navigation 
                                 size={30} 
                                 color={'white'}             
                                 onPress={() => {
+                                    if(isLoading)return;
                                     setcardId(card._id);
                                     setisAreYouSureModalOpen(true);
                                 }}

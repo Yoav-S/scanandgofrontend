@@ -14,7 +14,7 @@ interface Props {}
 
 const NoTransactionComp: React.FC<Props> = () => {
   const { theme, buttonTheme } = useContext(ThemeContext);
-  const { primary, secondary, text, background } = theme.colors;
+  const { primary, secondary, text, background , circleBackground} = theme.colors;
   const { currentUser } = useDataContext();
   const scrollViewRef = useRef<ScrollView>(null);
   const [currentPage, setCurrentPage] = useState<number>(0);
@@ -69,7 +69,7 @@ const NoTransactionComp: React.FC<Props> = () => {
       cx={width / 2}
       cy={width}
       r={width}
-      fill={buttonTheme.buttonMain.background}
+      fill={circleBackground}
       fill-opacity="0.3"
     />
   </Svg>

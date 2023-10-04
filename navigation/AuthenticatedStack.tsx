@@ -136,13 +136,6 @@ export const AuthenticatedStackScreen: React.FC<AuthenticatedStackType> = () => 
       name="ScanningTour"   
       component={ScanningTourComp} 
       />
-        <AuthenticatedStack.Screen         
-        options={{
-          headerShown: false 
-        }} 
-        name="ForgotPassword" 
-        component={ForgotPassword} 
-        />
       </AuthenticatedStack.Navigator>
     );
   };

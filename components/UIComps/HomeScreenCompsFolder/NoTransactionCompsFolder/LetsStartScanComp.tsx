@@ -13,11 +13,11 @@ const LetsStartScanComp: React.FC = () => {
   return (
     <View style={[styles.container]}>
         <View style={[styles.titleCon]}>
-          <Text style={[{color: background, fontWeight: 'bold', fontSize: 24},styles.titleText]}>First Time Scanning ?</Text>
-          <Text style={{color: background, fontWeight: '500', fontSize: 16, marginTop: '2%'}}>Full guide about Scan & Go scanning procces.</Text>
+          <Text style={[{color: text.primary, fontWeight: 'bold', fontSize: 24},styles.titleText]}>First Time Scanning ?</Text>
+          <Text style={{color: text.primary, fontWeight: '500', fontSize: 16, marginTop: '2%'}}>Full guide about Scan & Go scanning procces.</Text>
         </View>
         <TouchableOpacity onPress={() => {navigation.navigate('ScanningTour')}} style={{backgroundColor: background, width: '35%', alignItems: 'center',marginTop: '10%', borderRadius: 8}}>
-            <Text style={{padding: '6%', color: buttonTheme.buttonMain.background, fontWeight: 'bold'}}>Scanning Tour</Text>
+            <Text style={{padding: '6%', color: text.primary, fontWeight: 'bold'}}>Scanning Tour</Text>
         </TouchableOpacity>
     </View>
   );

@@ -15,24 +15,24 @@ const HelpAndSupportComp: React.FC = () => {
   return (
     <View style={[styles.container]}>
               <View style={[styles.titleCon]}>
-          <Text style={[{color: background, fontWeight: 'bold', fontSize: 24}]}>Help And Support System</Text>
+          <Text style={[{color: text.primary, fontWeight: 'bold', fontSize: 24}]}>Help And Support System</Text>
         </View>
         <View style={{flexDirection: 'row', marginTop: '5%', gap: 10, alignItems: 'flex-end'}}>
-            <Text style={{color: background}}>We Have fully</Text>
+            <Text style={{color: text.primary}}>We Have fully</Text>
             <TouchableOpacity onPress={() => {navigation.navigate('HelpAndSupportScreen')}}>
-                <Text style={{color: background, fontWeight: 'bold', fontSize: 16}}>help and support</Text>
+                <Text style={{color: buttonTheme.buttonMain.background, fontWeight: 'bold', fontSize: 16}}>help and support</Text>
             </TouchableOpacity>
-            <Text style={{color: background}}>page,</Text>
+            <Text style={{color: text.primary}}>page,</Text>
         </View>
         <View style={{flexDirection: 'row', marginTop: '3%'}}>
-        <Text style={{color: background}}>which is located at our</Text>
+        <Text style={{color: text.primary}}>which is located at our</Text>
         <TouchableOpacity style={{flexDirection: 'row'}} onPress={() => {navigation.navigate('Settings')}}>
-            <Text style={{color: background, fontWeight: 'bold', fontSize: 16}}> settings </Text>
-            <Text style={{color: background, fontSize: 14}}>screen.</Text>
+            <Text style={{color: buttonTheme.buttonMain.background, fontWeight: 'bold', fontSize: 16}}> settings </Text>
+            <Text style={{color: text.primary, fontSize: 14}}>screen.</Text>
         </TouchableOpacity>
         </View>
         <View style={{marginTop: '2%', width: '90%'}}>
-            <Text style={{color: background, lineHeight: 25}}>And suggests a complete instractions tour about the Scan & Go application.</Text>
+            <Text style={{color: text.primary, lineHeight: 25}}>And suggests a complete instractions tour about the Scan & Go application.</Text>
         </View>
     </View>
   );

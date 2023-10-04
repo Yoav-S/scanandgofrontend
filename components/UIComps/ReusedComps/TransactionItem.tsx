@@ -15,9 +15,7 @@ const TransactionItem: React.FC<TransactionCompType> = ({transaction, handleshow
     const {currentUser, getFullTransaction, showToast} = useDataContext();
     const { cardType } = transaction;
     const { theme } = useContext(ThemeContext);
-    const { primary, secondary, text, background, itemBackground, itemText, itemBoxShadow, androidShadow } = theme.colors     
-    console.log(itemBackground);
-    
+    const { primary, secondary, text, background, itemBackground, itemText, itemBoxShadow, androidShadow } = theme.colors         
     const handlePressTransaction = async (id: string) => {
       const [isExists, transaction] = await getFullTransaction(id);
       if(isExists){

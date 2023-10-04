@@ -180,7 +180,7 @@ const Checkout: React.FC = () => {
                         )
                     }
                 </View>
-                <View style={[styles.barrier, {backgroundColor: background, borderRadius: 8}]}/>
+                <View style={[styles.barrier, { borderRadius: 50, borderColor: text.primary}]}/>
                 <View style={styles.cartCarusell}>
                     <CartCarusell/>
                 </View>
@@ -238,7 +238,7 @@ const styles = StyleSheet.create({
         height: 150
     },
     barrier: {
-        borderWidth: 1,
+        borderWidth: 0.5,
         width: '95%',
         alignSelf: 'center',
     },

@@ -113,7 +113,7 @@ const TransactionsList: React.FC = () => {
     {
         transactionsList.map((transaction: recentTransaction, index) => {
             return (
-                <TransactionItem handleshowToast={handleshowToast} key={index} transaction={transaction}/>
+                <TransactionItem handleshowToast={handleshowToast} key={transaction._id} transaction={transaction}/>
             )
         })
     }

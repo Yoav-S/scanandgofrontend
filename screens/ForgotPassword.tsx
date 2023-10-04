@@ -118,7 +118,9 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
         showToast('please try again', 'error', 'Otp verify failed');  
       }      
     }
-
+  
+    console.log(route.params.cameFrom);
+    
     const handleChangePassword = async (value: {password : string}) => {
      try{
       setisLoadingResetPassword(true);

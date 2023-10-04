@@ -1,33 +1,23 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';
+import React, { useState, useRef, useContext } from 'react';
 import { View, StyleSheet, Text, Dimensions, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Formik } from 'formik';
-import Button from '@react-native-material/core';
 import * as Yup from 'yup';
-import axios from 'axios';
 import { useToken } from '../context/TokenContext';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import BigTitle from '../components/UIElements/BigTitle';
 import FormInput from '../components/UIElements/FormInput';
 import AllCheckBoxCategories from '../components/UIElements/AllCheckboxCategories';
 import StyledButton from '../components/UIElements/StyledButton';
 import DatePicker from 'react-native-date-picker';
-import TitleAndBtnCon from '../components/UIElements/TitleAndBtnCon';
-import messaging from '@react-native-firebase/messaging'; // Import Firebase messaging
 import { emailSchema, fullnameSchema, passwordSchema, genderSchema, birthDateSchema, termsSchema } from '../messages/Statements';
 import { Registergion_Form_Props } from '../interfaces/interfaces';
 import { useDataContext } from '../context/DataContext';
-import FlashMessage from "react-native-flash-message";
-import { showMessage, hideMessage } from "react-native-flash-message";
 import { CheckBox } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import Modal from 'react-native-modalbox';
-import Slider from 'react-native-slider';
 import { ActivityIndicator } from '@react-native-material/core';
 import Toast from 'react-native-toast-message';
 import { requestUserPermission } from '../utils/requests';
-import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { Icon } from 'react-native-elements';
 import { Input } from '@rneui/themed';
 
@@ -87,7 +77,7 @@ const handleFormSubmit = async ({ confirmPassword, ...values } : Registergion_Fo
   }
 
   return (
-    <StyledWrapper route='Signup' style={[{ flex: 1 ,backgroundColor: background }]}>
+    <StyledWrapper route='Signup' style={ {flex: 1 ,backgroundColor: background}}>
       <BigTitle title={'Create An Account'} />
 { isLoading ? (<ActivityIndicator size={60}/>) : (<ScrollView style={{margin: '3%'}}>
   <View>
@@ -204,7 +194,7 @@ const handleFormSubmit = async ({ confirmPassword, ...values } : Registergion_Fo
               </View>
 
               {!isBirthDateValidated && touched.birthDate && errors.birthDate && (
-                <Text style={{ color: 'red' }}>{errors.birthDate}</Text>
+                <Text style={{ color: 'red', fontWeight: 'bold' , marginLeft: '7%'}}>{errors.birthDate}</Text>
               )}
             </View>
             <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', marginTop: '5%'}}>
