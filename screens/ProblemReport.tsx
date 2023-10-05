@@ -97,8 +97,8 @@ const ProblemReport: React.FC<ProblemReportType> = () => {
   const buganimationObject = (
     <LottieView
       style={{
-        width: 200,
-        height: 200,
+        width: height * 0.2,
+        height: width * 0.6,
         alignSelf: 'center',
         zIndex: 20,
         position: 'relative',
@@ -216,7 +216,7 @@ const ProblemReport: React.FC<ProblemReportType> = () => {
     }
   };
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={[styles.container]}>
       <TitleAndArrowBack
         text="Report A Problem"
         onPress={() => {
@@ -225,11 +225,11 @@ const ProblemReport: React.FC<ProblemReportType> = () => {
       />
 
       <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        style={{flex: 1, height: height * 0.94}}>
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={{flex: 1}}
+        >
 
 
-            <View  style={{height: route.params.cameFrom === 'Settings' ? height * 0.8 : height * 0.9, padding: '5%'}}>
+            <View style={{width: width * 0.95, alignSelf: 'center', height: height * 0.9, borderWidth: 3}}>
             <ScrollView showsVerticalScrollIndicator={false}>
 
 {buganimationObject}
@@ -350,17 +350,19 @@ const ProblemReport: React.FC<ProblemReportType> = () => {
                   )}
                 </Formik>
               )}
+
                           </ScrollView>
 
             </View>
 
-
-      {route.params.cameFrom === 'Settings'
+            {route.params.cameFrom === 'Settings'
           ? !isKeyboardVisible && <BottomNavbar />
           : null}
                 </KeyboardAvoidingView>
 
+
       <Toast />
+      
     </ScrollView>
   );
 };
@@ -375,6 +377,7 @@ const createStyles = (
     container: {
       flex: 1,
       backgroundColor: background,
+      height: height
     },
     titleandarrowcon: {
       flexDirection: 'row',

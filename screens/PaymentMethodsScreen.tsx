@@ -25,7 +25,7 @@ const PaymentMethodsScreen: React.FC<PaymentMethodsScreenProps> = ({ navigation 
     const { currentUser } = useDataContext();
     const [defaultCardIndex, setDefaultCardIndex] = useState<string | null>(null);
     const { theme } = useContext(ThemeContext);
-    const { primary, secondary, text, background } = theme.colors  
+    const { primary, secondary, text, background, loadingBackground } = theme.colors  
     const {changeDefaultCardAttempt, showToast,  setisAreYouSureModalOpen,  setcardId} = useDataContext();
     const [isLoading, setisLoading] = useState<boolean>(false);
     const handleDefaultCardChange = async (cardId: string) => {
@@ -58,10 +58,10 @@ const PaymentMethodsScreen: React.FC<PaymentMethodsScreenProps> = ({ navigation 
 
 
     return (
-        <SafeAreaView style={[styles.container, {backgroundColor: background}]}>
+        <SafeAreaView style={[styles.container, {backgroundColor: isLoading ? loadingBackground : background}]}>
                 <TitleAndArrowBack text='Payment Methods' onPress={() => navigation.goBack()} />
                 <View style={{alignSelf: 'flex-end', padding: '3%'}}>
-                <StyledButton smallbutton text='Add New' onPress={() => navigation.navigate('AddCreditCardScreen')} />
+                <StyledButton disabled={isLoading} smallbutton text='Add New' onPress={() => navigation.navigate('AddCreditCardScreen')} />
 
                 </View>
                 {

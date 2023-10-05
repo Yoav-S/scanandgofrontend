@@ -36,7 +36,7 @@ const StyledButton: React.FC<StyledButtonType> = (props) =>{
         : props.disabled ? buttonAlt.background 
         : buttonMain.background, 
         width: props.bigbutton 
-        ? screen.width * 0.85 : props.smallbutton ? 90 : props.smallbutton && props.text === 'Scan Again' ? 60 : 120}]} 
+        ? screen.width * 0.95 : props.smallbutton ? 90 : props.smallbutton && props.text === 'Scan Again' ? 60 : 120}]} 
         onPress={props.onPress}>
             {!props.isLoading ? (
             <Text style={[styles.textstyle, 

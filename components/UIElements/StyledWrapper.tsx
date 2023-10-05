@@ -13,20 +13,12 @@ interface StyleObj {
 }
 
 const StyledWrapper = ({ children, style, route }: StyledWrapperProps) => {
-  const [backgroundOpacity] = useState(new Animated.Value(0));
 
-  useEffect(() => {
-    Animated.timing(backgroundOpacity, {
-      toValue: 1,
-      duration: 1000,
-      useNativeDriver: false,
-    }).start();
-  }, [route]);
+
 
   const animatedStyle = {
     ...style,
-    backgroundColor: style.backgroundColor || 'transparent',
-    opacity: backgroundOpacity,
+    backgroundColor: style.backgroundColor,
   };
 
   return (

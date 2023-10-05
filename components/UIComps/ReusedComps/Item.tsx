@@ -1,10 +1,11 @@
 import react, {useContext, useEffect} from 'react';
-import {View , Text, StyleSheet, SafeAreaView, Image} from 'react-native';
+import {View , Text, StyleSheet, SafeAreaView, Image, Dimensions} from 'react-native';
 import {ItemCompInterface} from '../../../interfaces/interfaces'
 import { Icon } from 'react-native-elements';
 import { ThemeContext } from '../../../context/ThemeContext';
 import { useDataContext } from '../../../context/DataContext';
 import ShekelPrice from '../../UIElements/ShekelPrice';
+const { width, height } = Dimensions.get('window');
 
 const Item: React.FC<ItemCompInterface> = (props) => {
     const { theme } = useContext(ThemeContext);
@@ -49,9 +50,10 @@ const styles = StyleSheet.create({
         fontWeight: '700'
     },
     image: {
-        width: '40%',
-        height: 150,
+        width: width * 0.36,
+        height: height * 0.18,
         marginRight: '3%',
+        borderRadius: 8
     },
     pricetext: {
         fontWeight: '600'

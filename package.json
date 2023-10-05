@@ -47,7 +47,7 @@
     "react-native-nfc-manager": "^3.14.7",
     "react-native-otp-inputs": "^7.4.0",
     "react-native-payment-card": "^1.0.61",
-    "react-native-reanimated": "^3.4.2",
+    "react-native-reanimated": "^2.17.0",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "^3.24.0",
     "react-native-slider": "^0.11.0",

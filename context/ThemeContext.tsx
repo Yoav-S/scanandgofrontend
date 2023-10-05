@@ -19,6 +19,7 @@ export const ThemeProvider: React.FC<Props> = ({ children }) => {
       itemBackground: '#D5D3D0',
       circleBackground: 'rgba(207, 207, 206, 0.8)',
       inputBackground: '#E3E2E0',
+      loadingBackground: 'rgba(140, 140, 140, 0.94)',
       itemText: '#222222',
       itemBoxShadow: {
         shadowColor: "#333333",
@@ -63,6 +64,7 @@ export const ThemeProvider: React.FC<Props> = ({ children }) => {
       itemBackground: '#575756',
       circleBackground: 'rgba(123, 89, 1, 0.8)',
       inputBackground: '#525252',
+      loadingBackground: 'rgba(28, 28, 28, 0.94)',
       itemText: '#222222',
       itemBoxShadow: {
         shadowColor: "#D5D3D0",

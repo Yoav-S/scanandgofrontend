@@ -249,6 +249,7 @@ const styles = StyleSheet.create({
     totalAmountCon: {
         width: '95%',
         alignItems: 'center',
+        marginBottom: '3%'
     },  
     couponCompCon: {
 

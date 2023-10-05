@@ -132,9 +132,6 @@ const SecurityScreen: React.FC = () => {
                 }
  
             </View>
-            <View style={styles.lottieAnimationCon}>
-
-            </View>
             </ScrollView>
             {!isKeyboardVisible && <BottomNavbar />}
             </KeyboardAvoidingView>

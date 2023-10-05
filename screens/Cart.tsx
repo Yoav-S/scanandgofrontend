@@ -1,5 +1,5 @@
 import react, {useState, useEffect, useContext} from 'react';
-import {Text, View, StyleSheet, SafeAreaView, Image} from 'react-native';
+import {Text, View, StyleSheet, SafeAreaView } from 'react-native';
 import { useDataContext } from '../context/DataContext';
 import animationData from '../assets/emptycartlottie.json'
 import LottieView from 'lottie-react-native';
@@ -16,6 +16,7 @@ import { ThemeContext } from "../context/ThemeContext";
 
 import { CurrentUserType } from '../interfaces/interfaces';
 import ShekelPrice from '../components/UIElements/ShekelPrice';
+
 const Cart: React.FC = () => {
     const {setCurrentUser,currentUser, deleteItemAttempt, showToast, amountofitemsvariable,setamountofitemsvariable} = useDataContext();
     const { theme } = useContext(ThemeContext);

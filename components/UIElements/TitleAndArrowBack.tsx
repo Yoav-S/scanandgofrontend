@@ -15,7 +15,7 @@ const TitleAndArrowBack: React.FC<TitleAndArrowBackProps> = (props) => {
   
         
     return (
-        <View style={[styles.titleandarrowcon, {backgroundColor: background}]}>
+        <View style={[styles.titleandarrowcon, {backgroundColor: 'transparent'}]}>
             <FontAwesomeIcon 
             name="arrow-left" 
             size={25} color={text.secondary}             
