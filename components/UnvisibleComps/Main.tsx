@@ -16,7 +16,9 @@ import TermsAndConditionsModal from '../ModalsComps/TermsAndConditionsModal';
 import BottomNavbar from '../UIElements/BottomNavbar';
 const Main: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true); // Add isLoading state
-  const {setTheme, lightTheme, darkTheme, buttonTheme} = useContext(ThemeContext);
+  const {setTheme, lightTheme, darkTheme, buttonTheme, theme} = useContext(ThemeContext);
+  const {primary, secondary, text, background, loadingBackground} = theme.colors;
+
   const colorScheme = useColorScheme();
   const {authenticated,
     setAuthenticated,
@@ -61,7 +63,7 @@ if(isLoading){
   return <SplashScreen/>
 }
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, {backgroundColor: background}]}>
         {authenticated ? (
                     <View style={{flex: 1}}>
                       

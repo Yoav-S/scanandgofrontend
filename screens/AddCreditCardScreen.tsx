@@ -37,7 +37,7 @@ const AddCreditCardScreen: React.FC = () => {
     const [isKeyboardVisible, setKeyboardVisible] = useState(false);
     const { theme, buttonTheme } = useContext(ThemeContext);
     const [expireinDate, setExpireinDate] = useState('');
-    const { primary, secondary, text, background } = theme.colors 
+    const { primary, secondary, text, background, loadingBackground } = theme.colors 
     const {addCreditCardAttempt, showToast, setisMessageModalVisible, currentUser} = useDataContext();
     const [allCategoriesValues, setAllCategoriesValues] = useState<{ label: string; value: string }[]>([
         { label: 'Discover', value: 'discover' },

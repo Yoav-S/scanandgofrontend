@@ -25,9 +25,9 @@ const EmailVerifyComp: React.FC<EmailVerifyCompProps> = ({isLoadingForm, handleF
     const navigation = useNavigation<StackNavigationProp<any, 'ForgotPassword'>>();
 
     const { theme } = useContext(ThemeContext);
-    const { primary, secondary, text, background } = theme.colors   
+    const { primary, secondary, text, background , loadingBackground} = theme.colors   
     const activitiIndicatorObject = (<LottieView
-        style={{width: 100, height: 100 , zIndex: 10, alignSelf: 'center', marginTop: '15%'}}
+        style={{width: screen.width * 0.2, height: screen.height * 0.1, alignSelf: 'center'}}
         speed={1} 
         source={activityIndicatorAnimation}
         autoPlay
@@ -42,7 +42,7 @@ const EmailVerifyComp: React.FC<EmailVerifyCompProps> = ({isLoadingForm, handleF
             />)
 
   return (
-    <View style={{backgroundColor: background, marginBottom: '5%'}}>
+    <View>
     <BigTitle title='Email Verification'/>
     <View style={{marginBottom: '5%'}}>
     {verifyemailanimationObject}
@@ -50,7 +50,10 @@ const EmailVerifyComp: React.FC<EmailVerifyCompProps> = ({isLoadingForm, handleF
     </View>
 
       {isLoadingForm ? (
-          activitiIndicatorObject
+        <View style={{alignSelf: 'center', borderRadius: 150, borderWidth: 1, backgroundColor: 'black', alignItems: 'center', marginTop: '15%'}}>
+{activitiIndicatorObject}
+        </View>
+          
       ) : (
           <Formik
               initialValues={{ email: '' }}

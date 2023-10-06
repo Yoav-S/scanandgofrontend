@@ -14,6 +14,8 @@ import cancelDeleteAnimation from '../../assets/cancelDeleteAnimation.json';
 import deleteSuccessAnimation from '../../assets/deletesuccessanimation.json';
 import deleteFailureAnimation from '../../assets/deletefailureanimation.json';
 import StyledButton from '../UIElements/StyledButton';
+import { Icon } from 'react-native-elements';
+
 const screen = Dimensions.get('window');
 
 const AreYouSureModal: React.FC = () => {
@@ -32,18 +34,10 @@ const AreYouSureModal: React.FC = () => {
   const [isPreviewFailureAnimation, setisPreviewFailureAnimation] =
     useState<boolean>(false);
   const [resultMessage, setresultMessage] = useState<string>('');
-  const canceldeleteAnimationObject = (
-    <LottieView
-      style={{width: 50, height: 50}}
-      speed={1}
-      source={cancelDeleteAnimation}
-      autoPlay
-      loop={true}
-    />
-  );
+
   const activityIndicatorobject = (
     <LottieView
-      style={{width: 100, height: 100}}
+      style={{width: screen.width * 0.2, height: screen.height * 0.1, alignSelf: 'center'}}
       speed={1}
       source={activityIndicatorAnimation}
       autoPlay
@@ -97,33 +91,33 @@ const AreYouSureModal: React.FC = () => {
     <View>
       <Modal
         visible={isAreYouSureModalOpen}
-        swipeDirection={!isLoading ? ['down', 'up', 'right', 'left'] : []}
+        swipeDirection={[]}
         swipeThreshold={200} // default 100
         modalStyle={[styles.modalStyle, {backgroundColor: background}]}
-        onSwipeOut={() => {
-          setisAreYouSureModalOpen(false);
-        }}
         footer={
           <ModalFooter
             style={[
               styles.ModalFooter,
               {
-                justifyContent: 'center',
-                alignItems: 'center',
-                flexDirection: 'row',
-                height: screen.height * 0.25,
+                justifyContent: isLoading ? 'center' : 'flex-end'
               },
             ]}>
             {!isLoading &&
               !isPreviewSuccessAnimation &&
               !isPreviewFailureAnimation && (
+                <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                 <StyledButton
-                  onPress={handleDeleteCardProcess}
-                  text="Delete anyway"
+                onPress={() => {setisAreYouSureModalOpen(false);}}
+                text="Cancel"
                 />
+                <StyledButton
+                onPress={handleDeleteCardProcess}
+                text="Delete anyway"
+                />
+                </View>
               )}
             {isLoading && (
-              <View style={{alignSelf: 'center'}}>
+              <View style={{alignSelf: 'center', borderRadius: 150, borderWidth: 1, backgroundColor: 'black', alignItems: 'center'}}>
                 {activityIndicatorobject}
               </View>
             )}
@@ -161,18 +155,18 @@ const AreYouSureModal: React.FC = () => {
         >
 
         <View
-          style={{alignSelf: 'center', alignItems: 'center', marginTop: '5%'}}>
+          style={{alignSelf: 'center'}}>
+          <Icon color="black" name="cancel" size={25} containerStyle={{alignSelf: 'flex-end'}} onPress={() => {setisAreYouSureModalOpen(false)}}/>
           <Text
             style={{
               color: text.primary,
               alignSelf: 'center',
-              marginTop: '5%',
               fontWeight: 'bold',
-              fontSize: 18,
+              fontSize: 16,
+              marginTop: '4%'
             }}>
-            Swipe to cancel delete
+              Are you sure you want to delete ?
           </Text>
-          {canceldeleteAnimationObject}
         </View>
       </Modal>
     </View>
@@ -201,10 +195,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
   ModalFooter: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: 'flex-end',
     flexDirection: 'column',
-    width: '100%',
+    width: '90%',
     alignSelf: 'center',
   },
 });

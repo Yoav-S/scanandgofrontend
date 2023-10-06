@@ -8,7 +8,7 @@ const BigTitle: React.FC<BigTitleType> = (props) => {
     const { primary, secondary, text, background } = theme.colors 
     const [title, setTitle] = useState<string>(props.title);
     return (
-        <View style={[styles.container, { backgroundColor: background }]}>
+        <View style={[styles.container]}>
             <Text style={[styles.colorBlack, { color: text.primary }]}>{title}</Text>
         </View>
     )

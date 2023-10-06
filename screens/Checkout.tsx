@@ -23,7 +23,7 @@ const Checkout: React.FC = () => {
     const route = useRoute<RouteProp<NavigatorParamList, 'CheckoutScreen'>>();
     const { theme } = useContext(ThemeContext);
     const [totalAmountState, setTotalAmountState] = useState(route.params.totalAmount)
-    const { primary, secondary, text, background } = theme.colors 
+    const { primary, secondary, text, background, loadingBackground } = theme.colors 
     const {currentUser, showToast, verifyCouponAttempt, PaymentAttempt} = useDataContext();
     const [isCouponValid, setisCouponValid] = useState<boolean>(false);
     const [isLoading, setisLoading] = useState<boolean>(false);
@@ -153,7 +153,7 @@ const Checkout: React.FC = () => {
     }, [currentUser?.cart])
     
     return (
-        <View style={[{backgroundColor: background}, styles.container]}>
+        <View style={[{backgroundColor: isLoading ? loadingBackground : background}, styles.container]}>
                   <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         style={{ flex: 1 }}

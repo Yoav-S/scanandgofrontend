@@ -20,7 +20,7 @@ import ShekelPrice from '../components/UIElements/ShekelPrice';
 const Cart: React.FC = () => {
     const {setCurrentUser,currentUser, deleteItemAttempt, showToast, amountofitemsvariable,setamountofitemsvariable} = useDataContext();
     const { theme } = useContext(ThemeContext);
-    const { primary, secondary, text, background } = theme.colors 
+    const { primary, secondary, text, background, loadingBackground } = theme.colors 
     const navigation = useNavigation<StackNavigationProp<any>>();
     const [totalamountvariable, settotalamountvariable] = useState(0);
     const [isLoading, setisLoading] = useState<boolean>(false);
@@ -68,7 +68,7 @@ const Cart: React.FC = () => {
         calculatePrice(currentUserItemsCart);
       }, [ currentUserItemsCart]);
     return (
-        <View style={[styles.container, {backgroundColor: background}]}>
+        <View style={[styles.container, {backgroundColor: isLoading ? loadingBackground : background}]}>
             <View style={styles.titleandIcon}>
             <Text/>
             <Text style={{color: text.primary, fontWeight: '600', fontSize: 18}}>Cart</Text>

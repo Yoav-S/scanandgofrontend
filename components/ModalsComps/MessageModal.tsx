@@ -1,17 +1,18 @@
 import React, {useEffect, useContext} from "react";
-import {View, Text, StyleSheet} from 'react-native'
+import {View, Text, StyleSheet, Dimensions} from 'react-native'
 import { useDataContext } from "../../context/DataContext";
 import { Modal, ModalContent, ModalFooter, ModalButton } from 'react-native-modals'
 import LottieView from "lottie-react-native";
 import creditcardLoader from '../../assets/loadingcreditcard.json'
 import { ThemeContext } from "../../context/ThemeContext";
+const screen = Dimensions.get('window');
 
 const MessageModal: React.FC = () => {
   const { theme } = useContext(ThemeContext);
   const { primary, secondary, text, background } = theme.colors 
   const {isMessageModalVisible} = useDataContext();
     const lottieViewYoav = (<LottieView
-        style={{width: 200, height: 200}}
+        style={{width: screen.width * 0.5, height: screen.height * 0.3, alignSelf: 'center'}}
         speed={1} 
         source={creditcardLoader}
         autoPlay
@@ -22,11 +23,12 @@ const MessageModal: React.FC = () => {
             <Modal
             visible={isMessageModalVisible}
             swipeThreshold={200} // default 100
-            modalStyle={styles.modalStyle}
+            modalStyle={[styles.modalStyle, { backgroundColor: background, height: screen.height * 0.4, width: screen.width * 0.65}]}
             footer={
-                <ModalFooter style={styles.ModalFooter}>
+                <ModalFooter style={[styles.ModalFooter, {height: screen.height * 0.05, alignContent: 'center', justifyContent: 'center'}]}>
                   <ModalButton
-                  style={{height: 100}}
+                  disabled={true}
+                  style={{height: screen.height * 0.1}}
                     textStyle={[{color: text.primary},styles.ModalButtonText]}
                     text="Checking Card Details..."
                     onPress={() => {console.log('pressed')}}
@@ -54,7 +56,9 @@ const styles = StyleSheet.create({
       textStylePrice:{color:'white', fontSize:17},
       modalContent: {},
       ModalButtonText: {},
-      modalStyle: {},
+      modalStyle: {
+        justifyContent: 'center'
+      },
       ModalFooter: {},
 })
 export default MessageModal;

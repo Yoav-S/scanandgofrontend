@@ -43,7 +43,7 @@ const ResetPasswordComp: React.FC<ResetPasswordCompProps> = ({handleChangePasswo
 
 
   return (
-    <View style={{backgroundColor: background, marginBottom: '5%'}}>
+    <View style={{ marginBottom: '5%'}}>
         <BigTitle title='Enter a new password'/>
     {resetpasswordanimationObject}
      <Text style={{color: text.primary, marginLeft: '5%',marginBottom: '5%'}}>Enter the new password for your account</Text>

@@ -36,7 +36,8 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         padding: '1%',
-        marginTop: '3%'
+        marginTop: '3%',
+        alignSelf: 'center'
     },
     wierlesstext: {
         fontWeight: '300'

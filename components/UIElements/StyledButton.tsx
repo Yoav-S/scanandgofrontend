@@ -25,23 +25,25 @@ const StyledButton: React.FC<StyledButtonType> = (props) =>{
         disabled={props.disabled} 
         style={[styles.btnstyle, 
         {padding: props.text === 'Scan Again' ? '1%' : '3%'},
-        {borderRadius: props.text === 'Delete anyway' ? 50 : 4},
+        {borderRadius: props.text === 'Delete anyway' || props.text === 'Cancel' ? 50 : 4},
         {marginLeft: props.text === 'Select birth Date' ? '10%' : '0%'},
-        {padding: props.text === 'Delete anyway' ? '10%' : '2%'},
+        {borderWidth: props.text === 'Cancel' ? 1 : 0},
+        {padding: props.text === 'Delete anyway' ? '3%' : '2%'},
         {alignSelf: props.text === 'Select birth Date' ? 'flex-start' : 'center'},
         {backgroundColor : props.text === 'Invalid' ? 'red'
         : props.text === 'Delete anyway' ? 'crimson' 
+        : props.text === 'Cancel' ? 'transparent'
         : props.text === 'Verified' ? 'green' 
         : props.text === 'Image Added' ? 'green' 
         : props.disabled ? buttonAlt.background 
         : buttonMain.background, 
         width: props.bigbutton 
-        ? screen.width * 0.95 : props.smallbutton ? 90 : props.smallbutton && props.text === 'Scan Again' ? 60 : 120}]} 
+        ? screen.width * 0.95 : props.smallbutton ? 90 : props.smallbutton && props.text === 'Scan Again' ? 60 : 130}]} 
         onPress={props.onPress}>
             {!props.isLoading ? (
             <Text style={[styles.textstyle, 
             {color : props.text === 'Invalid' 
-            || props.text === 'Verified' ? 'white' 
+            || props.text === 'Verified' ? 'white' : props.text === 'Cancel' ? 'crimson' 
             : props.text === 'Image Added' ? buttonMain.text 
             : buttonAlt.text},
         {fontWeight: props.text === 'Delete anyway' || props.text === 'Scan Again' ? '600' : '500'}]}>{props.text}</Text>)

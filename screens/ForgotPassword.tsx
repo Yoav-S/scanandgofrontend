@@ -32,7 +32,7 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
   const { theme } = useContext(ThemeContext);
   const route = useRoute<RouteProp<NavigatorParamList, 'ForgotPassword'>>();
   
-  const { primary, secondary, text, background } = theme.colors     
+  const { primary, secondary, text, background, loadingBackground } = theme.colors     
   const [emailSended, setEmailSended] = useState<boolean>(false);
   const [isOneMinuteBind, setisOneMinuteBind] = useState<boolean>(false);
   const [oneMinuteBindEndTime, setOneMinuteBindEndTime] = useState<number>(0);
@@ -118,9 +118,7 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
         showToast('please try again', 'error', 'Otp verify failed');  
       }      
     }
-  
-    console.log(route.params.cameFrom);
-    
+      
     const handleChangePassword = async (value: {password : string}) => {
      try{
       setisLoadingResetPassword(true);
@@ -178,7 +176,7 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: background}]}>  
+    <View style={[styles.container, { backgroundColor: isLoadingForm || isLoadingResendEmail || isLoadingResetPassword ? loadingBackground : background}]}>  
     <TitleAndArrowBack text='Forgot Password' onPress={() => {navigation.goBack()}}/>
     <ScrollView>
         {emailSended ? (isOtpVerified ? ( <ResetPasswordComp isloadingResetPassword={isLoadingResetPassword} handleChangePassword={handleChangePassword}/>) : 
