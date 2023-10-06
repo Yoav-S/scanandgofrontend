@@ -48,8 +48,7 @@ const ResetPasswordComp: React.FC<ResetPasswordCompProps> = ({handleChangePasswo
     {resetpasswordanimationObject}
      <Text style={{color: text.primary, marginLeft: '5%',marginBottom: '5%'}}>Enter the new password for your account</Text>
     <View>
-        {
-            isloadingResetPassword ? (activityIndicatorObject) : (    <Formik
+<Formik
                 initialValues={{ password: '', confirmPassword: '' }}
                 validationSchema={passwordValidationSchema}
                 onSubmit={({ password }) => handleChangePassword({ password })}
@@ -75,8 +74,7 @@ const ResetPasswordComp: React.FC<ResetPasswordCompProps> = ({handleChangePasswo
                         <StyledButton bigbutton disabled={!isValid || !dirty || isloadingResetPassword} onPress={handleSubmit} text={"Change Password"} />
                     </>
                 )}
-            </Formik>)
-        }
+            </Formik>
 
     </View>
     </View>

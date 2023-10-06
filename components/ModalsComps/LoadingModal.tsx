@@ -1,4 +1,4 @@
-import React, {useEffect, useContext} from "react";
+import React, {useEffect, useContext, useState} from "react";
 import {View, Text, StyleSheet, Dimensions} from 'react-native'
 import { useDataContext } from "../../context/DataContext";
 import { Modal, ModalContent, ModalFooter, ModalButton } from 'react-native-modals'
@@ -10,54 +10,50 @@ const screen = Dimensions.get('window');
 
 const LoadingModal: React.FC = () => {
   const { theme } = useContext(ThemeContext);
-  const { primary, secondary, text, background } = theme.colors     
-  const {isLoadingModal, setisLoadingModal} = useDataContext();
-  
-    const activityIndicatorAnimationObject = (<LottieView
-        style={{width: 200, height: 200}}
-        speed={1} 
-        source={activityIndicatorAnimation}
-        autoPlay
-        loop={true}
-        />)
-    return (
-        <View style={{ position: 'relative' }}>
-            <Modal
-            visible={isLoadingModal}
-            swipeDirection={[]}
-            swipeThreshold={200} // default 100
-            modalStyle={[styles.modalStyle,{backgroundColor: background}]}
-            footer={
-                <ModalFooter/>
-              }>
-              <View style={{height: screen.height}}>
-              {activityIndicatorAnimationObject}
-              </View>
-            </Modal>
-        </View>
-    )
+  const { background } = theme.colors;
+  const { isLoadingModal, setisLoadingModal } = useDataContext();
+  const [isLoading, setisLoading] = useState<boolean>(isLoadingModal);
+
+
+
+
+  const activityIndicatorAnimationObject = (
+    <LottieView
+      style={{
+        width: screen.width * 0.3,
+        height: screen.height * 0.2,
+        position: 'absolute',
+        left: screen.width * 0.35,
+        top: screen.height * 0.4,
+      }}
+      speed={1}
+      source={activityIndicatorAnimation}
+      autoPlay
+      loop={true}
+    />
+  );
+
+  return (
+    isLoadingModal && <View style={[styles.overlay, { backgroundColor: 'rgba(0, 0, 0, 0.6)' }]}>
+      <View style={styles.container}>
+        {activityIndicatorAnimationObject}
+      </View>
+    </View>
+  );
 }
+
 const styles = StyleSheet.create({
-    priceAndCartView:{
-        flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',marginTop:10
-      },
-      textContainer:{
-        flexDirection: 'row',
-        backgroundColor: 'rgba(128, 0, 128, 0.7)',
-        padding:10,
-        borderTopEndRadius:20,
-        borderBottomLeftRadius:20,
-        textAlign:'center'
-      },
-      textStyleName:{color:'white', fontSize:15},
-      textStylePrice:{color:'white', fontSize:17},
-      modalContent: {},
-      ModalButtonText: {},
-      modalStyle: {
-        width: 250
-      },
-      ModalFooter: {
-        height: 75
-      },
-})
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  container: {
+    width: screen.width,
+    height: screen.height,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
+
 export default LoadingModal;

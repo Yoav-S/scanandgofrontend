@@ -26,20 +26,21 @@ confirmPassword: Yup.string().required('Field is required').oneOf([Yup.ref('newp
 const SecurityScreen: React.FC = () => {
   const { theme } = useContext(ThemeContext);
   const { primary, secondary, text, background } = theme.colors     
-  const { updatePasswordAttempts, showToast} = useDataContext();
+  const { updatePasswordAttempts, showToast, isLoadingModal, setisLoadingModal} = useDataContext();
     const navigation = useNavigation<StackNavigationProp<any, 'SecurityScreen'>>();
-    const [isLoading, setisLoading] = useState<boolean>(false);
     const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
     const handleFormSubmit = async (values: {password: string, newpassword: string}) => {
-        setisLoading(true);
+        setisLoadingModal(true);
         const [isSubmited, message] = await updatePasswordAttempts(values.password, values.newpassword);
-        setisLoading(false);
+        setisLoadingModal(false);
         if(isSubmited) {
-            showToast('you can now use your new password', 'success', 'Passwords updated successfully');
+          showToast('you can now use your new password', 'success', 'Passwords updated successfully');
+          setTimeout(() => {
+            navigation.goBack();
+          }, 2000)
         }
         else{
-          console.log(message);
             if(message === "Request failed with status code 400"){
               showToast('old password incorrect', 'error', 'Password did not updated');
             } else{
@@ -92,8 +93,7 @@ const SecurityScreen: React.FC = () => {
             <TitleAndArrowBack text='Security' onPress={() => {navigation.goBack()}}/>
             <ScrollView>
             <View style={styles.FormikCon}>
-                {
-                    isLoading ? (activitiIndicatorAnimation) : (            <Formik
+<Formik
                         initialValues={{password: "", newpassword: "", confirmPassword: ""}}
                         validationSchema={validationSchema}
                         onSubmit={handleFormSubmit}
@@ -128,9 +128,7 @@ const SecurityScreen: React.FC = () => {
                             <StyledButton onPress={handleSubmit} text='Save' bigbutton disabled={!isValid || !dirty}/>
                           </>
                         )}
-                      </Formik>  )
-                }
- 
+                      </Formik>
             </View>
             </ScrollView>
             {!isKeyboardVisible && <BottomNavbar />}

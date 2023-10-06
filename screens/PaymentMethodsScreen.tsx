@@ -58,7 +58,7 @@ const PaymentMethodsScreen: React.FC<PaymentMethodsScreenProps> = ({ navigation 
 
 
     return (
-        <SafeAreaView style={[styles.container, {backgroundColor: isLoading ? loadingBackground : background}]}>
+        <SafeAreaView style={[styles.container, {backgroundColor: background}]}>
                 <TitleAndArrowBack text='Payment Methods' onPress={() => navigation.goBack()} />
                 <View style={{alignSelf: 'flex-end', padding: '3%'}}>
                 <StyledButton disabled={isLoading} smallbutton text='Add New' onPress={() => navigation.navigate('AddCreditCardScreen')} />

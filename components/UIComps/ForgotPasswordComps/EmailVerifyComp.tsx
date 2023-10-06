@@ -26,13 +26,7 @@ const EmailVerifyComp: React.FC<EmailVerifyCompProps> = ({isLoadingForm, handleF
 
     const { theme } = useContext(ThemeContext);
     const { primary, secondary, text, background , loadingBackground} = theme.colors   
-    const activitiIndicatorObject = (<LottieView
-        style={{width: screen.width * 0.2, height: screen.height * 0.1, alignSelf: 'center'}}
-        speed={1} 
-        source={activityIndicatorAnimation}
-        autoPlay
-        loop={true}
-        />)
+
         const verifyemailanimationObject = (<LottieView
             style={{width: 200, height: 200 , zIndex: 10, alignSelf: 'center', marginTop: '15%'}}
             speed={1} 
@@ -49,12 +43,6 @@ const EmailVerifyComp: React.FC<EmailVerifyCompProps> = ({isLoadingForm, handleF
 
     </View>
 
-      {isLoadingForm ? (
-        <View style={{alignSelf: 'center', borderRadius: 150, borderWidth: 1, backgroundColor: 'black', alignItems: 'center', marginTop: '15%'}}>
-{activitiIndicatorObject}
-        </View>
-          
-      ) : (
           <Formik
               initialValues={{ email: '' }}
               validationSchema={validationSchema}
@@ -74,7 +62,6 @@ const EmailVerifyComp: React.FC<EmailVerifyCompProps> = ({isLoadingForm, handleF
                   </>
               )}
           </Formik>
-      )}
   </View>
   );
 };

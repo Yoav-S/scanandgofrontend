@@ -38,7 +38,7 @@ const AddCreditCardScreen: React.FC = () => {
     const { theme, buttonTheme } = useContext(ThemeContext);
     const [expireinDate, setExpireinDate] = useState('');
     const { primary, secondary, text, background, loadingBackground } = theme.colors 
-    const {addCreditCardAttempt, showToast, setisMessageModalVisible, currentUser} = useDataContext();
+    const {addCreditCardAttempt, showToast, setisLoadingModal, currentUser} = useDataContext();
     const [allCategoriesValues, setAllCategoriesValues] = useState<{ label: string; value: string }[]>([
         { label: 'Discover', value: 'discover' },
         { label: 'Mastercard', value: 'mastercard' },
@@ -49,12 +49,12 @@ const AddCreditCardScreen: React.FC = () => {
     const [expirationDateInputPlaceholder, setExpirationDateInputPlaceholder] = useState<string>("Expiration Date");
 
     const handleFormSubmit = async (values: {cardType: string, cardNumber: string, cardholderName: string, expirationDate: string, cvv: string}) => {
-        setisMessageModalVisible(true);        
+      setisLoadingModal(true);        
         console.log(values);
         const creditCardForm: creditCardFormType = values;
         creditCardForm.isDefault = isDefault;
         const [isAdded, message] = await addCreditCardAttempt(creditCardForm);
-        setisMessageModalVisible(false);
+        setisLoadingModal(false);
         if(isAdded){
             showToast('you can use it now', 'success', 'Credit card added successfully')
             setTimeout(() => {
@@ -94,7 +94,7 @@ const AddCreditCardScreen: React.FC = () => {
         style={{ flex: 1 }}
       >
                 <TitleAndArrowBack text="Add new credit card" onPress={() => {navigation.goBack()}}/>
-                <ScrollView>
+                <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={[styles.formikCon, {height: screen.height * 0.8}]}>
                     <Formik
                         initialValues={{cardType: "", cardNumber: "", cardholderName: "", expirationDate: "", cvv: "", isDefault: isDefault}}
@@ -113,7 +113,7 @@ const AddCreditCardScreen: React.FC = () => {
                         expiry={values.expirationDate}
                         cvc={values.cvv}
                         /></ScrollView>
-                                                <ScrollView style={[styles.cardContainer,]}>
+                                                <ScrollView showsVerticalScrollIndicator={false} style={[styles.cardContainer,]}>
 
                         <FormInput onPress={() => {handleChange('cardNumber')('')}} value={values.cardNumber} startValue={values.cardNumber} errorMessage={errors.cardNumber} setInput={handleChange('cardNumber')} label="Card Number" numeric/>
                         <FormInput onPress={() => {handleChange('cardholderName')('')}} value={values.cardholderName} startValue={values.cardholderName} errorMessage={errors.cardholderName} setInput={handleChange('cardholderName')} label="Card Holder Name"/>

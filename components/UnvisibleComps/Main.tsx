@@ -25,6 +25,7 @@ const Main: React.FC = () => {
     setCurrentUser,
     getUserById,
     setToken,
+    isLoadingModal
      } = useDataContext();
 
 useEffect(() => {

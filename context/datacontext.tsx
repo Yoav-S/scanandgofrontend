@@ -21,7 +21,7 @@ export const DataProvider: React.FC<Props> = ({ children }) => {
   const [isAreYouSureModalOpen, setisAreYouSureModalOpen] = useState<boolean>(false);   
   const [token, setToken] = useState<string>('');
   const [isVisibleStatus, setisVisibleStatus] = useState(false);
-  const [isLoadingModal, setisLoadingModal] = useState<boolean>(true);
+  const [isLoadingModal, setisLoadingModal] = useState<boolean>(false);
   const [updatedCurrentUserCart, setupdatedCurrentUserCart] = useState<IteminCartType[] | undefined>(currentUser?.cart || []);
   const [isMessageModalVisible, setisMessageModalVisible] = useState(false);
   const [amountofitemsvariable, setamountofitemsvariable] = useState<number>(currentUser?.cart.length || 0);

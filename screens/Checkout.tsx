@@ -24,11 +24,10 @@ const Checkout: React.FC = () => {
     const { theme } = useContext(ThemeContext);
     const [totalAmountState, setTotalAmountState] = useState(route.params.totalAmount)
     const { primary, secondary, text, background, loadingBackground } = theme.colors 
-    const {currentUser, showToast, verifyCouponAttempt, PaymentAttempt} = useDataContext();
+    const {currentUser, showToast, verifyCouponAttempt, PaymentAttempt, isLoadingModal, setisLoadingModal} = useDataContext();
     const [isCouponValid, setisCouponValid] = useState<boolean>(false);
     const [isLoading, setisLoading] = useState<boolean>(false);
     const [isAttempted, setisAttempted] = useState<boolean>(false);
-    const [isLoadingPayment, setisLoadingPayment] = useState<boolean>(false);
     const [currentCouponInputValue, setCouponInputValue] = useState<string>('');
     const navigation = useNavigation<StackNavigationProp<any>>();
     const [localCheckedVal, setlocalCheckedVal] = useState<boolean>();
@@ -110,9 +109,9 @@ const Checkout: React.FC = () => {
        products: newCart,
        couponId: currentCoupon,
    }
-   setisLoadingPayment(true);       
+   setisLoadingModal(true);       
    const paymentResult: boolean = await PaymentAttempt(transactionObject);   
-   setisLoadingPayment(false);       
+   setisLoadingModal(false);       
    if(paymentResult) {
     setisAttempted(false);
     setisCouponValid(false);
@@ -153,7 +152,7 @@ const Checkout: React.FC = () => {
     }, [currentUser?.cart])
     
     return (
-        <View style={[{backgroundColor: isLoading ? loadingBackground : background}, styles.container]}>
+        <View style={[{backgroundColor: background}, styles.container]}>
                   <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         style={{ flex: 1 }}
@@ -161,8 +160,6 @@ const Checkout: React.FC = () => {
                         <TitleAndArrowBack text='Checkout' onPress={() => {navigation.goBack()}}/>
                         <ScrollView>
 
-            {
-                isLoadingPayment ? (<ActivityIndicator style={{marginTop: '15%'}} size={70}/> ) : (
                 <View>
                 <View style={styles.paymentMethodsCon}>
                     <Text style={{color: text.primary, padding: '3%', fontWeight: '600'}}>Payment Method</Text>
@@ -213,10 +210,8 @@ const Checkout: React.FC = () => {
                     </View>
                     }
                 </View>
-                <StyledButton text='Pay Now' bigbutton onPress={handlePayNow}/>
+                <StyledButton disabled={isLoading} text='Pay Now' bigbutton onPress={handlePayNow}/>
                 </View>
-                )
-            }
 </ScrollView>
 {!isKeyboardVisible && <BottomNavbar />}
             </KeyboardAvoidingView>

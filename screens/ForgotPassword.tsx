@@ -36,15 +36,13 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
   const [emailSended, setEmailSended] = useState<boolean>(false);
   const [isOneMinuteBind, setisOneMinuteBind] = useState<boolean>(false);
   const [oneMinuteBindEndTime, setOneMinuteBindEndTime] = useState<number>(0);
-  const [isLoadingForm, setisLoadingForm] = useState<boolean>(false);
   const [isLoadingResendEmail, setisLoadingResendEmail] = useState<boolean>(false);
-  const [isLoadingResetPassword, setisLoadingResetPassword] = useState<boolean>(false);
   const [emailValue, setEmailValue] = useState<string>('');
   const [Digits, setDigits] = useState<string>('');
   const [otpExpireInTime, setotpExpireInTime] = useState<Date>();
   const [userId, setUserId] = useState<string>('');
   const [isOtpVerified, setisOtpVerified] = useState<boolean>(false);
-  const {verifyEmail, showToast, resetPassword} = useDataContext();
+  const {verifyEmail, showToast, resetPassword, isLoadingModal, setisLoadingModal} = useDataContext();
   const [remainingTime, setRemainingTime] = useState<number>(60); // Initialize with 60 seconds
   const screen = Dimensions.get('window');
 
@@ -121,9 +119,9 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
       
     const handleChangePassword = async (value: {password : string}) => {
      try{
-      setisLoadingResetPassword(true);
+      setisLoadingModal(true);
       const isPasswordChanged = await resetPassword(value.password, userId);
-      setisLoadingResetPassword(false);
+      setisLoadingModal(false);
       if(isPasswordChanged) {
         showToast('Password Succesfully saved', 'success', `your about to move to ${route.params.cameFrom}`);
         setTimeout(() => {
@@ -144,14 +142,14 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
 
 
     const handleFormSubmit = async (value: { email: string }) => {
-      setisLoadingForm(true);
+      setisLoadingModal(true);
       setEmailValue(value.email);
       try {
         const [isEmailSended, digits, expireIn, userId] = await verifyEmail(value.email);
         const [messageToast, statusToast, headerToast] = isEmailSended ? 
         ['Please check your email', 'success', 'Email Successfully Sent'] : 
         ['Email sent Failed', 'error', 'Please try again'];
-        setisLoadingForm(false);
+        setisLoadingModal(false);
         if (isEmailSended && userId != null) {
           console.log('success');
           
@@ -176,10 +174,10 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: isLoadingForm || isLoadingResendEmail || isLoadingResetPassword ? loadingBackground : background}]}>  
+    <View style={[styles.container, { backgroundColor: background}]}>  
     <TitleAndArrowBack text='Forgot Password' onPress={() => {navigation.goBack()}}/>
     <ScrollView>
-        {emailSended ? (isOtpVerified ? ( <ResetPasswordComp isloadingResetPassword={isLoadingResetPassword} handleChangePassword={handleChangePassword}/>) : 
+        {emailSended ? (isOtpVerified ? ( <ResetPasswordComp isloadingResetPassword={isLoadingModal} handleChangePassword={handleChangePassword}/>) : 
         (            
           <OtpComp 
           emailSended={emailSended} 
@@ -190,7 +188,7 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
           remainingTime={remainingTime}
           isLoadingResendEmail={isLoadingResendEmail}
           />
-        ) ) : ( <EmailVerifyComp handleFormSubmit={handleFormSubmit} isLoadingForm={isLoadingForm}/> )}
+        ) ) : ( <EmailVerifyComp handleFormSubmit={handleFormSubmit} isLoadingForm={isLoadingModal}/> )}
         </ScrollView>
         <Toast/>
     </View>

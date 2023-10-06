@@ -16,7 +16,6 @@ interface StyleObj {
 const StyledWrapper = ({ children, style, route }: StyledWrapperProps) => {
 
   const { theme } = useContext(ThemeContext);
-  const {loadingBackground } = theme.colors 
 
   const animatedStyle = {
     ...style,

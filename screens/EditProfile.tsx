@@ -33,10 +33,9 @@ const EditProfile: React.FC = () => {
     const navigation = useNavigation<StackNavigationProp<any, 'EditProfile'>>();
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
     const [openDateModal, setopenDateModal] = useState<boolean>(false);
-    const [isLoading, setisLoading] = useState<boolean>(false);
     const [date, setDate] = useState<Date>(new Date());
     const [isBirthDateValidated, setIsBirthDateValidated] = useState<boolean>(false);
-    const {showToast, updateDetailsAttempt} = useDataContext();
+    const {showToast, updateDetailsAttempt, isLoadingModal, setisLoadingModal} = useDataContext();
     const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
     const setOpenModalHandler = () => {
@@ -44,12 +43,14 @@ const EditProfile: React.FC = () => {
       };
 
     const handleFormSubmit = async (values: {email: string, fullName: string, gender: string, birthDate: string}) => {
-      setisLoading(true);
-        const isDetailsSaved = await updateDetailsAttempt(values.email, values.fullName, values.gender, values.birthDate);
-        
-        setisLoading(false);
+        setisLoadingModal(true);
+        const isDetailsSaved = await updateDetailsAttempt(values.email, values.fullName, values.gender, values.birthDate);     
+        setisLoadingModal(false);
         if(isDetailsSaved) {
-            showToast('You have succesfully updated your details', 'success', 'Details Saved !');
+          showToast('You have succesfully updated your details', 'success', 'Details Saved !');
+          setTimeout(() => {
+            navigation.navigate('Settings');
+          }, 2000)
         }
         else{
             showToast('Something went wrong', 'error', 'Update Details Failed !')
@@ -89,8 +90,7 @@ const EditProfile: React.FC = () => {
         style={{ flex: 1 }}
       >
             <TitleAndArrowBack text='Edit Profile' onPress={() => {navigation.goBack()}}/>
-            {
-              isLoading ? (<ActivityIndicator size={60}/>) : (                   <ScrollView>
+<ScrollView>
                 <View style={styles.FormikCon}>
                 <Formik
             initialValues={{ email: '', fullName: '', gender: '', birthDate: '' }}
@@ -172,8 +172,7 @@ const EditProfile: React.FC = () => {
             )}
           </Formik>
                 </View></ScrollView>
-)
-            }
+
 
                     {!isKeyboardVisible && <BottomNavbar />}
             </KeyboardAvoidingView>

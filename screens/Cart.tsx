@@ -1,5 +1,5 @@
 import react, {useState, useEffect, useContext} from 'react';
-import {Text, View, StyleSheet, SafeAreaView } from 'react-native';
+import {Text, View, StyleSheet, SafeAreaView, Dimensions } from 'react-native';
 import { useDataContext } from '../context/DataContext';
 import animationData from '../assets/emptycartlottie.json'
 import LottieView from 'lottie-react-native';
@@ -16,6 +16,7 @@ import { ThemeContext } from "../context/ThemeContext";
 
 import { CurrentUserType } from '../interfaces/interfaces';
 import ShekelPrice from '../components/UIElements/ShekelPrice';
+const screen = Dimensions.get('window');
 
 const Cart: React.FC = () => {
     const {setCurrentUser,currentUser, deleteItemAttempt, showToast, amountofitemsvariable,setamountofitemsvariable} = useDataContext();
@@ -68,7 +69,7 @@ const Cart: React.FC = () => {
         calculatePrice(currentUserItemsCart);
       }, [ currentUserItemsCart]);
     return (
-        <View style={[styles.container, {backgroundColor: isLoading ? loadingBackground : background}]}>
+        <View style={[styles.container, {backgroundColor: background}]}>
             <View style={styles.titleandIcon}>
             <Text/>
             <Text style={{color: text.primary, fontWeight: '600', fontSize: 18}}>Cart</Text>

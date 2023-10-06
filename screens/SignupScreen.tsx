@@ -38,7 +38,7 @@ const SignupScreen: React.FC = () => {
   const navigation = useNavigation<StackNavigationProp<any, 'Signup'>>();
   const { setToken } = useToken();
   const { theme } = useContext(ThemeContext);
-  const { setisTermsModal, isTermsButtonPressed , setisTermsButtonPressed,isTermsModal} = useDataContext();
+  const { setisTermsModal, isTermsButtonPressed , setisTermsButtonPressed,isTermsModal, isLoadingModal, setisLoadingModal} = useDataContext();
   const { primary, secondary, text, background } = theme.colors 
   const [isBirthDateValidated, setIsBirthDateValidated] = useState<boolean>(false);
   const { signupAttempt, showToast , autoLoginNewUser} = useDataContext();
@@ -46,7 +46,6 @@ const SignupScreen: React.FC = () => {
   const inputRef = useRef(null);
   const [isInputFocused, setIsInputFocused] = useState(false);
 
-  const [isLoading, setisLoading] = useState<boolean>(false);
   const [readTerms, setReadTerms] = useState<boolean>(false);
   const [modalStatus, setModalStatus] = useState<boolean>(false);
   const [openDateModal, setopenDateModal] = useState<boolean>(false);
@@ -57,13 +56,13 @@ const SignupScreen: React.FC = () => {
 
 const handleFormSubmit = async ({ confirmPassword, ...values } : Registergion_Form_Props) => {
   setIsBirthDateValidated(true);
-  setisLoading(true);
+  setisLoadingModal(true);
   const deviceToken = await requestUserPermission();
   values.deviceToken = deviceToken;
   const [isRegistered, message, token] = await signupAttempt(values);
   const [messageToast, statusToast, headerToast] = isRegistered ? [`${message} moving to homepage`, 'success', 'Sign-Up Successfully 👋'] : [message, 'error', 'Sign-Up failed'];
   console.log(values);  
-  setisLoading(false);  
+  setisLoadingModal(false);  
   showToast(messageToast, statusToast, headerToast);
   if (!isRegistered || !token) return;
   setTimeout(() => {
@@ -79,7 +78,7 @@ const handleFormSubmit = async ({ confirmPassword, ...values } : Registergion_Fo
   return (
     <StyledWrapper route='Signup' style={ {flex: 1 ,backgroundColor: background, }}>
       <BigTitle title={'Create An Account'} />
-{ isLoading ? (<ActivityIndicator size={60}/>) : (<ScrollView style={{margin: '3%'}}>
+<ScrollView showsVerticalScrollIndicator={false} style={{margin: '3%'}}>
   <View>
       <Formik
         initialValues={{ email: '', password: '', confirmPassword: '', fullName: '', gender: '', birthDate: '', termsAndConditions: isTermsButtonPressed }}
@@ -229,8 +228,6 @@ const handleFormSubmit = async ({ confirmPassword, ...values } : Registergion_Fo
       <StyledButton bigbutton disabled={false} onPress={() => {navigation.navigate('Login')}} text={'Back to login'} />
       </View>
         </ScrollView>
-
-     )}
   <Toast/>
 
     </StyledWrapper>

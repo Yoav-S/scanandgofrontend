@@ -62,13 +62,12 @@ const ProblemReport: React.FC<ProblemReportType> = () => {
   const [currentAsset, setCurrentAsset] = useState<Asset | null>(null);
   const [cameFrom, setCameFrom] = useState<string>();
   const [selectedImage, setSelectedImage] = useState<string>('');
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [appVersionValue, setAppVersionValue] = useState<string>(appVersion);
   const [deviceModel, setdeviceModel] = useState<string>('');
   const [systemVersionValue, setSystemVersionValue] = useState<string>('');
   const [osValue, setOsValue] = useState<string>('');
   const [isFormatedImage, setisFormatedImage] = useState<boolean>(true);
-  const {getArrayOfDropDownCategories, showToast, uploadReport} =
+  const {getArrayOfDropDownCategories, showToast, uploadReport, isLoadingModal, setisLoadingModal} =
     useDataContext();
   const [open, setOpen] = useState(false);
   const descriptionMinLength = 20
@@ -78,21 +77,6 @@ const ProblemReport: React.FC<ProblemReportType> = () => {
   const [currentCategoryValue, setCurrentCategoryValue] = useState<string>('');
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
-  const activitiIndicatorAnimation = (
-    <LottieView
-      style={{
-        width: 150,
-        height: 150,
-        alignSelf: 'center',
-        zIndex: 20,
-        position: 'relative',
-      }}
-      speed={1}
-      source={activityIndicator}
-      autoPlay
-      loop={true}
-    />
-  );
 
   const buganimationObject = (
     <LottieView
@@ -183,7 +167,7 @@ const ProblemReport: React.FC<ProblemReportType> = () => {
   };
 
   const handleFormSubmit = async (value: {description: string}) => {
-    setIsLoading(true);
+    setisLoadingModal(true);
     try {
       const [isPostUploaded, uploadMessage] = await uploadReport(
         currentAsset,
@@ -194,7 +178,7 @@ const ProblemReport: React.FC<ProblemReportType> = () => {
         deviceModel,
         appVersionValue,
       );
-      setIsLoading(false);
+      setisLoadingModal(false);
       setCurrentAsset(null);
       setSelectedImage('');
       setCurrentCategoryValue('');
@@ -209,7 +193,7 @@ const ProblemReport: React.FC<ProblemReportType> = () => {
         }, 2000);
       }
     } catch (err: any) {
-      setIsLoading(false);
+      setisLoadingModal(false);
       setCurrentAsset(null);
       setCurrentCategoryValue('');
       showToast(err.message, 'error', 'Problem uploading failed !');
@@ -233,11 +217,7 @@ const ProblemReport: React.FC<ProblemReportType> = () => {
             <View style={{width: width * 0.95, alignSelf: 'center', height: cameFrom === 'Settings'? height * 0.8 : height * 0.9}}>
 
 {buganimationObject}
-              {isLoading ? (
-                <View style={{marginTop: '50%'}}>
-                  {activitiIndicatorAnimation}
-                </View>
-              ) : (
+
                 <Formik
                   initialValues={{category: '', image: '', description: ''}}
                   validationSchema={validationSchema}
@@ -349,9 +329,7 @@ const ProblemReport: React.FC<ProblemReportType> = () => {
                     </>
                   )}
                 </Formik>
-              )}
-
-
+           
             </View>
             </ScrollView>
 
