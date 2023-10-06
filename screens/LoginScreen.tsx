@@ -34,7 +34,7 @@ const LoginScreen: React.FC = () => {
   const { primary, secondary, text, background } = theme.colors   
   const [buttonStatus, setButtonStatus] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState(false);
-  const {loginAttempt, setAuthenticated, showToast} = useDataContext();
+  const {loginAttempt, setAuthenticated, showToast, setisLoadingModal} = useDataContext();
   const activitiIndicatorObject = (<LottieView
     style={{width: 100, height: 100 , zIndex: 10}}
     speed={1} 
@@ -47,7 +47,7 @@ const LoginScreen: React.FC = () => {
       speed={1} 
       source={bugbuttonanimation}
       autoPlay
-      loop={true}
+      loop={!isLoading}
       />)
   const loginAnimationObject = (<LottieView
     style={{width: 250, height: 250}}
@@ -57,8 +57,10 @@ const LoginScreen: React.FC = () => {
     loop={true}
     />)
   const handleFormSubmit = async (values: { email: string; password: string; }) => {
-    setIsLoading(true)
+    setIsLoading(true);
+    setisLoadingModal(true);
     const result = await loginAttempt(values.email, values.password, checkBoxValue);
+    setisLoadingModal(false);
     setIsLoading(false)
     if (result === false) {
       showToast('Sorry... wrong email or password','error','Login Failed');
@@ -79,7 +81,7 @@ const LoginScreen: React.FC = () => {
     <StyledWrapper style={{backgroundColor: background, flex: 1}} route={'login'}>
       <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
       <BigTitle title="Login" />
-      <TouchableOpacity onPress={() => {navigation.navigate('ProblemReport', {cameFrom: 'Login'})}}>
+      <TouchableOpacity disabled={isLoading} onPress={() => {navigation.navigate('ProblemReport', {cameFrom: 'Login'})}}>
       {bugbuttonanimationObject}
 
       </TouchableOpacity>

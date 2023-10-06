@@ -13,7 +13,7 @@ import AreYouSureModal from '../ModalsComps/AreYouSureModal';
 import SplashScreen from '../../screens/SplashScreen';
 import { ThemeContext } from '../../context/ThemeContext';
 import TermsAndConditionsModal from '../ModalsComps/TermsAndConditionsModal';
-import BottomNavbar from '../UIElements/BottomNavbar';
+import LoadingModal from '../ModalsComps/LoadingModal';
 const Main: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true); // Add isLoading state
   const {setTheme, lightTheme, darkTheme, buttonTheme, theme} = useContext(ThemeContext);
@@ -24,9 +24,8 @@ const Main: React.FC = () => {
     setAuthenticated,
     setCurrentUser,
     getUserById,
-    isVisibleStatus,
     setToken,
-    updateDeviceToken } = useDataContext();
+     } = useDataContext();
 
 useEffect(() => {
   if (colorScheme === 'dark') {
@@ -72,11 +71,14 @@ if(isLoading){
                     <MessageModal/>
                     <LogoutModal/>
                     <AreYouSureModal/>
+                    <LoadingModal/>
                     </View>
         ) : (
           <View style={{flex: 1}}>
                     <NotAuthenticatedStackScreen />
                     <TermsAndConditionsModal/>
+                    <LoadingModal/>
+
           </View>
         )}
     </View>

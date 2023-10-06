@@ -77,7 +77,7 @@ const handleFormSubmit = async ({ confirmPassword, ...values } : Registergion_Fo
   }
 
   return (
-    <StyledWrapper route='Signup' style={ {flex: 1 ,backgroundColor: background}}>
+    <StyledWrapper route='Signup' style={ {flex: 1 ,backgroundColor: background, }}>
       <BigTitle title={'Create An Account'} />
 { isLoading ? (<ActivityIndicator size={60}/>) : (<ScrollView style={{margin: '3%'}}>
   <View>

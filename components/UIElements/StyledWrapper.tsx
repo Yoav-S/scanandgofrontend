@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import { View, Animated, Dimensions } from 'react-native';
-
+import { ThemeContext } from '../../context/ThemeContext';
 interface StyledWrapperProps {
   style: StyleObj; 
   children: React.ReactNode;
@@ -10,11 +10,13 @@ interface StyledWrapperProps {
 interface StyleObj {
   backgroundColor: string;
   flex: number;
+
 }
 
 const StyledWrapper = ({ children, style, route }: StyledWrapperProps) => {
 
-
+  const { theme } = useContext(ThemeContext);
+  const {loadingBackground } = theme.colors 
 
   const animatedStyle = {
     ...style,

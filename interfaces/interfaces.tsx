@@ -144,6 +144,8 @@ export interface DataContextType {
     isAreYouSureModalOpen: boolean;
     cardId: string;
     isTermsModal: boolean;
+    isLoadingModal:boolean; 
+    setisLoadingModal: (isLoadingModal: boolean) => void;
     isTermsButtonPressed: boolean;
     setisTermsButtonPressed: (isTermsButtonPressed: boolean) => void;
     setisTermsModal: (isTermsModal: boolean) => void;
