@@ -12,10 +12,7 @@ const LoadingModal: React.FC = () => {
   const { theme } = useContext(ThemeContext);
   const { background } = theme.colors;
   const { isLoadingModal, setisLoadingModal } = useDataContext();
-  const [isLoading, setisLoading] = useState<boolean>(isLoadingModal);
-
-
-
+  const [opacityVal, setOpacityVal] = useState<number>(0);; 
 
   const activityIndicatorAnimationObject = (
     <LottieView

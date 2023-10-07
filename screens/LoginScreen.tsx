@@ -70,9 +70,6 @@ const LoginScreen: React.FC = () => {
     }, 2000)
   };
 
-  const navigateToSignUp = () => {
-    navigation.navigate('Signup');
-  }
 
   return (
     <StyledWrapper style={{backgroundColor: background, flex: 1}} route={'login'}>

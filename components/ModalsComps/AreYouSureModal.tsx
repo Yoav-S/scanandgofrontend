@@ -156,7 +156,7 @@ const AreYouSureModal: React.FC = () => {
 
         <View
           style={{alignSelf: 'center'}}>
-          <Icon color="black" name="cancel" size={25} containerStyle={{alignSelf: 'flex-end'}} onPress={() => {setisAreYouSureModalOpen(false)}}/>
+          <Icon color={text.secondary} name="cancel" size={25} containerStyle={{alignSelf: 'flex-end'}} onPress={() => {setisAreYouSureModalOpen(false)}}/>
           <Text
             style={{
               color: text.primary,
